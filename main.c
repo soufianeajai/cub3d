@@ -8,9 +8,7 @@ int	main()
 	
 	
 	
-	
-	
-	
+	// noo
 	// ft_parse(ac, av, &mlx);
 	// draw_set(&mlx);
 	ft_connect(&mlx);
