@@ -10,6 +10,19 @@
 # define HEIGHT 1000
 # define WIDTH 1000
 
+typedef struct s_input {
+  char  *no;
+  char  *so;
+  char  *we;
+  char  *ea;
+  int    c_color;
+  int    f_color;
+  double  direction;
+  char  **map;
+  int    pos_x;
+  int    pos_y;
+  int   nbr_lines;
+}  t_input;
 
 typedef struct t_image {
 	void	*ptr;
