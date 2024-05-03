@@ -5,6 +5,12 @@ int	main()
 {
 	t_mlx	mlx;
 
+	
+	
+	
+	
+	
+	
 	// ft_parse(ac, av, &mlx);
 	// draw_set(&mlx);
 	ft_connect(&mlx);
