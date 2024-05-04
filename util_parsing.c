@@ -33,3 +33,16 @@ int	ft_strcmp(const char *s1, const char *s2)
 		i++;
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
+int white_space(char c)
+{
+	if (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r')
+		return (1);
+	return (0);
+}
+
+int is_direction(char c)
+{
+    if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
+        return (1);
+    return (0);
+}
