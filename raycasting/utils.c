@@ -1,16 +1,6 @@
 
 #include"../cub3d.h"
 
-int	ft_strlen(const char *s)
-{
-	int	len;
-
-	len = 0;
-	while (s[len])
-		len++;
-	return (len);
-}
-
 int	ft_signe(const char **str)
 {
 	int	signe;

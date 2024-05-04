@@ -1,12 +1,14 @@
 
 #ifndef CUB3D_H
 # define CUB3D_H
-
+#include <fcntl.h>
+#include "gnl/get_next_line.h"
 # include<mlx.h>
 # include<stdlib.h>
 # include<math.h>
 # include<stdio.h>
 # include<unistd.h>
+#include "parsing.h"
 # define HEIGHT 1000
 # define WIDTH 1000
 
@@ -39,6 +41,7 @@ typedef struct s_mlx {
 	t_img		image;
 
 }	t_mlx;
+
 int	ft_connect(t_mlx *mlx);
 void	my_mlx_pixel_put(t_img *image, int x, int y, int color);
 void	ft_error(void	*ptr, char *msg);

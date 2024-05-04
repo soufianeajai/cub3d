@@ -1,7 +1,9 @@
 
 NAME	= cub3d
 CFLAGS	= -Wall -Wextra -Werror #-O3
-SRS		= main.c raycasting/events_hooks.c raycasting/connect_check_set.c raycasting/utils.c
+SRS		= main.c raycasting/events_hooks.c raycasting/connect_check_set.c \
+		raycasting/utils.c gnl/get_next_line.c gnl/get_next_line_utils.c parsing.c util_parsing.c 
+
 FRAM	= -lmlx -framework OpenGL -framework AppKit 
 
 OBJ	= $(SRS:.c=.o)

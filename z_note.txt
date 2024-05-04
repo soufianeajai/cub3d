@@ -1,0 +1,13 @@
+* to push in another branch : git push origin master:parsing
+
+{ 
+    des problem in code :
+    -
+}
+
+* N : pi/2 (3,14) 
+* S ; 3pi/2
+* E : 0
+* W : pi 
+
+* parsing : 3d map 
