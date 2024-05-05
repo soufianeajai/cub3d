@@ -8,7 +8,7 @@ int	ft_connect(t_mlx *mlx)
 		perror("Problem in the display connection");
 		exit(1);
 	}
-	mlx->window = mlx_new_window(mlx->connect, WIDTH, HEIGHT, "FRACTOL");
+	mlx->window = mlx_new_window(mlx->connect, WIDTH, HEIGHT, "CUB3D");
 	if (!mlx->window)
 		ft_error(mlx->connect, "Problem in creating the window");
 	mlx->image.ptr = mlx_new_image(mlx->connect, WIDTH, HEIGHT);
