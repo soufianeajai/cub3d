@@ -1,12 +1,13 @@
 
 #ifndef CUB3D_H
 # define CUB3D_H
-
+# include<fcntl.h>
 # include<mlx.h>
 # include<stdlib.h>
 # include<math.h>
 # include<stdio.h>
 # include<unistd.h>
+#include "parsing/parsing.h"
 # define HEIGHT 1024
 # define WIDTH 1024
 # define PI	3.1416
@@ -14,19 +15,6 @@
 # define FOV 60
 # define PLAYER_HEIGHT 32
 
-typedef struct s_input {
-  char  *no;
-  char  *so;
-  char  *we;
-  char  *ea;
-  int    c_color;
-  int    f_color;
-  double  direction;
-  char  **map;
-  int    pos_x;
-  int    pos_y;
-  int   nbr_lines;
-}  t_input;
 
 typedef struct t_image {
 	void	*ptr;
@@ -78,5 +66,8 @@ int	handle_keys(int keysym, t_mlx *mlx);
 int	ft_close(int keysym, t_mlx *mlx);
 int	ft_close2(t_mlx *mlx);
 void	free_ptr(void *ptr);
+void get_images(t_mlx *mlx, t_input *input);
+t_game init_game(t_mlx mlx, t_input input);
+t_img  get_image_from_xpm(void *mlx_ptr, char *path_xpm);
 
 #endif

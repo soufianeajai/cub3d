@@ -23,24 +23,38 @@ t_img  get_image_from_xpm(void *mlx_ptr, char *path_xpm)
   img.addr = mlx_get_data_addr(img.ptr, &img.bpp, &img.line_len, &img.endian);
   return (img);
 }
-
+void read_matrix(t_input *input)
+{
+	int i = 0;
+	while(i < input->nbr_lines)
+	{
+		printf("%s__", input->map[i]);
+		printf("\n");
+		i++;
+	}
+}
 int	main()
 {
-	t_game game;
-	t_mlx	mlx;
-	t_input input;
+	// t_game game;
+	// t_mlx	mlx;
+	t_input *input;
 
+	input = parsing("parsing/map.cub");
+	if (!input)
+		return (1);
+		printf("nbr_lines = %d\n", input->nbr_lines);
+	read_matrix(input);
 // add parsing here and give in input struct
-	ft_connect(&mlx);
-	get_images(&mlx, &input);
-	game = init_game(mlx, input);
-//	draw_set(&mlx);
-	mlx_put_image_to_window(mlx.connect, mlx.window, mlx.image.ptr, 0, 0);
-	mlx_hook(mlx.window, 2, 1L << 2, &ft_close, &mlx);
-	mlx_hook(mlx.window, 17, 1L << 17, &ft_close2, &mlx);
-//	mlx_key_hook(mlx.window, &handle_keys, &mlx);
-//	mlx_mouse_hook(mlx.window, &handle_mouse, &mlx);
-	mlx_loop(mlx.connect);
+// 	ft_connect(&mlx);
+// 	get_images(&mlx, &input);
+// 	game = init_game(mlx, input);
+// //	draw_set(&mlx);
+// 	mlx_put_image_to_window(mlx.connect, mlx.window, mlx.image.ptr, 0, 0);
+// 	mlx_hook(mlx.window, 2, 1L << 2, &ft_close, &mlx);
+// 	mlx_hook(mlx.window, 17, 1L << 17, &ft_close2, &mlx);
+// //	mlx_key_hook(mlx.window, &handle_keys, &mlx);
+// //	mlx_mouse_hook(mlx.window, &handle_mouse, &mlx);
+// 	mlx_loop(mlx.connect);
 	return (0);
 }
 
