@@ -11,6 +11,7 @@
 # define WIDTH 1024
 # define PI	3.1416
 # define SIZE_CUBE 64
+# define FOV 60
 
 typedef struct s_input {
   char  *no;
