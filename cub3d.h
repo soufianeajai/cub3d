@@ -45,7 +45,7 @@ typedef struct s_point{
 typedef struct s_game{
   t_mlx mlx;
   t_point player_pos;
-  double player_direction;
+  t_point player_direction;
   t_point projection_plane_center;
   double distance_projection_plane;
   double alpha_angle;
@@ -69,5 +69,6 @@ void	free_ptr(void *ptr);
 void get_images(t_mlx *mlx, t_input *input);
 t_game init_game(t_mlx mlx, t_input input);
 t_img  get_image_from_xpm(void *mlx_ptr, char *path_xpm);
+void copy_image(t_img *image, t_img wall_image, int x, int y);
 
 #endif
