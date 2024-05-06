@@ -6,13 +6,13 @@ void fill_desc_map(char *line, t_input *input, int *index)
 
     id = ft_substr(line, 0, 2);
     if (!ft_strcmp(id,"NO"))
-        input->no =ft_substr(line, 3, ft_strlen(line));
+        input->no =ft_substr(line, 3, ft_strlen(line + 3) - 1);
     else if (!ft_strcmp(id,"SO"))
-        input->so =ft_substr(line, 3, ft_strlen(line));
+        input->so =ft_substr(line, 3, ft_strlen(line + 3) - 1);
     else if (!ft_strcmp(id,"WE"))
-        input->we =ft_substr(line, 3, ft_strlen(line));
+        input->we =ft_substr(line, 3, ft_strlen(line + 3) - 1);
     else if (!ft_strcmp(id,"EA"))
-        input->ea =ft_substr(line, 3, ft_strlen(line));
+        input->ea =ft_substr(line, 3, ft_strlen(line + 3) - 1);
     else if (!ft_strcmp(id,"F "))
         input->f_color = (220 << 16) + (100 << 8) + 0;
     else if (!ft_strcmp(id,"C "))
@@ -79,17 +79,17 @@ void fill_map(t_input *input, char *file)
     close(fd);
 }
 
-t_input *parsing(char *file)
+t_input parsing(char *file)
 {
-    t_input *input;
+    t_input input;
     int fd;
     char *line;
     int i;
 
     i = 0;
-    input = malloc(sizeof(t_input));
-    if (!input)
-        return (NULL);
+    // input = malloc(sizeof(t_input));
+    // if (!input)
+    //     return (NULL);
     fd = open(file, O_RDONLY);
     while (1)
     {
@@ -98,12 +98,12 @@ t_input *parsing(char *file)
             break;
         if (empty_line(line))
             continue;
-        fill_desc_map(line, input, &i);
+        fill_desc_map(line, &input, &i);
        // printf("%s\n", line);
     }
     // we have nomber line for map :
-    input->nbr_lines = i;
+    input.nbr_lines = i;
     close(fd);
-    fill_map(input, file);
+    fill_map(&input, file);
     return (input);
 }
