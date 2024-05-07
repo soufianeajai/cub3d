@@ -24,24 +24,24 @@ t_img  get_image_from_xpm(void *mlx_ptr, char *path_xpm)
 void read_matrix(t_input input)
 {
     int i = 0;
-    while(i < input.nbr_lines)
+    while(input.map[i] != NULL)
     {
         printf("%s", input.map[i]);
         printf("\n");
         i++;
     }
 }
-void copy_image(t_img *image, t_img wall_image, int x, int y)
+void copy_image(t_img *image, t_img image_to_copy, int x, int y)
 {
 	int i = 0;
 	int j = 0;
 	int color;
-	while (i < wall_image.width)
+	while (i < image_to_copy.width)
 	{
 		j = 0;
-		while (j < wall_image.height)
+		while (j < image_to_copy.height)
 		{
-			color = *(int *)(wall_image.addr + (j * wall_image.line_len + i * (wall_image.bpp / 8)));
+			color = *(int *)(image_to_copy.addr + (j * image_to_copy.line_len + i * (image_to_copy.bpp / 8)));
 			my_mlx_pixel_put(image, x + i, y + j, color);
 			j++;
 		}

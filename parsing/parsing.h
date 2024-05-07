@@ -15,7 +15,8 @@ typedef struct s_input {
   char  **map;
   int    pos_x;
   int    pos_y;
-  int   nbr_lines;
+  int   height;
+  int   width;
 }  t_input;
 
 char	*ft_substr(char *s, unsigned int start, size_t len);

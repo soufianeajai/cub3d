@@ -1,6 +1,6 @@
 #include "parsing.h"
 
-void fill_desc_map(char *line, t_input *input, int *index)
+void fill_desc_map(char *line, t_input *input, int *index, size_t *len)
 {
     char *id;
 
@@ -18,7 +18,11 @@ void fill_desc_map(char *line, t_input *input, int *index)
     else if (!ft_strcmp(id,"C "))
         input->f_color = (225 << 16) + (30 << 8) + 0;
     else
+    {
+        if (*len < ft_strlen(line))
+            *len = ft_strlen(line);
         *index += 1; 
+    }
 }
 int empty_line(char *line)
 {
@@ -52,15 +56,51 @@ int is_not_map(char *line)
     }
     return (0);
 }
-void fill_map(t_input *input, char *file)
+char *replace_spaces(char *line)
+{
+    int i;
+
+    i = 0;
+    while (line[i])
+    {
+        if (white_space(line[i]))
+            line[i] = '2';
+        i++;
+    }
+    return (line);
+}
+
+char *get_full_len(char *line, int len)
+{
+    char *new_line;
+    int i;
+
+    i = 0;
+    new_line = malloc(len + 1);
+    while (line[i])
+    {
+        new_line[i] = line[i];
+        i++;
+    }
+    while (i < len)
+    {
+        new_line[i] = '2';
+        i++;
+    }
+    new_line[i] = '\0';
+    return (new_line);
+}
+void fill_map(t_input *input, char *file, int len)
 {
     int fd;
     char *line;
     int i;
+    int j;
 
     i = 0;
+    j = 0;
     fd = open(file, O_RDONLY);
-    input->map = malloc(sizeof(char *) * input->nbr_lines);
+    input->map = malloc(sizeof(char *) * input->height);
     while (1)
     {
         line = get_next_line(fd);
@@ -68,9 +108,14 @@ void fill_map(t_input *input, char *file)
             break;
         if (empty_line(line) || is_not_map(line))
             continue;
-        if (i < input->nbr_lines)
-            input->map[i++] = ft_substr(line, 0, ft_strlen(line) - 1);
-        if (i == input->nbr_lines)
+        if (i < input->height)
+        {
+            input->map[i] = get_full_len(line, len);
+            input->map[i] = replace_spaces(input->map[i]);
+            
+            i++;
+        }
+        if (i == input->height)
         {
             input->map[i] = NULL;
             break;
@@ -85,11 +130,12 @@ t_input parsing(char *file)
     int fd;
     char *line;
     int i;
+    int j;
+    size_t len;
 
     i = 0;
-    // input = malloc(sizeof(t_input));
-    // if (!input)
-    //     return (NULL);
+    j = 0;
+    len = 0;
     fd = open(file, O_RDONLY);
     while (1)
     {
@@ -98,12 +144,11 @@ t_input parsing(char *file)
             break;
         if (empty_line(line))
             continue;
-        fill_desc_map(line, &input, &i);
-       // printf("%s\n", line);
+        fill_desc_map(line, &input, &i,&len);
     }
-    // we have nomber line for map :
-    input.nbr_lines = i;
+    input.height = i;
     close(fd);
-    fill_map(&input, file);
+    fill_map(&input, file, len);
+    input.width = len;
     return (input);
 }

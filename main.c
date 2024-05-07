@@ -1,6 +1,6 @@
 #include"cub3d.h"
 
-void draw_set(t_mlx *mlx)
+void draw(t_mlx *mlx)
 {
 	int x = 0;
 	int y = 0;
@@ -23,11 +23,11 @@ int	main()
 	t_input input;
 
 	input = parsing("map.cub");
-//	read_matrix(input);
+	read_matrix(input);
 	ft_connect(&mlx);
 	game = init_game(mlx, input);
 	get_images(&mlx, &input);
-	draw_set(&mlx);
+	draw(&mlx);
  	mlx_hook(mlx.window, 2, 0, &ft_close, &mlx);
  	mlx_hook(mlx.window, 17,0, &ft_close2, &mlx);
 	mlx_key_hook(mlx.window, &handle_keys, &mlx);
@@ -42,7 +42,6 @@ t_game init_game(t_mlx mlx, t_input input)
 	game.mlx = mlx;
 	game.player_pos.x = input.pos_x;
 	game.player_pos.y = input.pos_y;
-	game.player_direction = input.direction;
 	game.map = input.map;
 	game.nbr_lines = input.nbr_lines;
 	game.c_color = input.c_color;
@@ -53,7 +52,6 @@ t_game init_game(t_mlx mlx, t_input input)
 	game.distance_projection_plane = (game.projection_plane_center.x / tan(FOV / 2));
 	game.angle_between_rays = FOV / WIDTH;
 	game.rays_per_fov = WIDTH;
-	game.angle_ray = game.player_direction - (FOV / 2);
 	return (game);
 }
 

@@ -7,13 +7,14 @@
 # include<math.h>
 # include<stdio.h>
 # include<unistd.h>
-#include "parsing/parsing.h"
-# define HEIGHT 1024
+# include "parsing/parsing.h"
+# define HEIGHT 640
 # define WIDTH 1024
-# define PI	3.1416
 # define SIZE_CUBE 64
-# define FOV 60
+# define FOV deg_to_rad(60)
+# define NUM_RAYS WIDTH
 # define PLAYER_HEIGHT 32
+# define ANGLE_ANCREMENT (FOV / NUM_RAYS)
 
 
 typedef struct t_image {
@@ -70,5 +71,8 @@ void get_images(t_mlx *mlx, t_input *input);
 t_game init_game(t_mlx mlx, t_input input);
 t_img  get_image_from_xpm(void *mlx_ptr, char *path_xpm);
 void copy_image(t_img *image, t_img wall_image, int x, int y);
+double deg_to_rad(double angle);
+double rad_to_deg(double angle);
+void read_matrix(t_input input);
 
 #endif
