@@ -23,7 +23,9 @@ int	main()
 	t_input input;
 
 	input = parsing("map.cub");
-	read_matrix(input);
+	input.map[11][26] = '0';
+	input.direction = deg_to_rad(90);
+//	read_matrix(input);
 	ft_connect(&mlx);
 	game = init_game(mlx, input);
 	get_images(&mlx, &input);
@@ -43,7 +45,6 @@ t_game init_game(t_mlx mlx, t_input input)
 	game.player_pos.x = input.pos_x;
 	game.player_pos.y = input.pos_y;
 	game.map = input.map;
-	game.nbr_lines = input.nbr_lines;
 	game.c_color = input.c_color;
 	game.f_color = input.f_color;
 	game.alpha_angle = 0;
