@@ -12,13 +12,15 @@ int	ft_connect(t_mlx *mlx)
 	if (!mlx->window)
 		ft_error(mlx->connect, "Problem in creating the window");
 	mlx->image.ptr = mlx_new_image(mlx->connect, WIDTH, HEIGHT);
-	if (!mlx->image.ptr)
+	mlx->minimap_image.ptr = mlx_new_image(mlx->connect, MINI_WIDTH, MINI_HEIGHT);
+	if (!mlx->image.ptr || !mlx->minimap_image.ptr)
 	{
 		mlx_destroy_window(mlx->connect, mlx->window);
 		ft_error(mlx->connect, "Problem in Allocating the image");
 	}
 	mlx->image.addr = mlx_get_data_addr(mlx->image.ptr, \
 			&(mlx->image.bpp), &(mlx->image.line_len), &(mlx->image.endian));
+	mlx->minimap_image.addr = mlx_get_data_addr(mlx->minimap_image.ptr, &(mlx->minimap_image.bpp), &(mlx->minimap_image.line_len), &(mlx->minimap_image.endian));
 	return (0);
 }
 

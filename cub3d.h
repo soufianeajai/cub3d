@@ -11,10 +11,14 @@
 # define HEIGHT 640
 # define WIDTH 1024
 # define SIZE_CUBE 64
+# define MINI_HEIGHT 80
+# define MINI_WIDTH 160
+# define MINI_CUBE 8
 # define FOV deg_to_rad(60)
 # define NUM_RAYS WIDTH
 # define PLAYER_HEIGHT 32
 # define ANGLE_ANCREMENT (FOV / NUM_RAYS)
+# define DISTANCE_TO_PP ((WIDTH / 2) / tan(FOV / 2))
 
 
 typedef struct t_image {
@@ -25,12 +29,14 @@ typedef struct t_image {
 	int		endian;
   int   width;
   int   height;
+  int   mini_cube;
 }	t_img;
 
 typedef struct s_mlx {
 	int			type;
 	void		*connect;
 	void		*window;
+  t_img   minimap_image;
 	t_img		image;
   t_img		north_wall_image;
   t_img		south_wall_image;
@@ -38,24 +44,28 @@ typedef struct s_mlx {
   t_img		west_wall_image;
 }	t_mlx;
 
-typedef struct s_point{
+typedef struct s_player{
   int x;
   int y;
-} t_point;
+  int x_dir;
+  int y_dir;
+} t_player;
+
+typedef struct s_ray{
+  double angle;
+  double distance;
+  int hit;
+  int wall_hit_x;
+  int wall_hit_y;
+} t_ray;
 
 typedef struct s_game{
   t_mlx mlx;
-  t_point player_pos;
-  t_point player_direction;
-  t_point projection_plane_center;
-  double distance_projection_plane;
-  double alpha_angle;
-  int   rays_per_fov;
-  double view_distance;
-  double angle_between_rays;
-  double angle_ray;
+  t_player player;
+  t_ray *rays;
   char  **map;
-  int   nbr_lines;
+  int  map_width;
+  int  map_height;
   int   c_color;
   int   f_color;
 } t_game;
