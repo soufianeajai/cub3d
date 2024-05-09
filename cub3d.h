@@ -86,5 +86,8 @@ void copy_image(t_img *image, t_img wall_image, int x, int y);
 double deg_to_rad(double angle);
 double rad_to_deg(double angle);
 void read_matrix(t_input input);
+void get_start_point(int *start_x, int *start_y, int player_x, int player_y);
+void draw_rectangle(t_img *img, int x, int y, int color);
+void draw_minimap(t_mlx *mlx, t_game *game, int player_y, int player_x);
 
 #endif
