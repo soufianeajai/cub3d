@@ -11,9 +11,11 @@
 # define HEIGHT 640
 # define WIDTH 1024
 # define SIZE_CUBE 64
-# define MINI_HEIGHT 80
-# define MINI_WIDTH 160
-# define MINI_CUBE 8
+# define MINI_HEIGHT 108
+# define MINI_WIDTH 108
+# define MINI_CUBE 12
+# define MINI_MAP_WIDTH (MINI_WIDTH / MINI_CUBE)
+# define MINI_MAP_HEIGHT (MINI_HEIGHT / MINI_CUBE)
 # define FOV deg_to_rad(60)
 # define NUM_RAYS WIDTH
 # define PLAYER_HEIGHT 32
