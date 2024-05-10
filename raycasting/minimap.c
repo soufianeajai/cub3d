@@ -31,23 +31,6 @@ void draw_rectangle(t_img *img, int x, int y, int color)
 		i++;
 	}
 }
-// void draw_player(t_img *img, int x, int y, int color)
-// {
-// 	int i = MINI_CUBE / 4;
-// 	int j = MINI_CUBE / 4;
-
-// 	while (i < (3*MINI_CUBE )/ 4)
-// 	{
-// 		j =  MINI_CUBE / 4;
-// 		while (j < (3*MINI_CUBE )/ 4)
-// 		{
-// 			my_mlx_pixel_put(img, x + i, y + j, color);
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-	
-// }
 
 void draw_player(t_img *img, int x, int y, int color, t_game *game)
 {
@@ -73,7 +56,7 @@ void draw_player(t_img *img, int x, int y, int color, t_game *game)
 	}
 	draw_direction(img, centerX, centerY, game, MINI_CUBE);
 }
-void draw_line(t_img *img, int x, int y, int end_x, int end_y, int color)
+void draw_line(t_img *img, int x, int y, int end_x, int end_y)
 {
     int dx;
     int dy;
@@ -94,7 +77,7 @@ void draw_line(t_img *img, int x, int y, int end_x, int end_y, int color)
 		sy = -1;
     while (x != end_x || y != end_y)
 	{
-        my_mlx_pixel_put(img, x, y, color);
+        my_mlx_pixel_put(img, x, y, 0x00FF0000);
         if (err > -dy) {
             err -= dy;
             x += sx;
@@ -113,31 +96,8 @@ void draw_direction(t_img *img, int x, int y, t_game *game, int length)
 
 	end_x = x + (int)(length * game->player.x_dir);
 	end_y = y - (int)(length * game->player.y_dir); // - because the Y axe is down in screen
-    draw_line(img, x, y, end_x, end_y, 0x00FF0000);
+    draw_line(img, x, y, end_x, end_y);
 }
-
-
-// void draw_direction(t_img *img, int x, int y, t_game *game, int length)
-// {
-//     int end_x;
-//     int end_y;
-// 	int i;
-// 	int j;
-
-// 	end_x = x + (int)(length * game->player.x_dir);
-// 	end_y = y + (int)(length * game->player.y_dir);
-//     j = y;
-// 	while (j <= end_y)
-// 	{
-// 		i = x;
-// 		while (i <= end_x)
-// 		{
-//             my_mlx_pixel_put(img, x + i, y + j, 0X00FFFFFF);
-// 			i++;
-// 		}
-// 		j++;
-// 	}
-// }
 void draw_minimap(t_mlx *mlx, t_game *game, int player_y, int player_x)
 {
 	int start_x;
