@@ -2,12 +2,15 @@
 
 { 
     des problem in code :
-    -
+    - i need to check xpm file is exist or not
 }
 
-* N : pi/2 (3,14) 
-* S ; 3pi/2
-* E : 0
-* W : pi 
+* N : pi/2 = 90
+* S ; 3pi/2 = 270
+* E : 0 = 0
+* W : pi (3,14) = 180
+apres set value 0
 
 * parsing : 3d map 
+
+** test for if have permission for open .xmp file element of map !!

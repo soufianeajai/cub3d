@@ -1,8 +1,8 @@
 
 NAME	= cub3d
-CFLAGS	= -Wall -Wextra -Werror #-O3
+CFLAGS	= -Wall -Wextra -Werror #-O3#-fsanitize=address
 SRS		= main.c raycasting/events_hooks.c raycasting/connect_check_set.c raycasting/utils.c parsing/util2_parsing.c \
-		  parsing/parsing.c parsing/util_parsing.c parsing/gnl/get_next_line.c parsing/gnl/get_next_line_utils.c
+		  parsing/util1_parsing.c parsing/parsing.c parsing/util_parsing.c parsing/gnl/get_next_line.c parsing/gnl/get_next_line_utils.c
 
 FRAM	= -lmlx -framework OpenGL -framework AppKit 
 
@@ -14,7 +14,7 @@ all: $(NAME)
 	cc $(CFLAGS) -c $< -o $@
 	
 $(NAME): $(OBJ)
-	cc $(OBJ)  $(FRAM)  -fsanitize=address -o $(NAME)
+	cc $(OBJ)  $(FRAM)   -o $(NAME)
 
 fclean: clean
 	rm -f $(NAME)

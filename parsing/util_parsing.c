@@ -1,18 +1,12 @@
 #include "parsing.h"
 
-static int	ft_isdigit(int c)
+int	ft_isdigit(int c)
 {
 	if (c >= '0' && c <= '9')
 		return (1);
 	return (0);
 }
 
-static int	ft_isspace(char c)
-{
-	if ((c >= '\t' && c <= '\r') || c == ' ')
-		return (1);
-	return (0);
-}
 
 long	ft_atoi(const char *p)
 {
@@ -21,7 +15,7 @@ long	ft_atoi(const char *p)
 
 	res = 0;
 	signe = 1;
-	while (ft_isspace(*p))
+	while (white_space(*p))
 		p++;
 	if (*p == '+')
 		p++;
@@ -33,7 +27,7 @@ long	ft_atoi(const char *p)
 	return (res * signe);
 }
 
-char	*ft_substr(char *s, unsigned int start, size_t len)
+char	*ft_substr(char *s, int start, size_t len)
 {
 	char	*str;
 	size_t	i;
@@ -66,6 +60,21 @@ int	ft_strcmp(const char *s1, const char *s2)
 		i++;
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
+
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	int	i;
+
+	i = 0;
+	if (n == 0)
+		return (0);
+	while (s1[i] && s2[i] && s1[i] == s2[i] && n - 1 != 0)
+	{
+		i++;
+		n--;
+	}
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+}
 int white_space(char c)
 {
 	if (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r')
@@ -75,20 +84,15 @@ int white_space(char c)
 
 int is_direction(char c)
 {
-    if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
-        return (1);
-    return (0);
+	if (c == 'N')
+		return (90);
+	if (c == 'S')
+		return (270);
+	if (c == 'E')
+		return (0);
+	if (c == 'W')
+		return (180);
+    return (-1);
 }
 
-void ft_free(char **tab)
-{
-	int i;
 
-	i = 0;
-	while (tab[i])
-	{
-		free(tab[i]);
-		i++;
-	}
-	free(tab);
-}

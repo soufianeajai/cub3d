@@ -42,9 +42,9 @@
 		{
 			"id": "pointer:pointer",
 			"typeName": "pointer",
-			"x": 388.9648027420044,
-			"y": 126.96611022949219,
-			"lastActivityTimestamp": 1714774415635,
+			"x": 1129.4183902845955,
+			"y": 615.7462213211809,
+			"lastActivityTimestamp": 1715272784944,
 			"meta": {}
 		},
 		{
@@ -73,7 +73,7 @@
 				}
 			],
 			"cursor": {
-				"type": "cross",
+				"type": "default",
 				"rotation": 0
 			},
 			"isFocusMode": false,
@@ -83,12 +83,12 @@
 			"screenBounds": {
 				"x": 0,
 				"y": 0,
-				"w": 582.5,
-				"h": 624.1666259765625
+				"w": 645,
+				"h": 810.8333129882812
 			},
 			"insets": [
 				false,
-				true,
+				false,
 				true,
 				false
 			],
@@ -102,7 +102,7 @@
 			"isFocused": true,
 			"devicePixelRatio": 2.4000000953674316,
 			"isCoarsePointer": false,
-			"isHoveringCanvas": true,
+			"isHoveringCanvas": false,
 			"openMenus": [],
 			"isChangingStyle": false,
 			"isReadonly": false,
@@ -113,9 +113,11 @@
 			"typeName": "instance"
 		},
 		{
-			"editingShapeId": null,
+			"editingShapeId": "shape:4A_PArDRGnFUJmmMyWfoV",
 			"croppingShapeId": null,
-			"selectedShapeIds": [],
+			"selectedShapeIds": [
+				"shape:4A_PArDRGnFUJmmMyWfoV"
+			],
 			"hoveredShapeId": null,
 			"erasingShapeIds": [],
 			"hintingShapeIds": [],
@@ -126,9 +128,9 @@
 			"typeName": "instance_page_state"
 		},
 		{
-			"x": 44.28388500213623,
-			"y": 81.54299926757812,
-			"z": 1,
+			"x": 134.48766227771424,
+			"y": 921.2858735307641,
+			"z": 0.44064477151678455,
 			"meta": {},
 			"id": "camera:page:page",
 			"typeName": "camera"
@@ -5980,6 +5982,29 @@
 			},
 			"parentId": "page:page",
 			"index": "a7",
+			"typeName": "shape"
+		},
+		{
+			"x": 70.4393125486747,
+			"y": -480.4160475421304,
+			"rotation": 0,
+			"isLocked": false,
+			"opacity": 1,
+			"meta": {},
+			"id": "shape:4A_PArDRGnFUJmmMyWfoV",
+			"type": "text",
+			"props": {
+				"color": "black",
+				"size": "m",
+				"w": 1053.91015625,
+				"text": "* pour espaces \n            - when first and last line it valid (line[i][k-1] ==1 and line[i][k+1] ==1 )\n\n            - when have espace inter in map ( now we need to check 4 caratere) xxxxxx\n\nto avoid this problem aboiut espaces we just first check walls of map first !!!!!",
+				"font": "draw",
+				"textAlign": "start",
+				"autoSize": true,
+				"scale": 1
+			},
+			"parentId": "page:page",
+			"index": "a8",
 			"typeName": "shape"
 		}
 	]

@@ -15,14 +15,25 @@ typedef struct s_input {
   char  **map;
   int    pos_x;
   int    pos_y;
-  int   nbr_lines;
+  int   H;
+  int   W;
 }  t_input;
 
-char	*ft_substr(char *s, unsigned int start, size_t len);
+
+int init_Data(t_input *input, char *file);
+void free_all_elements(t_input *input);
+
+int is_wall(char c);
+char	*ft_substr(char *s,  int start, size_t len);
 int	ft_strcmp(const char *s1, const char *s2);
+int	ft_strncmp(const char *s1, const char *s2, size_t n);
 int white_space(char c);
+int	ft_isdigit(int c);
 int is_direction(char c);
 long	ft_atoi(const char *p);
 void ft_free(char **tab);
-char	**ft_split(char const *s, char c);
-t_input *parsing(char *file);
+void free_tab_len(char **tab, int len);
+char	**ft_split(char const *s, char c, int *nbr_lines);
+int parsing(char *file, t_input *input);
+char *get_full_len(char *line, t_input *input, int *position);
+char *replace_spaces(char *line);

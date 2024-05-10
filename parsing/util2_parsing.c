@@ -60,7 +60,7 @@ static int	count_w(char const *s, char c)
 	return (count);
 }
 
-char	**ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c, int *nbr_lines)
 {
 	int		i;
 	int		j;
@@ -73,6 +73,7 @@ char	**ft_split(char const *s, char c)
 	p = (char **)malloc(sizeof(char *) * (count_w(s, c) + 1));
 	if (!p)
 		return (NULL);
+	*nbr_lines = count_w(s, c);
 	while (s[i])
 	{
 		while (s[i] == c)
