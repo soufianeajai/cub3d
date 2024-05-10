@@ -14,9 +14,9 @@ int	main()
 	game = init_game(mlx, input);
 	get_images(&mlx, &input);
 	draw_minimap(&game);
- 	mlx_hook(mlx.window, 2, 0, &ft_close, &mlx);
+ 	mlx_key_hook(mlx.window, &ft_close, &mlx);
  	mlx_hook(mlx.window, 17,0, &ft_close2, &mlx);
-	mlx_key_hook(mlx.window, &handle_keys, &game);
+	mlx_hook(mlx.window, 2, 0, &handle_keys, &game);
  	mlx_loop(mlx.connect);
 	return (0);
 }
