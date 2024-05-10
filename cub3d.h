@@ -49,8 +49,9 @@ typedef struct s_mlx {
 typedef struct s_player{
   int x;
   int y;
-  int x_dir;
-  int y_dir;
+  double x_dir;
+  double y_dir;
+  double direction;
 } t_player;
 
 typedef struct s_ray{
@@ -89,5 +90,5 @@ void read_matrix(t_input input);
 void get_start_point(int *start_x, int *start_y, int player_x, int player_y);
 void draw_rectangle(t_img *img, int x, int y, int color);
 void draw_minimap(t_mlx *mlx, t_game *game, int player_y, int player_x);
-
+void draw_direction(t_img *img, int x, int y, t_game *game, int length);
 #endif
