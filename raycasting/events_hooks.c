@@ -25,6 +25,9 @@ int	ft_close2(t_mlx *mlx)
 
 int	handle_keys(int keysym, t_game *game)
 {
+	int new_pos_x;
+	int new_pos_y;
+
 	if (keysym == 124) // right arrow
 	{
 		game->player.direction += ROTAION_SPEED;
@@ -41,22 +44,38 @@ int	handle_keys(int keysym, t_game *game)
 	}
 	else if (keysym == 13) // W key
 	{
-		game->player.y += sin(game->player.direction) * MOVE_SPEED;
+		new_pos_y += sin(game->player.direction) * MOVE_SPEED;
+		if (x < 0 || x >= game->map_width || new_pos_y < 0 || new_pos_y >= game->map_height)
+			return (0);
+		if (game->map[new_pos_y][x] == '0')
+			game->player.y = new_pos_y;
 		draw_minimap(game);
 	}
 	else if (keysym == 0) // A key
 	{
-	//	game->player.x -= cos(game->player.direction) * MOVE_SPEED;
+		if (new_pos_x < 0 || new_pos_x >= game->map_width || y < 0 || y >= game->map_height)
+			return (0);
+		new_pos_x -= cos(game->player.direction) * MOVE_SPEED;
+		if (game->map[y][new_pos_x] == '0')
+			game->player.x = new_pos_x;
 		draw_minimap(game);
 	}
 	else if (keysym == 1) // S key
 	{
-		game->player.y -= sin(game->player.direction) * MOVE_SPEED;
+		if (x < 0 || x >= game->map_width || new_pos_y < 0 || new_pos_y >= game->map_height)
+			return (0);
+		new_pos_y -= sin(game->player.direction) * MOVE_SPEED;
+		if (game->map[new_pos_y][x] == '0')
+			game->player.y = new_pos_y;
 		draw_minimap(game);	
 	}
 	else if (keysym == 2) // D key
 	{
-	//	game->player.x += cos(game->player.direction) * MOVE_SPEED;
+		if (new_pos_x < 0 || new_pos_x >= game->map_width || y < 0 || y >= game->map_height)
+			return (0);
+		new_pos_x += cos(game->player.direction) * MOVE_SPEED;
+		if (game->map[y][new_pos_x] == '0')
+			game->player.x = new_pos_x;
 		draw_minimap(game);	
 	}
 	mlx_put_image_to_window(game->mlx.connect, game->mlx.window,game->mlx.minimap_image.ptr, 0, HEIGHT - MINI_HEIGHT);
