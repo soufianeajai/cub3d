@@ -21,7 +21,8 @@
 # define PLAYER_HEIGHT 32
 # define ANGLE_ANCREMENT (FOV / NUM_RAYS)
 # define DISTANCE_TO_PP ((WIDTH / 2) / tan(FOV / 2))
-
+# define MOVE_SPEED 1
+# define ROTAION_SPEED deg_to_rad(2)
 
 typedef struct t_image {
 	void	*ptr;

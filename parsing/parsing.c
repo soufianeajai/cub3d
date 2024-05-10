@@ -138,9 +138,9 @@ void get_player(t_input *input)
             if (is_direction(input->map[y][x]))
             {
                 if (input->map[y][x] == 'N')
-                    input->direction = 90;
-                else if (input->map[y][x] == 'S')
                     input->direction = 270;
+                else if (input->map[y][x] == 'S')
+                    input->direction = 90;
                 else if (input->map[y][x] == 'E')
                     input->direction = 0;
                 else if (input->map[y][x] == 'W')

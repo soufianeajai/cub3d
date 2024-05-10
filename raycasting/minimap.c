@@ -96,7 +96,7 @@ void draw_direction(t_img *img, int x, int y, t_game *game, int length)
     int end_y;
 
 	end_x = x + (int)(length * game->player.x_dir);
-	end_y = y - (int)(length * game->player.y_dir); // - because the Y axe is down in screen
+	end_y = y + (int)(length * game->player.y_dir); // - because the Y axe is down in screen
     draw_line(img, x, y, end_x, end_y);
 }
 

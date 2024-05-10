@@ -27,36 +27,36 @@ int	handle_keys(int keysym, t_game *game)
 {
 	if (keysym == 124) // right arrow
 	{
-		game->player.direction += 0.1;
+		game->player.direction += ROTAION_SPEED;
 		game->player.x_dir = cos(game->player.direction);
 		game->player.y_dir = sin(game->player.direction);
 		draw_minimap(game);
 	}
 	else if (keysym == 123) //left arrow
 	{
-		game->player.direction -= 0.1;
+		game->player.direction -= ROTAION_SPEED;
 		game->player.x_dir = cos(game->player.direction);
 		game->player.y_dir = sin(game->player.direction);
 		draw_minimap(game);
 	}
 	else if (keysym == 13) // W key
 	{
-		game->player.y += 1;
+		game->player.y += sin(game->player.direction) * MOVE_SPEED;
 		draw_minimap(game);
 	}
 	else if (keysym == 0) // A key
 	{
-		game->player.x -= 1;
+	//	game->player.x -= cos(game->player.direction) * MOVE_SPEED;
 		draw_minimap(game);
 	}
 	else if (keysym == 1) // S key
 	{
-		game->player.y -= 1;
+		game->player.y -= sin(game->player.direction) * MOVE_SPEED;
 		draw_minimap(game);	
 	}
 	else if (keysym == 2) // D key
 	{
-		game->player.x += 1;
+	//	game->player.x += cos(game->player.direction) * MOVE_SPEED;
 		draw_minimap(game);	
 	}
 	mlx_put_image_to_window(game->mlx.connect, game->mlx.window,game->mlx.minimap_image.ptr, 0, HEIGHT - MINI_HEIGHT);
