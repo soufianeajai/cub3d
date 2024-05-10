@@ -98,33 +98,30 @@ void draw_direction(t_img *img, int x, int y, t_game *game, int length)
 	end_y = y - (int)(length * game->player.y_dir); // - because the Y axe is down in screen
     draw_line(img, x, y, end_x, end_y);
 }
-void draw_minimap(t_mlx *mlx, t_game *game, int player_y, int player_x)
+
+void draw_minimap(t_game *game)
 {
 	int start_x;
 	int start_y;
 	int x;
 	int y;
 	
-	get_start_point(&start_x, &start_y, player_x, player_y);
+	get_start_point(&start_x, &start_y, game->player.x, game->player.y);
 	x = start_x;
 	y = start_y;
-	while ((y <= (MINI_MAP_HEIGHT/2 + player_y)) && y < game->map_height)
+	while ((y <= (MINI_MAP_HEIGHT/2 + game->player.y)) && y < game->map_height)
 	{
 		x = start_x;
-		while ((x <= (MINI_MAP_WIDTH/2 + player_x)) && x < game->map_width)
+		while ((x <= (MINI_MAP_WIDTH/2 + game->player.x)) && x < game->map_width)
 		{
 			if (game->map[y][x] == '0')
- 				draw_rectangle(&mlx->minimap_image, (x - start_x)*MINI_CUBE, (y - start_y)*MINI_CUBE, 0X00FFFFFF);
+ 				draw_rectangle(&game->mlx.minimap_image, (x - start_x)*MINI_CUBE, (y - start_y)*MINI_CUBE, 0X00FFFFFF);
 			if (game->map[y][x] == '1')
- 				draw_rectangle(&mlx->minimap_image, (x - start_x)*MINI_CUBE, (y - start_y)*MINI_CUBE, 0X000000FF);
-			if (game->map[y][x] == '2')
- 				draw_rectangle(&mlx->minimap_image, (x - start_x)*MINI_CUBE, (y - start_y)*MINI_CUBE, 0XEF00FF00);
-			if (game->map[y][x] == 'Z')
- 				draw_player(&mlx->minimap_image, (x - start_x)*MINI_CUBE, (y - start_y)*MINI_CUBE, 0X00FF0000, game);
+ 				draw_rectangle(&game->mlx.minimap_image, (x - start_x)*MINI_CUBE, (y - start_y)*MINI_CUBE, 0X000000FF);
 			x++;
 		}
 		y++;
 	}
-
-	mlx_put_image_to_window(mlx->connect, mlx->window, mlx->minimap_image.ptr, WIDTH/2, HEIGHT/2);
+	draw_player(&game->mlx.minimap_image, (game->player.x - start_x)*MINI_CUBE, (game->player.y- start_y)*MINI_CUBE, 0X00FF0000, game);
+	mlx_put_image_to_window(game->mlx.connect, game->mlx.window, game->mlx.minimap_image.ptr, 0, HEIGHT - MINI_HEIGHT);
 }

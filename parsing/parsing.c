@@ -125,6 +125,41 @@ void fill_map(t_input *input, char *file, int len)
     }
     close(fd);
 }
+void get_player(t_input *input)
+{
+    int x = 0;
+    int y = 0;
+    int found = 0;
+    while (y < input->height)
+    {
+        x = 0;
+        while (x < input->width)
+        {
+            if (is_direction(input->map[y][x]))
+            {
+                if (input->map[y][x] == 'N')
+                    input->direction = 90;
+                else if (input->map[y][x] == 'S')
+                    input->direction = 270;
+                else if (input->map[y][x] == 'E')
+                    input->direction = 0;
+                else if (input->map[y][x] == 'W')
+                    input->direction = 180;
+                input->pos_x = x;
+                input->pos_y = y;
+                input->map[y][x] = '0';
+                found = 1;
+                break;
+            }
+            else
+                x++;
+        }
+        if (found)
+            break;
+        y++;
+    }
+
+}
 
 t_input parsing(char *file)
 {
@@ -152,5 +187,8 @@ t_input parsing(char *file)
     close(fd);
     fill_map(&input, file, len);
     input.width = len;
+    get_player(&input);
     return (input);
 }
+
+

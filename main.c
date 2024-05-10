@@ -7,18 +7,16 @@ int	main()
 	t_input input;
 
 	input = parsing("map.cub");
-	input.map[11][26] = '0';
-	input.direction = deg_to_rad(90);
+	input.direction = deg_to_rad(input.direction);
 	printf("%f\n", input.direction);
-	input.map[5][30] = 'Z';
 	read_matrix(input);
 	ft_connect(&mlx);
 	game = init_game(mlx, input);
 	get_images(&mlx, &input);
-	draw_minimap(&mlx, &game, 5, 30);
+	draw_minimap(&game);
  	mlx_hook(mlx.window, 2, 0, &ft_close, &mlx);
  	mlx_hook(mlx.window, 17,0, &ft_close2, &mlx);
-	mlx_key_hook(mlx.window, &handle_keys, &mlx);
+	mlx_key_hook(mlx.window, &handle_keys, &game);
  	mlx_loop(mlx.connect);
 	return (0);
 }

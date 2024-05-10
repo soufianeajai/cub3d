@@ -76,7 +76,7 @@ typedef struct s_game{
 int	ft_connect(t_mlx *mlx);
 void	my_mlx_pixel_put(t_img *image, int x, int y, int color);
 void	ft_error(void	*ptr, char *msg);
-int	handle_keys(int keysym, t_mlx *mlx);
+int	handle_keys(int keysym, t_game *game);
 int	ft_close(int keysym, t_mlx *mlx);
 int	ft_close2(t_mlx *mlx);
 void	free_ptr(void *ptr);
@@ -89,6 +89,6 @@ double rad_to_deg(double angle);
 void read_matrix(t_input input);
 void get_start_point(int *start_x, int *start_y, int player_x, int player_y);
 void draw_rectangle(t_img *img, int x, int y, int color);
-void draw_minimap(t_mlx *mlx, t_game *game, int player_y, int player_x);
+void draw_minimap(t_game *game);
 void draw_direction(t_img *img, int x, int y, t_game *game, int length);
 #endif

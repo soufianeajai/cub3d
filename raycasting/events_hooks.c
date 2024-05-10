@@ -22,24 +22,34 @@ int	ft_close2(t_mlx *mlx)
 	return (0);
 }
 
-int	handle_keys(int keysym, t_mlx *mlx)
+int	handle_keys(int keysym, t_game *game)
 {
-	if (keysym == 124)
+	if (keysym == 124) // right arrow
+	{
+		game->player.direction -= 0.5;
+		// update(game);
+		// draw_minimap(&game);
+	}
+	else if (keysym == 123) //left arrow
+	{
+		game->player.direction += 0.5;
+	}
+	else if (keysym == 13) // W key
 	{
 		
 	}
-	else if (keysym == 123)
+	else if (keysym == 0) // A key
 	{
 		
 	}
-	else if (keysym == 126)
+	else if (keysym == 1) // S key
 	{
-		
+
 	}
-	else if (keysym == 125)
+	else if (keysym == 2) // D key
 	{
-		
+
 	}
-	mlx_put_image_to_window(mlx->connect, mlx->window, mlx->image.ptr, 0, 0);
+	mlx_put_image_to_window(game->mlx.connect, game->mlx.window,game->mlx.minimap_image.ptr, 0, HEIGHT - MINI_HEIGHT);
 	return (0);
 }
