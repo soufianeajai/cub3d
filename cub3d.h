@@ -1,4 +1,3 @@
-
 #ifndef CUB3D_H
 # define CUB3D_H
 # include<fcntl.h>
@@ -70,6 +69,10 @@ typedef struct s_game{
   char  **map;
   int  map_width;
   int  map_height;
+  int player_map_x;
+  int player_map_y;
+  int mini_x;
+  int mini_y;
   int   c_color;
   int   f_color;
 } t_game;

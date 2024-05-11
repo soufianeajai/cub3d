@@ -29,8 +29,12 @@ t_game init_game(t_mlx mlx, t_input input)
 	game.player.x_dir = cos(input.direction);
 	game.player.y_dir = sin(input.direction);
 	game.player.direction = input.direction;
-	game.player.x = input.pos_x;
-	game.player.y = input.pos_y;
+	game.player_map_x = input.pos_x;
+	game.player_map_y = input.pos_y;
+	game.player.x = input.pos_x * SIZE_CUBE;
+	game.player.y = input.pos_y * SIZE_CUBE;
+	game.mini_x = 0;
+	game.mini_y = 0;
 	game.map = input.map;
 	game.map_height = input.height;
 	game.map_width = input.width;
