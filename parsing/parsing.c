@@ -207,18 +207,58 @@ char	**fill_map(t_input *input, char *file, int index_start_map)
 	return (close(fd), map);
 }
 
-int parsing_map(char **map, int H, int W)
+int is_valid_in_map(t_input *input, int i ,int j, int *flag)
+{
+	if (i < 0 || i >= input->H || j < 0 || j >= input->W)
+			return (1);
+	if (input->map[i][j] == '2')
+		*flag = 1;
+	if (input->map[i][j] == '0')
+		return (0);
+	return (-1);
+}
+int check_Error_espace(char **map,int i, t_input *input)
+{
+	int j;
+	int check;
+
+	j = -1;
+	check = 0;
+	while (map[i][++j])
+	{
+		if (map[i][j] == '2')
+		{
+			if (!is_valid_in_map(input, i, j - 1, &check) || !is_valid_in_map(input, i, j + 1, &check) || 
+				!is_valid_in_map(input, i - 1, j, &check) || !is_valid_in_map(input, i + 1, j, &check) ||
+				!is_valid_in_map(input, i - 1, j - 1, &check) || !is_valid_in_map(input, i + 1, j - 1, &check) ||
+				!is_valid_in_map(input, i - 1, j + 1, &check) || !is_valid_in_map(input, i + 1, j + 1, &check))
+			{
+				printf("\nError : map[%d][%d] = %c\n",i,j,map[i][j]);
+				return (0);
+			}
+			if (check == 0 )
+			{
+				printf("\nError dont have one at least esapce '2': map[%d][%d] = %c\n",i,j,map[i][j]);
+				return (0);
+			}
+		}
+		
+	}
+	return (1);
+}
+
+
+int parsing_map(char **map, t_input *input)
 {
     int i;
     int j;
-
-    i = -1;
-    
-
+	//int check; // this for check if first 0 is in the first line or not (have a lot of 1 before 0)
+	
+	i = -1;
     while (map[++i])
     {
         j = -1;
-        if (i == 0 || i == H - 1)
+        if (i == 0 || i == input->H - 1)
         {
             while (map[i][++j])
             {
@@ -231,15 +271,19 @@ int parsing_map(char **map, int H, int W)
         }
         else
         {
-            while (map[i][++j] && map[i][j] == '2');
+			while (map[i][++j] && map[i][j] == '2');
+			if (map[i][j] != '1')
+				return (0);
+
+            j = input->W;
+            while (map[i][--j] && map[i][j] == '2')
+				;
             if (map[i][j] != '1')
                 return (0);
-            j = W;
-            while (map[i][--j] && map[i][j] == '2');
-            if (map[i][j] != '1')
-                return (0);
-        }
-    }
+			if(check_Error_espace(map, i, input) == 0)
+					return (0);
+		}
+     }
     return (1);
 }
 
@@ -273,7 +317,7 @@ int	parsing(char *file, t_input *input)
 		return (free_all_elements(input), 0);
 	close(fd);
 	input->map = fill_map(input, file, index_start_map);
-	if (!input->map || parsing_map(input->map, input->H , input->W) == 0)
+	if (!input->map || parsing_map(input->map, input) == 0)
         return (free_all_elements(input), 0);
 	return (1);
 }

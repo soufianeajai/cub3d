@@ -27,11 +27,7 @@ void read_matrix(t_input input)
 {
 	int i = 0;
 	while(i < input.H)
-	{
-		if (input.map[i])
-		printf("\n");
-		i++;
-	}
+		printf("%s\n", input.map[i++]);
 	printf("-> H=%d, W=%d, X= %d ,Y= %d, direction = %f\n", input.H,input.W,input.pos_x,input.pos_y,input.direction);
 }
 
