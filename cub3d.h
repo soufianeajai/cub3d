@@ -20,8 +20,8 @@
 # define PLAYER_HEIGHT 32
 # define ANGLE_ANCREMENT (FOV / NUM_RAYS)
 # define DISTANCE_TO_PP ((WIDTH / 2) / tan(FOV / 2))
-# define MOVE_SPEED 1
-# define ROTAION_SPEED deg_to_rad(2)
+# define MOVE_SPEED 2
+# define ROTAION_SPEED deg_to_rad(5)
 
 typedef struct t_image {
 	void	*ptr;
@@ -95,4 +95,5 @@ void get_start_point(int *start_x, int *start_y, int player_x, int player_y);
 void draw_rectangle(t_img *img, int x, int y, int color);
 void draw_minimap(t_game *game);
 void draw_direction(t_img *img, int x, int y, t_game *game, int length);
+void draw_player(t_img *img, int x, int y, int color, t_game *game);
 #endif

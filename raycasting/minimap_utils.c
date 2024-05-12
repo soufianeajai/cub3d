@@ -10,6 +10,7 @@ void draw_player(t_img *img, int x, int y, int color, t_game *game)
     radius = MINI_CUBE / 3;
 	centerX = x + (MINI_CUBE / 2);
 	centerY = y + (MINI_CUBE / 2);
+
 	j = -radius;
     while (j <= radius)
 	{
@@ -17,7 +18,7 @@ void draw_player(t_img *img, int x, int y, int color, t_game *game)
 		while (i <= radius)
 		{
 			if (i * i + j * j <= radius * radius)
-                my_mlx_pixel_put(img, centerX + i, centerY + j, color);
+                my_mlx_pixel_put(img, (centerX + i), (centerY + j), color);
 			i++;
 		}
 		j++;
@@ -45,7 +46,7 @@ void draw_line(t_img *img, int x, int y, int end_x, int end_y)
 		sy = -1;
     while (x != end_x || y != end_y)
 	{
-        my_mlx_pixel_put(img, x, y, 0x00000000);
+        my_mlx_pixel_put(img, x, y, 0x00FF0000);
         int e2 = 2 * err;
         if (e2 > -dy) {
             err -= dy;

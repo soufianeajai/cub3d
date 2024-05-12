@@ -1,7 +1,7 @@
 
 NAME	= cub3d
 CFLAGS	= -Wall -Wextra -Werror -g3
-SRS		= main.c raycasting/events_hooks.c raycasting/connect_check_set.c raycasting/minimap.c raycasting/utils.c raycasting/handle_images.c \
+SRS		= main.c raycasting/events_hooks.c raycasting/connect_check_set.c raycasting/minimap.c raycasting/minimap_utils.c raycasting/utils.c raycasting/handle_images.c \
 		  parsing/parsing.c parsing/util_parsing.c parsing/gnl/get_next_line.c parsing/gnl/get_next_line_utils.c
 
 FRAM	= -lmlx -framework OpenGL -framework AppKit 

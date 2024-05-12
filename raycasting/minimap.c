@@ -31,30 +31,29 @@ void draw_rectangle(t_img *img, int x, int y, int color)
 		i++;
 	}
 }
-
+// !!!!!! i need to use game->player.x instead of game->player_map_x in all the draw_minimap function to handle moves 
 void draw_minimap(t_game *game)
 {
 	int start_x;
 	int start_y;
-	int x;
-	int y;
-	
+	int x = 0;
+	int y = 0;
 	get_start_point(&start_x, &start_y, game->player_map_x, game->player_map_y);
-	x = start_x;
-	y = start_y;
-	while ((y <= (MINI_MAP_HEIGHT/2 + game->player.y)) && y < game->map_height)
+	printf("start x = %d | start y = %d", start_x, start_y);
+	// printf("end x = %d | end y = %d", end_x, end_y);
+	while (y < MINI_HEIGHT && (y/MINI_CUBE + start_y) < game->map_height)
 	{
-		x = start_x;
-		while ((x <= (MINI_MAP_WIDTH/2 + game->player.x)) && x < game->map_width)
+		x = 0;
+		while (x < MINI_WIDTH && (x/MINI_CUBE + start_x) < game->map_width)
 		{
-			if (game->map[y][x] == '0')
- 				draw_rectangle(&game->mlx.minimap_image, (x - start_x)*MINI_CUBE, (y - start_y)*MINI_CUBE, 0X00FFFFFF);
-			if (game->map[y][x] == '1')
- 				draw_rectangle(&game->mlx.minimap_image, (x - start_x)*MINI_CUBE, (y - start_y)*MINI_CUBE, 0X000000FF);
-			x++;
+			if (game->map[y/MINI_CUBE + start_y][x/MINI_CUBE + start_x] == '0')
+ 				draw_rectangle(&game->mlx.minimap_image, x, y, 0X00FFFFFF);
+			if (game->map[y/MINI_CUBE + start_y][x/MINI_CUBE + start_x] == '1')
+ 				draw_rectangle(&game->mlx.minimap_image, x, y, 0X000000FF);
+			x += MINI_CUBE;
 		}
-		y++;
+		y += MINI_CUBE;
 	}
-	draw_player(&game->mlx.minimap_image, (game->player.x - start_x)*MINI_CUBE, (game->player.y- start_y)*MINI_CUBE, 0X00FF0000, game);
+	draw_player(&game->mlx.minimap_image, (game->player_map_x - start_x)*MINI_CUBE, (game->player_map_y- start_y)*MINI_CUBE, 0X00FF0000, game);
 	mlx_put_image_to_window(game->mlx.connect, game->mlx.window, game->mlx.minimap_image.ptr, 0, HEIGHT - MINI_HEIGHT);
 }
