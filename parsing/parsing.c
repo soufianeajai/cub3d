@@ -238,6 +238,7 @@ int check_Error_espace(char **map,int i, t_input *input)
 			}
 			if (check == 0 )
 			{
+				
 				printf("\nError dont have one at least esapce '2': map[%d][%d] = %c\n",i,j,map[i][j]);
 				return (0);
 			}
