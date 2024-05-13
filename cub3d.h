@@ -10,11 +10,6 @@
 # define HEIGHT 640
 # define WIDTH 1024
 # define SIZE_CUBE 64
-# define MINI_HEIGHT 108
-# define MINI_WIDTH 108
-# define MINI_CUBE 12
-# define MINI_MAP_WIDTH (MINI_WIDTH / MINI_CUBE)
-# define MINI_MAP_HEIGHT (MINI_HEIGHT / MINI_CUBE)
 # define FOV deg_to_rad(60)
 # define NUM_RAYS WIDTH
 # define PLAYER_HEIGHT 32
@@ -22,6 +17,11 @@
 # define DISTANCE_TO_PP ((WIDTH / 2) / tan(FOV / 2))
 # define MOVE_SPEED 2
 # define ROTAION_SPEED deg_to_rad(5)
+# define MINI_HEIGHT 108
+# define MINI_WIDTH 108
+# define MINI_CUBE 12
+# define MINI_MAP_WIDTH (MINI_WIDTH / MINI_CUBE)
+# define MINI_MAP_HEIGHT (MINI_HEIGHT / MINI_CUBE)
 
 typedef struct t_image {
 	void	*ptr;
@@ -47,11 +47,12 @@ typedef struct s_mlx {
 }	t_mlx;
 
 typedef struct s_player{
-  int x;
-  int y;
-  double x_dir;
-  double y_dir;
-  double direction;
+  float  x;
+  float  y;
+  int x_move_dir;
+  int y_move_dir;
+  int direction_side;
+  float rotation_angle;
 } t_player;
 
 typedef struct s_ray{
@@ -96,4 +97,5 @@ void draw_rectangle(t_img *img, int x, int y, int color);
 void draw_minimap(t_game *game);
 void draw_direction(t_img *img, int x, int y, t_game *game, int length);
 void draw_player(t_img *img, int x, int y, int color, t_game *game);
+void update_minimap(t_game *game);
 #endif
