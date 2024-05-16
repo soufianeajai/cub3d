@@ -2,7 +2,7 @@
 
 int	main()
 {
-	t_game game;
+//	t_game game;
 	t_mlx	mlx;
 	t_input input;
 
@@ -10,7 +10,7 @@ int	main()
 	input.direction = deg_to_rad(input.direction);
 	read_matrix(input);
 	ft_connect(&mlx);
-	game = init_game(mlx, input);
+//	game = init_game(mlx, input);
 	get_images(&mlx, &input);
 //	draw_minimap(&game);
  	mlx_key_hook(mlx.window, &ft_close, &mlx);

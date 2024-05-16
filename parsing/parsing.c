@@ -97,10 +97,10 @@ void fill_map(t_input *input, char *file, int len)
     int fd;
     char *line;
     int i;
-    int j;
+    // int j;
 
     i = 0;
-    j = 0;
+    // j = 0;
     fd = open(file, O_RDONLY);
     input->map = malloc(sizeof(char *) * input->height);
     while (1)
@@ -167,11 +167,11 @@ t_input parsing(char *file)
     int fd;
     char *line;
     int i;
-    int j;
+    // int j;
     size_t len;
 
     i = 0;
-    j = 0;
+    // j = 0;
     len = 0;
     fd = open(file, O_RDONLY);
     while (1)
