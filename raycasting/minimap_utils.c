@@ -2,29 +2,48 @@
 
 void draw_player(t_img *img, int x, int y, int color, t_game *game)
 {
-	int radius;
-    int centerX;
-    int centerY;
 	int i;
 	int j;
-    radius = MINI_CUBE / 3;
-	centerX = x + (MINI_CUBE / 2);
-	centerY = y + (MINI_CUBE / 2);
+	int r;
 
-	j = -radius;
-    while (j <= radius)
+	r = game->cube_size / 4;
+	i = -r;
+	while (i < r)
 	{
-		i = -radius;
-		while (i <= radius)
+		j = -r;
+		while (j < r)
 		{
-			if (i * i + j * j <= radius * radius)
-                my_mlx_pixel_put(img, (centerX + i), (centerY + j), color);
-			i++;
+			if (i * i + j * j <= r * r)
+				my_mlx_pixel_put(img, x + i, y + j, color);
+			j++;
 		}
-		j++;
+		i++;
 	}
-	draw_direction(img, centerX, centerY, game, MINI_CUBE);
+	draw_direction(img, x, y, game, r*2);
 }
+
+void draw_player_mini(t_img *img, int x, int y, int color, t_game *game)
+{
+	int i;
+	int j;
+	int r;
+
+	r = MINI_CUBE_SIZE / 3;
+	i = -r;
+	while (i < r)
+	{
+		j = -r;
+		while (j < r)
+		{
+			if (i * i + j * j <= r * r)
+				my_mlx_pixel_put(img, x + i, y + j, color);
+			j++;
+		}
+		i++;
+	}
+	draw_direction(img, x, y, game, r*3);
+}
+
 void draw_line(t_img *img, int x, int y, int end_x, int end_y)
 {
     int dx;
@@ -64,7 +83,40 @@ void draw_direction(t_img *img, int x, int y, t_game *game, int length)
     int end_x;
     int end_y;
 
-	end_x = x + (int)(length * game->player.x_dir);
-	end_y = y + (int)(length * game->player.y_dir); // - because the Y axe is down in screen
+	end_x = x + (int)(length * cos(game->player.rotation_angle));
+	end_y = y + (int)(length * sin(game->player.rotation_angle)); // - because the Y axe is down in screen
     draw_line(img, x, y, end_x, end_y);
+}
+
+void draw_square(t_game *game, int x, int y, int color)
+{
+	int i = 1;
+	int j = 1;
+
+	while (i < game->cube_size)
+	{
+		j = 1;
+		while (j < game->cube_size)
+		{
+			my_mlx_pixel_put(&game->mlx.image, x + i, y + j, color);
+			j++;
+		}
+		i++;
+	}
+}
+void draw_mini_square(t_game *game, int x, int y, int color)
+{
+	int i = 1;
+	int j = 1;
+
+	while (i < MINI_CUBE_SIZE)
+	{
+		j = 1;
+		while (j < MINI_CUBE_SIZE)
+		{
+			my_mlx_pixel_put(&game->mlx.minimap_image, x*MINI_CUBE_SIZE + i, y*MINI_CUBE_SIZE + j, color);
+			j++;
+		}
+		i++;
+	}
 }

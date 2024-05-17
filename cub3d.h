@@ -9,19 +9,15 @@
 # include "parsing/parsing.h"
 # define HEIGHT 640
 # define WIDTH 1024
-# define SIZE_CUBE 64
 # define FOV deg_to_rad(60)
 # define NUM_RAYS WIDTH
-# define PLAYER_HEIGHT 32
 # define ANGLE_ANCREMENT (FOV / NUM_RAYS)
 # define DISTANCE_TO_PP ((WIDTH / 2) / tan(FOV / 2))
 # define MOVE_SPEED 2
 # define ROTAION_SPEED deg_to_rad(5)
 # define MINI_HEIGHT 108
 # define MINI_WIDTH 108
-# define MINI_CUBE 12
-# define MINI_MAP_WIDTH (MINI_WIDTH / MINI_CUBE)
-# define MINI_MAP_HEIGHT (MINI_HEIGHT / MINI_CUBE)
+# define MINI_CUBE_SIZE 12
 
 typedef struct t_image {
 	void	*ptr;
@@ -49,10 +45,16 @@ typedef struct s_mlx {
 typedef struct s_player{
   float  x;
   float  y;
-  int x_move_dir;
-  int y_move_dir;
-  int direction_side;
+  int map_x;
+  int map_y;
+  float width;
+  float height;
+  int x_walk_dir;
+  int y_walk_dir;
+  int turn_direction;
   float rotation_angle;
+  float walk_speed;
+  float turn_speed;
 } t_player;
 
 typedef struct s_ray{
@@ -70,10 +72,7 @@ typedef struct s_game{
   char  **map;
   int  map_width;
   int  map_height;
-  int player_map_x;
-  int player_map_y;
-  int mini_x;
-  int mini_y;
+  int cube_size;
   int   c_color;
   int   f_color;
 } t_game;
@@ -93,9 +92,11 @@ double deg_to_rad(double angle);
 double rad_to_deg(double angle);
 void read_matrix(t_input input);
 void get_start_point(int *start_x, int *start_y, int player_x, int player_y);
-void draw_rectangle(t_img *img, int x, int y, int color);
-void draw_minimap(t_game *game);
+void draw_square(t_game *game, int x, int y, int color);
+void draw_map(t_game *game);
 void draw_direction(t_img *img, int x, int y, t_game *game, int length);
 void draw_player(t_img *img, int x, int y, int color, t_game *game);
-void update_minimap(t_game *game);
+void draw_minimap(t_game *game);
+void draw_player_mini(t_img *img, int x, int y, int color, t_game *game);
+void draw_mini_square(t_game *game, int x, int y, int color);
 #endif

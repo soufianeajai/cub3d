@@ -2,17 +2,17 @@
 
 int	main()
 {
-//	t_game game;
+	t_game game;
 	t_mlx	mlx;
 	t_input input;
 
 	input = parsing("map.cub");
-	input.direction = deg_to_rad(input.direction);
-	read_matrix(input);
+//	read_matrix(input);
 	ft_connect(&mlx);
-//	game = init_game(mlx, input);
+	game = init_game(mlx, input);
 	get_images(&mlx, &input);
-//	draw_minimap(&game);
+	draw_map(&game);
+	draw_minimap(&game);
  	mlx_key_hook(mlx.window, &ft_close, &mlx);
  	mlx_hook(mlx.window, 17,0, &ft_close2, &mlx);
 //	mlx_hook(mlx.window, 2, 0, &handle_keys, &game);
@@ -20,23 +20,46 @@ int	main()
 	return (0);
 }
 
+int from_map_to_world(t_game game)
+{
+	float scale_x;
+	float scale_y;
+	float scale;
+
+	scale_x = (float)WIDTH / (float)game.map_width;
+	scale_y = (float)HEIGHT / (float)game.map_height;
+	if (scale_x < scale_y)
+		scale = scale_x;
+	else
+		scale = scale_y;
+	return ((int)scale);
+}
+
 t_game init_game(t_mlx mlx, t_input input)
 {
 	t_game game;
 
+//init map
 	game.mlx = mlx;
-	game.player.rotation_angle = input.direction;
-	game.player_map_x = input.pos_x;
-	game.player_map_y = input.pos_y;
-	// game.player.x = input.pos_x * SIZE_CUBE;
-	// game.player.y = input.pos_y * SIZE_CUBE;
-	game.mini_x = 0;
-	game.mini_y = 0;
 	game.map = input.map;
 	game.map_height = input.height;
 	game.map_width = input.width;
 	game.c_color = input.c_color;
 	game.f_color = input.f_color;
+	game.cube_size = from_map_to_world(game);
+// init player
+	game.player.map_x = input.pos_x;
+	game.player.map_y = input.pos_y;
+	game.player.x = (input.pos_x * game.cube_size) + game.cube_size / 2;
+	game.player.y = (input.pos_y * game.cube_size) + game.cube_size / 2;
+	game.player.width = game.cube_size / 3;
+	game.player.height = game.cube_size / 3;
+	game.player.turn_direction = 0;
+	game.player.x_walk_dir = 0;
+	game.player.y_walk_dir = 0;
+	game.player.walk_speed = game.cube_size / 2;
+	game.player.turn_speed = deg_to_rad(45);
+	game.player.rotation_angle = deg_to_rad(input.direction);
 	return (game);
 }
 
