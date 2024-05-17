@@ -42,11 +42,12 @@ void draw_minimap(t_game *game)
 
 	player_map_x = (int)(game->player.x / game->cube_size);
 	player_map_y = (int)(game->player.y / game->cube_size);
-	start_x = player_map_x - (int)(MINI_WIDTH/MINI_CUBE_SIZE/2);
-	start_y = player_map_y - (int)(MINI_HEIGHT/MINI_CUBE_SIZE/2);
-	end_x = player_map_x + (int)(MINI_WIDTH/MINI_CUBE_SIZE/2) + 1;
-	end_y = player_map_y + (int)(MINI_HEIGHT/MINI_CUBE_SIZE/2) + 1;
+	start_x = player_map_x - (int)(MINI_WIDTH / MINI_CUBE_SIZE / 2);
+	start_y = player_map_y - (int)(MINI_HEIGHT / MINI_CUBE_SIZE / 2);
+	end_x = player_map_x + (int)(MINI_WIDTH / MINI_CUBE_SIZE / 2) + 1;
+	end_y = player_map_y + (int)(MINI_HEIGHT / MINI_CUBE_SIZE / 2) + 1;
 	y = start_y;
+
 	while (y < end_y)
 	{
 		x = start_x;
@@ -55,16 +56,21 @@ void draw_minimap(t_game *game)
 			if (y >= 0 && y < game->map_height && x >= 0 && x < game->map_width)
 			{
 				if (game->map[y][x] == '1')
-					draw_mini_square(game, (x - start_x), (y - start_y), 0x00000000);
+					draw_mini_square(game, (x - start_x) * MINI_CUBE_SIZE, (y - start_y) * MINI_CUBE_SIZE, 0x00000000);
 				else if (game->map[y][x] == '0')
-					draw_mini_square(game, (x - start_x), (y - start_y), 0x00FFFFFF);
+					draw_mini_square(game, (x - start_x) * MINI_CUBE_SIZE, (y - start_y) * MINI_CUBE_SIZE, 0x00FFFFFF);
 				else if (game->map[y][x] == '2')
-					draw_mini_square(game, (x - start_x), (y - start_y), 0x000000FF);
+					draw_mini_square(game, (x - start_x) * MINI_CUBE_SIZE, (y - start_y) * MINI_CUBE_SIZE, 0x000000FF);
 			}
 			x++;
 		}
 		y++;
 	}
-	draw_player_mini(&game->mlx.minimap_image, (player_map_x - start_x)*MINI_CUBE_SIZE + MINI_CUBE_SIZE/2, (player_map_y - start_y)*MINI_CUBE_SIZE + MINI_CUBE_SIZE/2, 0x00FF0000, game);
+
+	// Draw player position on the mini-map
+	double player_mini_x = ((game->player.x / game->cube_size) - start_x) * MINI_CUBE_SIZE;
+	double player_mini_y = ((game->player.y / game->cube_size) - start_y) * MINI_CUBE_SIZE;
+	draw_player_mini(&game->mlx.minimap_image, player_mini_x, player_mini_y, 0x00000000, game);
+
 	mlx_put_image_to_window(game->mlx.connect, game->mlx.window, game->mlx.minimap_image.ptr, 0, HEIGHT - MINI_HEIGHT);
 }

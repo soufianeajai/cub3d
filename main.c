@@ -15,7 +15,7 @@ int	main()
 	draw_minimap(&game);
  	mlx_key_hook(mlx.window, &ft_close, &mlx);
  	mlx_hook(mlx.window, 17,0, &ft_close2, &mlx);
-//	mlx_hook(mlx.window, 2, 0, &handle_keys, &game);
+	mlx_hook(mlx.window, 2, 0, &handle_keys, &game);
  	mlx_loop(mlx.connect);
 	return (0);
 }
