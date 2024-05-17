@@ -21,6 +21,7 @@ t_img  get_image_from_xpm(void *mlx_ptr, char *path_xpm)
   img.addr = mlx_get_data_addr(img.ptr, &img.bpp, &img.line_len, &img.endian);
   return (img);
 }
+
 void read_matrix(t_input input)
 {
     int i = 0;

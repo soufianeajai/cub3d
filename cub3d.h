@@ -15,9 +15,9 @@
 # define DISTANCE_TO_PP ((WIDTH / 2) / tan(FOV / 2))
 # define MOVE_SPEED 10
 # define ROTATION_SPEED deg_to_rad(10)
-# define MINI_HEIGHT 216
-# define MINI_WIDTH 216
-# define MINI_CUBE_SIZE 24
+# define MINI_HEIGHT 113
+# define MINI_WIDTH 180
+# define MINI_CUBE_SIZE 20
 
 typedef struct t_image {
 	void	*ptr;
@@ -91,7 +91,6 @@ void copy_image(t_img *image, t_img wall_image, int x, int y);
 double deg_to_rad(double angle);
 double rad_to_deg(double angle);
 void read_matrix(t_input input);
-void get_start_point(int *start_x, int *start_y, int player_x, int player_y);
 void draw_square(t_game *game, int x, int y, int color);
 void draw_map(t_game *game);
 void draw_direction(t_img *img, int x, int y, t_game *game, float length);

@@ -20,19 +20,19 @@ int	main()
 	return (0);
 }
 
-int from_map_to_world(t_game game)
+int get_cube_size(t_game game)
 {
 	float scale_x;
 	float scale_y;
-	float scale;
+	float cube_size;
 
 	scale_x = (float)WIDTH / (float)game.map_width;
 	scale_y = (float)HEIGHT / (float)game.map_height;
 	if (scale_x < scale_y)
-		scale = scale_x;
+		cube_size = scale_x;
 	else
-		scale = scale_y;
-	return ((int)scale);
+		cube_size = scale_y;
+	return ((int)cube_size);
 }
 
 t_game init_game(t_mlx mlx, t_input input)
@@ -46,7 +46,7 @@ t_game init_game(t_mlx mlx, t_input input)
 	game.map_width = input.width;
 	game.c_color = input.c_color;
 	game.f_color = input.f_color;
-	game.cube_size = from_map_to_world(game);
+	game.cube_size = get_cube_size(game);
 // init player
 	game.player.map_x = input.pos_x;
 	game.player.map_y = input.pos_y;
