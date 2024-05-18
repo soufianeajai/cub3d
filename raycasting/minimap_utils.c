@@ -22,8 +22,6 @@ void draw_player(t_img *img, int x, int y, int color, t_game *game)
 	draw_direction(img, x, y, game, r*2);
 }
 
-
-
 void draw_line(t_img *img, int x, int y, int end_x, int end_y)
 {
     int dx;
@@ -85,22 +83,7 @@ void draw_square(t_game *game, int x, int y, int color)
 		i++;
 	}
 }
-// void draw_mini_square(t_game *game, int x, int y, int color)
-// {
-// 	int i = 1;
-// 	int j = 1;
 
-// 	while (i < MINI_CUBE_SIZE)
-// 	{
-// 		j = 1;
-// 		while (j < MINI_CUBE_SIZE)
-// 		{
-// 			my_mlx_pixel_put(&game->mlx.minimap_image, x + i, y + j, color);
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// }
 void draw_mini_square(t_game *game, int x, int y, int color)
 {
 	// Drawing a square on the mini-map at (x, y) with the specified color
