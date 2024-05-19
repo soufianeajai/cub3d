@@ -26,6 +26,7 @@ typedef enum {
     EAST,
     WEST
 } wall_orientation;
+
 typedef enum {
   X,
   Y,
