@@ -48,7 +48,6 @@ typedef struct s_vector {
   float y;
 } t_vector;
 
-
 typedef struct s_mlx {
 	int			type;
 	void		*connect;

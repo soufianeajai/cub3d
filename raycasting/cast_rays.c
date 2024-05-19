@@ -91,7 +91,6 @@ t_ray cast_ray(t_game *game, float ray_angle)
     t_ray ray;
     int map_x;
     int map_y;
-    axes axis; 
     
     map_x = init_ray(game, &ray, ray_angle, &map_y);
     handle_start_point(game, &ray, map_x, map_y);   
@@ -112,7 +111,10 @@ t_ray cast_ray(t_game *game, float ray_angle)
     get_ray_length(&ray, game);
     return (ray);
 }
+// void render_walls(t_game *game, t_ray *rays, int colum_id)
+// {
 
+// }
 
 void cast_all_rays(t_game *game)
 {
@@ -129,5 +131,7 @@ void cast_all_rays(t_game *game)
         rays[i] = cast_ray(game, ray_angle);
         ray_angle += ANGLE_ANCREMENT;
         i += WALL_STRIP_WIDTH;
+        colum_id++;
     }
+//    render_walls(game, &rays, colum_id);
 }
