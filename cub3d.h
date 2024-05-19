@@ -26,6 +26,10 @@ typedef enum {
     EAST,
     WEST
 } wall_orientation;
+typedef enum {
+  X,
+  Y,
+} axes;
 
 typedef struct t_image {
 	void	*ptr;
@@ -37,6 +41,12 @@ typedef struct t_image {
   int   height;
   int   mini_cube;
 }	t_img;
+
+typedef struct s_vector {
+  float x;
+  float y;
+} t_vector;
+
 
 typedef struct s_mlx {
 	int			type;
@@ -69,8 +79,12 @@ typedef struct s_ray{
   float angle;
   float distance;
   int hit;
-  int wall_hit_x;
-  int wall_hit_y;
+  t_vector start;
+  t_vector d;
+  t_vector step;
+  t_vector delta_distance;
+  t_vector side_distance;
+  t_vector wall_hit;
   wall_orientation orientation;
 } t_ray;
 

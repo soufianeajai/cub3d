@@ -1,70 +1,116 @@
 #include"../cub3d.h"
 
-float calculate_distance(float x1, float y1, float x2, float y2) {
-    return sqrt((x2 - x1) * (x2 - y1) + (y2 - y1) * (y2 - y1));
+float calculate_distance(float x1, float y1, float x2, float y2)
+{
+    return (sqrt((x2 - x1) * (x2 - y1) + (y2 - y1) * (y2 - y1)));
 }
+int init_ray(t_game *game, t_ray *ray, float ray_angle, int *map_y)
+{
+    int map_x;
 
+    ray->start.x = game->player.x;
+    ray->start.y = game->player.y;
+    ray->d.x = cos(ray_angle);
+    ray->d.y = sin(ray_angle);
+    ray->delta_distance.x = fabs(1 / ray->d.x);
+    ray->delta_distance.y = fabs(1 / ray->d.y);
+    map_x = (int)(ray->start.x / game->cube_size);
+    *map_y = (int)(ray->start.y / game->cube_size);
+    ray->hit = 0;
+    ray->wall_hit.x = 0;
+    ray->wall_hit.y = 0;
+    ray->distance = -1;
+    return (map_x);
+}
+void handle_start_point(t_game *game, t_ray *ray, int map_x, int map_y)
+{
+    if (ray->d.x < 0) 
+    {
+        ray->step.x = -1;
+        ray->side_distance.x = (ray->start.x - map_x * game->cube_size) * ray->delta_distance.x;
+    }
+    else if (ray->d.x >= 0)
+    {
+        ray->step.x = 1;
+        ray->side_distance.x = ((map_x + 1) * game->cube_size - ray->start.x) * ray->delta_distance.x;
+    }
+    if (ray->d.y < 0)
+    {
+        ray->step.y = -1;
+        ray->side_distance.y = (ray->start.y - map_y * game->cube_size) * ray->delta_distance.y;
+    }
+    else if (ray->d.y >= 0)
+    {
+        ray->step.y = 1;
+        ray->side_distance.y = ((map_y + 1) * game->cube_size - ray->start.y) * ray->delta_distance.y;
+    }
+}
+wall_orientation get_orientation(float step, axes axis)
+{
+    wall_orientation orientation;
+    
+    if (axis == X)
+    {
+        if (step == -1)
+            orientation = WEST;
+        else
+            orientation = EAST;
+    }
+    else
+    {
+        if (step == -1)
+            orientation = NORTH;
+        else
+            orientation = SOUTH;
+    }
+    return (orientation);
+}
+void update_axes(t_ray *ray, int *map_, axes axis)
+{
+    if (axis == X)
+    {
+        ray->side_distance.x += ray->delta_distance.x;
+        *map_ += ray->step.x;
+        ray->orientation = get_orientation(ray->step.x, axis);
+    }
+    else
+    {
+        ray->side_distance.y += ray->delta_distance.y;
+        *map_ += ray->step.y;
+        ray->orientation = get_orientation(ray->step.y, axis);
+    }
+}
+void get_ray_length(t_ray *ray, t_game *game)
+{
+    ray->wall_hit.x = ray->start.x + (ray->side_distance.x - ray->delta_distance.x) * ray->d.x;
+    ray->wall_hit.y = ray->start.y + (ray->side_distance.y - ray->delta_distance.y) * ray->d.y;
+    ray->distance = calculate_distance(game->player.x, game->player.y, ray->wall_hit.x, ray->wall_hit.y);
+}
 t_ray cast_ray(t_game *game, float ray_angle)
 {
     t_ray ray;
+    int map_x;
+    int map_y;
+    axes axis; 
+    
+    map_x = init_ray(game, &ray, ray_angle, &map_y);
+    handle_start_point(game, &ray, map_x, map_y);   
+    while (!ray.hit) 
+    {
+        if (ray.side_distance.x < ray.side_distance.y)
+            update_axes(&ray, &map_x, X);
+        else
+            update_axes(&ray, &map_y, Y);
+        if (map_x >= 0 && map_x < game->map_width && map_y >= 0 && map_y < game->map_height)
+        {
+            if (game->map[map_y][map_x] == '1')
+                ray.hit = 1;
+        }
+        else
+            return (ray);
+    }
+    get_ray_length(&ray, game);
     return (ray);
-}
-float cast(Game *game, float ray_angle, WallOrientation *orientation) {
-    float ray_x = game->player.x;
-    float ray_y = game->player.y;
-    float ray_dx = cos(ray_angle);
-    float ray_dy = sin(ray_angle);
-
-    float delta_dist_x = fabs(1 / ray_dx);
-    float delta_dist_y = fabs(1 / ray_dy);
-
-    int map_x = (int)(ray_x / game->cube_size);
-    int map_y = (int)(ray_y / game->cube_size);
-
-    int step_x, step_y;
-    float side_dist_x, side_dist_y;
-
-    if (ray_dx < 0) {
-        step_x = -1;
-        side_dist_x = (ray_x - map_x * game->cube_size) * delta_dist_x;
-    } else {
-        step_x = 1;
-        side_dist_x = ((map_x + 1) * game->cube_size - ray_x) * delta_dist_x;
-    }
-
-    if (ray_dy < 0) {
-        step_y = -1;
-        side_dist_y = (ray_y - map_y * game->cube_size) * delta_dist_y;
-    } else {
-        step_y = 1;
-        side_dist_y = ((map_y + 1) * game->cube_size - ray_y) * delta_dist_y;
-    }
-
-    int hit = 0;
-    while (!hit) {
-        if (side_dist_x < side_dist_y) {
-            side_dist_x += delta_dist_x;
-            map_x += step_x;
-            *orientation = (step_x == -1) ? WEST : EAST;
-        } else {
-            side_dist_y += delta_dist_y;
-            map_y += step_y;
-            *orientation = (step_y == -1) ? NORTH : SOUTH;
-        }
-
-        if (map_x >= 0 && map_x < game->map.width && map_y >= 0 && map_y < game->map.height) {
-            if (game->map.map[map_y][map_x] == '1') {
-                hit = 1;
-            }
-        } else {
-            return -1; // No wall found within bounds
-        }
-    }
-
-    float hit_x = ray_x + (side_dist_x - delta_dist_x) * ray_dx;
-    float hit_y = ray_y + (side_dist_y - delta_dist_y) * ray_dy;
-
-    return calculate_distance(game->player.x, game->player.y, hit_x, hit_y);
 }
 
 
