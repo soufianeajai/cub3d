@@ -9,8 +9,9 @@
 # include "parsing/parsing.h"
 # define HEIGHT 640
 # define WIDTH 1024
+# define WALL_STRIP_WIDTH 1
 # define FOV deg_to_rad(60)
-# define NUM_RAYS WIDTH
+# define NUM_RAYS (WIDTH / WALL_STRIP_WIDTH)
 # define ANGLE_ANCREMENT (FOV / NUM_RAYS)
 # define DISTANCE_TO_PP ((WIDTH / 2) / tan(FOV / 2))
 # define MOVE_SPEED 10
@@ -18,6 +19,13 @@
 # define MINI_HEIGHT 113
 # define MINI_WIDTH 180
 # define MINI_CUBE_SIZE 20
+
+typedef enum {
+    NORTH,
+    SOUTH,
+    EAST,
+    WEST
+} wall_orientation;
 
 typedef struct t_image {
 	void	*ptr;
@@ -58,11 +66,12 @@ typedef struct s_player{
 } t_player;
 
 typedef struct s_ray{
-  double angle;
-  double distance;
+  float angle;
+  float distance;
   int hit;
   int wall_hit_x;
   int wall_hit_y;
+  wall_orientation orientation;
 } t_ray;
 
 typedef struct s_game{
