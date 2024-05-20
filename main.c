@@ -9,8 +9,8 @@ int	main()
 	input = parsing("map.cub");
 //	read_matrix(input);
 	ft_connect(&mlx);
-	game = init_game(mlx, input);
 	get_images(&mlx, &input);
+	game = init_game(mlx, input);
 //	draw_map(&game);
 //	draw_minimap(&game);
  	cast_all_rays(&game);

@@ -16,6 +16,7 @@ int init_ray(t_game *game, t_ray *ray, float ray_angle, int *map_y)
     ray->delta_distance.y = fabs(1 / ray->d.y);
     map_x = (int)(ray->start.x / game->cube_size);
     *map_y = (int)(ray->start.y / game->cube_size);
+    ray->angle = ray_angle;
     ray->hit = 0;
     ray->wall_hit.x = 0;
     ray->wall_hit.y = 0;
@@ -80,11 +81,24 @@ void update_axes(t_ray *ray, int *map_, axes axis)
         ray->orientation = get_orientation(ray->step.y, axis);
     }
 }
-void get_ray_length(t_ray *ray, t_game *game)
+// void get_ray_length(t_ray *ray, t_game *game)
+// {
+//     ray->wall_hit.x = ray->start.x + (ray->side_distance.x - ray->delta_distance.x) * ray->d.x;
+//     ray->wall_hit.y = ray->start.y + (ray->side_distance.y - ray->delta_distance.y) * ray->d.y;
+//     ray->distance = calculate_distance(game->player.x, game->player.y, ray->wall_hit.x, ray->wall_hit.y);
+// }
+
+void get_ray_length(t_ray *ray, int map_x, int map_y)
 {
-    ray->wall_hit.x = ray->start.x + (ray->side_distance.x - ray->delta_distance.x) * ray->d.x;
-    ray->wall_hit.y = ray->start.y + (ray->side_distance.y - ray->delta_distance.y) * ray->d.y;
-    ray->distance = calculate_distance(game->player.x, game->player.y, ray->wall_hit.x, ray->wall_hit.y);
+    if (ray->hit)
+    {
+        if (ray->orientation == EAST || ray->orientation == WEST)
+            ray->distance = (map_x - ray->start.x + (1 - ray->step.x) / 2) / ray->d.x;
+        else
+            ray->distance = (map_y - ray->start.y + (1 - ray->step.y) / 2) / ray->d.y;
+        ray->wall_hit.x = ray->start.x + ray->distance * ray->d.x;
+        ray->wall_hit.y = ray->start.y + ray->distance * ray->d.y;
+    }
 }
 t_ray cast_ray(t_game *game, float ray_angle)
 {
@@ -105,10 +119,10 @@ t_ray cast_ray(t_game *game, float ray_angle)
             if (game->map[map_y][map_x] == '1')
                 ray.hit = 1;
         }
-        else
-            return (ray);
+        // else
+        //     return (ray);
     }
-    get_ray_length(&ray, game);
+    get_ray_length(&ray, map_x, map_y);
     return (ray);
 }
 t_img *get_texture(wall_orientation orientation, t_game *game)
@@ -133,43 +147,12 @@ unsigned int get_texture_color(t_img *texture, int x, int y)
     pixel = texture->addr + (y * texture->line_len + x * (texture->bpp / 8));
     return (*(unsigned int*)pixel);
 }
-void render_walls(t_game *game, t_ray *rays)
-{
-    int i;
-    int j;
-    int wall_height;
-    int draw_start;
-    int draw_end;
-    float perp_distance;
-    int texture_x;
-    int texture_y;
-    unsigned int color;
-    t_img *texture;
-
-    i = 0;
-    while (i < NUM_RAYS)
-    {
-        perp_distance = rays[i].distance * cos(rays[i].angle - game->player.rotation_angle);
-        wall_height = (int)(HEIGHT / perp_distance);
-        draw_start = -wall_height / 2 + HEIGHT / 2;
-        draw_end = wall_height / 2 + HEIGHT / 2;
-        if (draw_start < 0)
-            draw_start = 0;
-        if (draw_end >= HEIGHT)
-            draw_end = HEIGHT - 1;
-        texture = get_texture(rays[i].orientation, game);
-        texture_x = (int)(rays[i].wall_hit.x) % texture->width;
-        j = draw_start;
-        while (j < draw_end)
-        {
-            texture_y = (j - draw_start) * ((float)texture->height / wall_height);
-            color = get_texture_color(texture, texture_x, texture_y);
-            my_mlx_pixel_put(&game->mlx.image, i *WALL_STRIP_WIDTH, j, color);
-        }
-    }
-}
 
 
+// void render_wall(t_game *game, t_ray *ray, float ray_angle, int colum)
+// {
+
+// }
 void cast_all_rays(t_game *game)
 {
     float ray_angle;
@@ -181,9 +164,15 @@ void cast_all_rays(t_game *game)
     while (i < NUM_RAYS)
     {
         rays[i] = cast_ray(game, ray_angle);
+        // if (i = 0)
+        // {
+             printf("%d  %f\n", i, rays[i].distance);
+             printf("rays[i].wall_hit.x %f\n", rays[i].wall_hit.x);
+            printf("rays[i].wall_hit.y %f\n", rays[i].wall_hit.y);
+        // }
+//        render_wall(game, &rays[i], ray_angle, i);
         ray_angle += ANGLE_ANCREMENT;
         i += WALL_STRIP_WIDTH;
     }
-    render_walls(game, rays);
-    mlx_put_image_to_window(game->mlx.connect, game->mlx.window, game->mlx.image.ptr, 0, 0);
+//    render_walls(game, rays);
 }
