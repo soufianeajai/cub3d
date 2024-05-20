@@ -121,4 +121,5 @@ void draw_player(t_img *img, int x, int y, int color, t_game *game);
 void draw_minimap(t_game *game);
 void draw_player_mini(t_img *img, int x, int y, int color, t_game *game);
 void draw_mini_square(t_game *game, int x, int y, int color);
+void cast_all_rays(t_game *game);
 #endif

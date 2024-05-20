@@ -111,27 +111,79 @@ t_ray cast_ray(t_game *game, float ray_angle)
     get_ray_length(&ray, game);
     return (ray);
 }
-// void render_walls(t_game *game, t_ray *rays, int colum_id)
-// {
+t_img *get_texture(wall_orientation orientation, t_game *game)
+{
+    t_img *texture;
+     
+    texture = 0;
+    if (orientation == NORTH)
+        texture = &game->mlx.north_wall_image;
+    else if (orientation == SOUTH)
+        texture = &game->mlx.south_wall_image;
+    else if (orientation == EAST)
+        texture = &game->mlx.east_wall_image;
+    else if (orientation == WEST)
+        texture = &game->mlx.west_wall_image;   
+    return (texture);
+}
 
-// }
+unsigned int get_texture_color(t_img *texture, int x, int y)
+{
+    char *pixel;
+    pixel = texture->addr + (y * texture->line_len + x * (texture->bpp / 8));
+    return (*(unsigned int*)pixel);
+}
+void render_walls(t_game *game, t_ray *rays)
+{
+    int i;
+    int j;
+    int wall_height;
+    int draw_start;
+    int draw_end;
+    float perp_distance;
+    int texture_x;
+    int texture_y;
+    unsigned int color;
+    t_img *texture;
+
+    i = 0;
+    while (i < NUM_RAYS)
+    {
+        perp_distance = rays[i].distance * cos(rays[i].angle - game->player.rotation_angle);
+        wall_height = (int)(HEIGHT / perp_distance);
+        draw_start = -wall_height / 2 + HEIGHT / 2;
+        draw_end = wall_height / 2 + HEIGHT / 2;
+        if (draw_start < 0)
+            draw_start = 0;
+        if (draw_end >= HEIGHT)
+            draw_end = HEIGHT - 1;
+        texture = get_texture(rays[i].orientation, game);
+        texture_x = (int)(rays[i].wall_hit.x) % texture->width;
+        j = draw_start;
+        while (j < draw_end)
+        {
+            texture_y = (j - draw_start) * ((float)texture->height / wall_height);
+            color = get_texture_color(texture, texture_x, texture_y);
+            my_mlx_pixel_put(&game->mlx.image, i *WALL_STRIP_WIDTH, j, color);
+        }
+    }
+}
+
 
 void cast_all_rays(t_game *game)
 {
-    int colum_id;
     float ray_angle;
     t_ray  rays[NUM_RAYS + 1];
     int i;
 
     i = 0;
-    colum_id = 0;
     ray_angle = game->player.rotation_angle - (FOV / 2);
     while (i < NUM_RAYS)
     {
         rays[i] = cast_ray(game, ray_angle);
         ray_angle += ANGLE_ANCREMENT;
         i += WALL_STRIP_WIDTH;
-        colum_id++;
     }
-//    render_walls(game, &rays, colum_id);
+    render_walls(game, rays);
+    mlx_put_image_to_window(game->mlx.connect, game->mlx.window, game->mlx.image.ptr, 0, 0);
 }
