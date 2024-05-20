@@ -25,7 +25,7 @@ void draw_map(t_game *game)
 		}
 		i++;
 	}
-	draw_player(&game->mlx.image, game->player.x, game->player.y, 0x00FF0000, game);
+	draw_player(&game->mlx.image, game->player.x, game->player.y, 0x00000000, game);
 	mlx_put_image_to_window(game->mlx.connect, game->mlx.window, game->mlx.image.ptr, 0, 0);
 }
 

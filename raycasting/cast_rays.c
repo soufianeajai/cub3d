@@ -8,19 +8,23 @@ int init_ray(t_game *game, t_ray *ray, float ray_angle, int *map_y)
 {
     int map_x;
 
+    ray->angle = ray_angle;
+    ray->distance = -1;
+    ray->hit = 0;
     ray->start.x = game->player.x;
     ray->start.y = game->player.y;
     ray->d.x = cos(ray_angle);
     ray->d.y = sin(ray_angle);
+    ray->step.x = 0;
+    ray->step.y = 0;
     ray->delta_distance.x = fabs(1 / ray->d.x);
     ray->delta_distance.y = fabs(1 / ray->d.y);
-    map_x = (int)(ray->start.x / game->cube_size);
-    *map_y = (int)(ray->start.y / game->cube_size);
-    ray->angle = ray_angle;
-    ray->hit = 0;
+    ray->side_distance.x = 0;
+    ray->side_distance.y = 0;
     ray->wall_hit.x = 0;
     ray->wall_hit.y = 0;
-    ray->distance = -1;
+    map_x = (int)(ray->start.x / game->cube_size);
+    *map_y = (int)(ray->start.y / game->cube_size);
     return (map_x);
 }
 void handle_start_point(t_game *game, t_ray *ray, int map_x, int map_y)
@@ -149,7 +153,7 @@ unsigned int get_texture_color(t_img *texture, int x, int y)
 }
 
 
-// void render_wall(t_game *game, t_ray *ray, float ray_angle, int colum)
+// void render_wall(t_game *game, t_ray *ray, float ray_angle, int column)
 // {
 
 // }
@@ -157,22 +161,15 @@ void cast_all_rays(t_game *game)
 {
     float ray_angle;
     t_ray  rays[NUM_RAYS + 1];
-    int i;
+    int column;
 
-    i = 0;
+    column = 0;
     ray_angle = game->player.rotation_angle - (FOV / 2);
-    while (i < NUM_RAYS)
+    while (column < NUM_RAYS)
     {
-        rays[i] = cast_ray(game, ray_angle);
-        // if (i = 0)
-        // {
-             printf("%d  %f\n", i, rays[i].distance);
-             printf("rays[i].wall_hit.x %f\n", rays[i].wall_hit.x);
-            printf("rays[i].wall_hit.y %f\n", rays[i].wall_hit.y);
-        // }
-//        render_wall(game, &rays[i], ray_angle, i);
+        rays[column] = cast_ray(game, ray_angle);
+//        render_wall(game, &rays[column], ray_angle, column);
         ray_angle += ANGLE_ANCREMENT;
-        i += WALL_STRIP_WIDTH;
+        column += WALL_STRIP_WIDTH;
     }
-//    render_walls(game, rays);
 }

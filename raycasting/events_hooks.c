@@ -67,7 +67,7 @@ int	handle_keys(int keysym, t_game *game)
 		game->player.x = new_pos_x;
 		game->player.y = new_pos_y;
 	}
-//	draw_map(game);
-//	draw_minimap(game);
+	draw_map(game);
+	draw_minimap(game);
 	return (0);
 }

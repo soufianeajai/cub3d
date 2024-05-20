@@ -61,17 +61,24 @@ void draw_direction(t_img *img, int x, int y, t_game *game, float length)
 {
     int end_x;
     int end_y;
-
-	end_x = x + (int)(length * cos(game->player.rotation_angle));
-	end_y = y + (int)(length * sin(game->player.rotation_angle)); // - because the Y axe is down in screen
-    draw_line(img, x, y, end_x, end_y);
+	int i = 0;
+	float angle;
+	
+	angle = game->player.rotation_angle - (FOV / 2);
+	while (i < NUM_RAYS)
+	{
+		end_x = x + (int)(length * cos(angle));
+		end_y = y + (int)(length * sin(angle));
+    	draw_line(img, x, y, end_x, end_y);
+		angle += ANGLE_ANCREMENT;
+		i += WALL_STRIP_WIDTH;
+	}
 }
 
 void draw_square(t_game *game, int x, int y, int color)
 {
 	int i = 1;
 	int j = 1;
-
 	while (i < game->cube_size)
 	{
 		j = 1;
@@ -109,7 +116,7 @@ void draw_player_mini(t_img *img, int x, int y, int color, t_game *game)
 	int j;
 	int r;
 
-	r = MINI_CUBE_SIZE / 4;
+	r = MINI_CUBE_SIZE / 6;
 	i = -r;
 	while (i < r)
 	{
@@ -122,5 +129,5 @@ void draw_player_mini(t_img *img, int x, int y, int color, t_game *game)
 		}
 		i++;
 	}
-	draw_direction(img, x, y, game, r*2.5);
+	draw_direction(img, x, y, game, r*8);
 }
