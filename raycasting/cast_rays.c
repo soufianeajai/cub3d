@@ -159,19 +159,27 @@
 // // }
 
 
-// void cast_all_rays(t_game *game)
-// {
-//     float ray_angle;
-//     t_ray  rays[NUM_RAYS + 1];
-//     int column;
+t_ray cast_ray(t_game *game, float ray_angle)
+{
+    t_ray ray;
 
-//     column = 0;
-//     ray_angle = game->player.rotation_angle - (FOV / 2);
-//     while (column < NUM_RAYS)
-//     {
-// //        rays[column] = cast_ray(game, ray_angle);
-// //        render_wall(game, &rays[column], ray_angle, column);
-//         ray_angle += ANGLE_ANCREMENT;
-//         column++;
-//     }
-// }
+    return (ray);
+}
+
+
+void cast_all_rays(t_game *game)
+{
+    float ray_angle;
+    t_ray  rays[NUM_RAYS + 1];
+    int column;
+
+    column = 0;
+    ray_angle = game->player.rotation_angle - (FOV / 2);
+    while (column < NUM_RAYS)
+    {
+        rays[column] = cast_ray(game, ray_angle);
+        render_wall(game, &rays[column], ray_angle, column);
+        ray_angle += ANGLE_ANCREMENT;
+        column++;
+    }
+}

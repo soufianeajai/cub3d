@@ -44,7 +44,7 @@ void draw_line(t_img *img, int x, int y, int end_x, int end_y)
 		sy = -1;
     while (x != end_x || y != end_y)
 	{
-        my_mlx_pixel_put(img, x, y, 0xA1FFF100);
+        my_mlx_pixel_put(img, x, y, 0x00FF0000);
         e2 = 2 * err;
         if (e2 > -dy) {
             err -= dy;
