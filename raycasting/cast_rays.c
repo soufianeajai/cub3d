@@ -186,6 +186,7 @@ t_ray init_ray(t_game *game, float ray_angle)
         ray.is_facing_down = 1;
     if (ray.angle < M_PI_2 && ray.angle > (3 * M_PI_2))
         ray.is_facing_right = 1;
+// vertical intersection
     ray.h_first_intersection.y = floor(ray.start.y / game->cube_size) * game->cube_size;
     if (ray.is_facing_down)
         ray.h_first_intersection.y += game->cube_size;
@@ -193,24 +194,30 @@ t_ray init_ray(t_game *game, float ray_angle)
     ray.h_step.y = game->cube_size;
     if (ray.is_facing_down == 0)
         ray.h_step.y *= -1;
-    ray.h_step.x = ray.h_step.y / tan(ray_angle);
+    ray.h_step.x = ray.h_step.y / tan(ray.angle);
     if (ray.is_facing_right == 0 && ray.h_step.x > 0)
         ray.h_step.x *= -1;
     if (ray.is_facing_right && ray.h_step.x < 0)
         ray.h_step.x *= -1;
 // vertical intersection
-    ray.v_first_intersection.x = floor(ray.start.x / game->cube_size) * game->cube_size; // a revoir
-    ray.v_first_intersection.y = ray.start.y + (ray.h_first_intersection.x - ray.start.x) * tan(ray.angle); // a revoir
+    ray.v_first_intersection.x = floor(ray.start.x / game->cube_size) * game->cube_size;
+    if (ray.is_facing_right)
+        ray.v_first_intersection.x += game->cube_size;
+    ray.v_first_intersection.y = ray.start.y + (ray.h_first_intersection.x - ray.start.x) * tan(ray.angle);
     ray.v_step.x = game->cube_size;
-    ray.v_step.y = ray.v_step.x * tan(ray_angle); 
+    if (ray.is_facing_right == 0)
+        ray.v_step.x *= -1;
+    ray.v_step.y = ray.v_step.x * tan(ray.angle); 
+    if (ray.is_facing_down == 0 && ray.v_step.y > 0)
+        ray.v_step.y *= -1;
+    if (ray.is_facing_down && ray.v_step.y < 0)
+        ray.v_step.y *= -1;
     return (ray);
 }
-t_ray get_horizontal_distance(t_game *game, t_ray ray)
+t_ray get_horizontal_intersection(t_game *game, t_ray ray)
 {
-    float distance;
     t_point next_intersection;
 
-    distance = 0;
     next_intersection.x = ray.h_first_intersection.x;
     next_intersection.y = ray.h_first_intersection.y;
     if (ray.is_facing_down == 0)
@@ -224,11 +231,39 @@ t_ray get_horizontal_distance(t_game *game, t_ray ray)
             ray.wall_hit.x = next_intersection.x;
             ray.wall_hit.y = next_intersection.y;
             ray.distance = calculate_distance(ray.start.x, ray.start.y, ray.wall_hit.x, ray.wall_hit.y);
+            break;
         }
         else
         {
             next_intersection.x += ray.h_step.x;
             next_intersection.y += ray.h_step.y;
+        }
+    }
+    return (ray);
+}
+t_ray get_vertical_intersection(t_game *game, t_ray ray)
+{
+    t_point next_intersection;
+
+    next_intersection.x = ray.v_first_intersection.x;
+    next_intersection.y = ray.v_first_intersection.y;
+    if (ray.is_facing_right == 0)
+        next_intersection.y--;
+    while (next_intersection.x >= 0 && next_intersection.x < game->map_width * game->cube_size &&
+		next_intersection.y >= 0 && next_intersection.y < game->map_height * game->cube_size)
+    {
+        if (game->map[(int)(next_intersection.y / game->cube_size)][(int)(next_intersection.x / game->cube_size)] == '1')
+        {
+            ray.hit = 1;
+            ray.wall_hit.x = next_intersection.x;
+            ray.wall_hit.y = next_intersection.y;
+            ray.distance = calculate_distance(ray.start.x, ray.start.y, ray.wall_hit.x, ray.wall_hit.y);
+            break;
+        }
+        else
+        {
+            next_intersection.x += ray.v_step.x;
+            next_intersection.y += ray.v_step.y;
         }
     }
     return (ray);
@@ -240,8 +275,24 @@ t_ray cast_ray(t_game *game, float ray_angle)
     t_ray vertical_intersection;
 
     ray = init_ray(game, ray_angle);
-    horizontal_intersection = get_horizontal_distance(game, ray);
-
+    horizontal_intersection = ray;
+    vertical_intersection = ray;
+    horizontal_intersection = get_horizontal_intersection(game, horizontal_intersection);
+    vertical_intersection = get_vertical_intersection(game, vertical_intersection);
+    if (horizontal_intersection.distance < vertical_intersection.distance)
+    {
+        ray.distance = horizontal_intersection.distance;
+        ray.wall_hit.x = horizontal_intersection.wall_hit.x;
+        ray.wall_hit.y = horizontal_intersection.wall_hit.y;
+        ray.vertical_hit = 0;
+    }
+    else
+    {
+        ray.distance = vertical_intersection.distance;
+        ray.wall_hit.x = vertical_intersection.wall_hit.x;
+        ray.wall_hit.y = vertical_intersection.wall_hit.y;
+        ray.vertical_hit = 1;
+    }
     return (ray);
 }
 
@@ -257,8 +308,10 @@ void cast_all_rays(t_game *game)
     while (column < NUM_RAYS)
     {
         rays[column] = cast_ray(game, ray_angle);
-        render_wall(game, &rays[column], ray_angle, column);
+//        render_wall(game, &rays[column], column);
         ray_angle += ANGLE_ANCREMENT;
         column++;
     }
+    game->rays = rays;
+    draw_map(game);
 }

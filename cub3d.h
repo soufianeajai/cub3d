@@ -81,6 +81,7 @@ typedef struct s_ray{
   int hit;
   int is_facing_down;
   int is_facing_right;
+  int vertical_hit;
   t_point start;
   t_point h_first_intersection;
   t_point v_first_intersection;

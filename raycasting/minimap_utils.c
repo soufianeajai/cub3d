@@ -67,6 +67,7 @@ void draw_direction(t_img *img, int x, int y, t_game *game, float length)
 	angle = game->player.rotation_angle - (FOV / 2);
 	while (i < NUM_RAYS)
 	{
+		length = game->rays[i].distance;
 		end_x = x + (int)(length * cos(angle));
 		end_y = y + (int)(length * sin(angle));
     	draw_line(img, x, y, end_x, end_y);
