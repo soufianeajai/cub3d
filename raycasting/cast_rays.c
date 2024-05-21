@@ -4,29 +4,7 @@
 // {
 //     return (sqrt((x2 - x1) * (x2 - y1) + (y2 - y1) * (y2 - y1)));
 // }
-// int init_ray(t_game *game, t_ray *ray, float ray_angle, int *map_y)
-// {
-//     int map_x;
 
-//     ray->angle = ray_angle;
-//     ray->distance = -1;
-//     ray->hit = 0;
-//     ray->start.x = game->player.x;
-//     ray->start.y = game->player.y;
-//     ray->d.x = cos(ray_angle);
-//     ray->d.y = sin(ray_angle);
-//     ray->step.x = 0;
-//     ray->step.y = 0;
-//     ray->delta_distance.x = fabs(1 / ray->d.x);
-//     ray->delta_distance.y = fabs(1 / ray->d.y);
-//     ray->side_distance.x = 0;
-//     ray->side_distance.y = 0;
-//     ray->wall_hit.x = 0;
-//     ray->wall_hit.y = 0;
-//     map_x = (int)(ray->start.x / game->cube_size);
-//     *map_y = (int)(ray->start.y / game->cube_size);
-//     return (map_x);
-// }
 // void handle_start_point(t_game *game, t_ray *ray, int map_x, int map_y)
 // {
 //     if (ray->d.x < 0) 
@@ -157,11 +135,78 @@
 // // {
 
 // // }
+// this is soo my angle wont be negative or more than 2 PI
+float normalize_angle(float angle)
+{
+    angle = (int)angle % (int)(2 * M_PI);
+    if (angle < 0)
+        angle += (float)(2 * M_PI);
+    return (angle);
+}
+// int init_ray(t_game *game, t_ray *ray, float ray_angle, int *map_y)
+// {
+//     int map_x;
 
+//     ray->angle = ray_angle;
+//     ray->distance = -1;
+//     ray->hit = 0;
+//     ray->start.x = game->player.x;
+//     ray->start.y = game->player.y;
+//     ray->d.x = cos(ray_angle);
+//     ray->d.y = sin(ray_angle);
+//     ray->step.x = 0;
+//     ray->step.y = 0;
+//     ray->delta_distance.x = fabs(1 / ray->d.x);
+//     ray->delta_distance.y = fabs(1 / ray->d.y);
+//     ray->side_distance.x = 0;
+//     ray->side_distance.y = 0;
+//     ray->wall_hit.x = 0;
+//     ray->wall_hit.y = 0;
+//     map_x = (int)(ray->start.x / game->cube_size);
+//     *map_y = (int)(ray->start.y / game->cube_size);
+//     return (map_x);
+// }
+t_ray init_ray(t_game *game, float ray_angle)
+{
+    t_ray ray;
 
+    ray.angle = normalize_angle(ray_angle);
+    ray.distance = 0;
+    ray.hit = 0;
+    ray.start.x = game->player.x;
+    ray.start.y = game->player.y;
+    ray.wall_hit.x = 0;
+    ray.wall_hit.y = 0;
+    ray.is_facing_down = 0;
+    ray.is_facing_right = 0;
+    if (ray.angle > 0 && ray.angle < M_PI)
+        ray.is_facing_down = 1;
+    if (ray.angle < M_PI_2 && ray.angle > (3 * M_PI_2))
+        ray.is_facing_right = 1;
+    ray.h_first_intersection.y = floor(ray.start.y / game->cube_size) * game->cube_size;
+    ray.h_first_intersection.x = ray.start.x + (ray.start.y - ray.h_first_intersection.y) / tan(ray.angle);
+    ray.h_step.y = game->cube_size;
+    ray.h_step.x = ray.h_step.y / tan(ray_angle); 
+    ray.v_first_intersection.x = floor(ray.start.x / game->cube_size) * game->cube_size; // a revoir
+    ray.v_first_intersection.y = ray.start.y + (ray.h_first_intersection.x - ray.start.x) * tan(ray.angle); // a revoir
+    ray.v_step.x = game->cube_size;
+    ray.v_step.y = ray.v_step.x * tan(ray_angle); 
+    return (ray);
+}
 t_ray cast_ray(t_game *game, float ray_angle)
 {
     t_ray ray;
+// first i have the start point of the ray and the angle
+// find horizontal wall intersection 
+//      - first we need to find the first horizontal intersection A(x, y)
+//          A.y = floor(start.pos.y / GRID_SIZE) * GRID_SIZE and A.x = pos.x + (pos.y - A.y)/tan(angle)
+//      - them we calculate the step.x
+//          the step.y = GRID_SIZE in the case of horizontal wall intersection, soo step.x = step.y/tan(angle)
+//      - then to find the next intersection point we just add the step.x who is fix now to the x pos and add the step.y(GRID_SIZE) yo y pos
+//      - then everytime we find an intersection point we convert it to the map indexes and check if there is a wall there
+//          if soo get the distance between the start position and the last one, else find the next intersection point
+// find vertical wall intersection 
+//      - in this case step.x = GRID_SIZE and step.y = step.x * tan(angle)
 
     return (ray);
 }

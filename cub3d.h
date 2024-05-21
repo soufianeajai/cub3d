@@ -43,10 +43,10 @@ typedef struct t_image {
   int   mini_cube;
 }	t_img;
 
-typedef struct s_vector {
+typedef struct s_point {
   float x;
   float y;
-} t_vector;
+} t_point;
 
 typedef struct s_mlx {
 	int			type;
@@ -79,12 +79,14 @@ typedef struct s_ray{
   float angle;
   float distance;
   int hit;
-  t_vector start;
-  t_vector d;
-  t_vector step;
-  t_vector delta_distance;
-  t_vector side_distance;
-  t_vector wall_hit;
+  int is_facing_down;
+  int is_facing_right;
+  t_point start;
+  t_point h_first_intersection;
+  t_point v_first_intersection;
+  t_point h_step;
+  t_point v_step;
+  t_point wall_hit;
   wall_orientation orientation;
 } t_ray;
 
