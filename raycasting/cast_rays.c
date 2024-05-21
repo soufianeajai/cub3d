@@ -1,9 +1,9 @@
 #include"../cub3d.h"
 
-// float calculate_distance(float x1, float y1, float x2, float y2)
-// {
-//     return (sqrt((x2 - x1) * (x2 - y1) + (y2 - y1) * (y2 - y1)));
-// }
+float calculate_distance(float x1, float y1, float x2, float y2)
+{
+    return (sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
+}
 
 // void handle_start_point(t_game *game, t_ray *ray, int map_x, int map_y)
 // {
@@ -166,6 +166,9 @@ float normalize_angle(float angle)
 //     *map_y = (int)(ray->start.y / game->cube_size);
 //     return (map_x);
 // }
+
+
+
 t_ray init_ray(t_game *game, float ray_angle)
 {
     t_ray ray;
@@ -184,29 +187,60 @@ t_ray init_ray(t_game *game, float ray_angle)
     if (ray.angle < M_PI_2 && ray.angle > (3 * M_PI_2))
         ray.is_facing_right = 1;
     ray.h_first_intersection.y = floor(ray.start.y / game->cube_size) * game->cube_size;
-    ray.h_first_intersection.x = ray.start.x + (ray.start.y - ray.h_first_intersection.y) / tan(ray.angle);
+    if (ray.is_facing_down)
+        ray.h_first_intersection.y += game->cube_size;
+    ray.h_first_intersection.x = ray.start.x + (ray.h_first_intersection.y - ray.start.y) / tan(ray.angle);
     ray.h_step.y = game->cube_size;
-    ray.h_step.x = ray.h_step.y / tan(ray_angle); 
+    if (ray.is_facing_down == 0)
+        ray.h_step.y *= -1;
+    ray.h_step.x = ray.h_step.y / tan(ray_angle);
+    if (ray.is_facing_right == 0 && ray.h_step.x > 0)
+        ray.h_step.x *= -1;
+    if (ray.is_facing_right && ray.h_step.x < 0)
+        ray.h_step.x *= -1;
+// vertical intersection
     ray.v_first_intersection.x = floor(ray.start.x / game->cube_size) * game->cube_size; // a revoir
     ray.v_first_intersection.y = ray.start.y + (ray.h_first_intersection.x - ray.start.x) * tan(ray.angle); // a revoir
     ray.v_step.x = game->cube_size;
     ray.v_step.y = ray.v_step.x * tan(ray_angle); 
     return (ray);
 }
+t_ray get_horizontal_distance(t_game *game, t_ray ray)
+{
+    float distance;
+    t_point next_intersection;
+
+    distance = 0;
+    next_intersection.x = ray.h_first_intersection.x;
+    next_intersection.y = ray.h_first_intersection.y;
+    if (ray.is_facing_down == 0)
+        next_intersection.y--;
+    while (next_intersection.x >= 0 && next_intersection.x < game->map_width * game->cube_size &&
+		next_intersection.y >= 0 && next_intersection.y < game->map_height * game->cube_size)
+    {
+        if (game->map[(int)(next_intersection.y / game->cube_size)][(int)(next_intersection.x / game->cube_size)] == '1')
+        {
+            ray.hit = 1;
+            ray.wall_hit.x = next_intersection.x;
+            ray.wall_hit.y = next_intersection.y;
+            ray.distance = calculate_distance(ray.start.x, ray.start.y, ray.wall_hit.x, ray.wall_hit.y);
+        }
+        else
+        {
+            next_intersection.x += ray.h_step.x;
+            next_intersection.y += ray.h_step.y;
+        }
+    }
+    return (ray);
+}
 t_ray cast_ray(t_game *game, float ray_angle)
 {
     t_ray ray;
-// first i have the start point of the ray and the angle
-// find horizontal wall intersection 
-//      - first we need to find the first horizontal intersection A(x, y)
-//          A.y = floor(start.pos.y / GRID_SIZE) * GRID_SIZE and A.x = pos.x + (pos.y - A.y)/tan(angle)
-//      - them we calculate the step.x
-//          the step.y = GRID_SIZE in the case of horizontal wall intersection, soo step.x = step.y/tan(angle)
-//      - then to find the next intersection point we just add the step.x who is fix now to the x pos and add the step.y(GRID_SIZE) yo y pos
-//      - then everytime we find an intersection point we convert it to the map indexes and check if there is a wall there
-//          if soo get the distance between the start position and the last one, else find the next intersection point
-// find vertical wall intersection 
-//      - in this case step.x = GRID_SIZE and step.y = step.x * tan(angle)
+    t_ray horizontal_intersection;
+    t_ray vertical_intersection;
+
+    ray = init_ray(game, ray_angle);
+    horizontal_intersection = get_horizontal_distance(game, ray);
 
     return (ray);
 }
