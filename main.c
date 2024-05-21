@@ -11,7 +11,7 @@ int	main()
 	ft_connect(&mlx);
 	get_images(&mlx, &input);
 	game = init_game(mlx, input);
-	draw_map(&game);
+//	draw_map(&game);
 	draw_minimap(&game);
 // 	cast_all_rays(&game);
 	mlx_key_hook(mlx.window, &ft_close, &mlx);
