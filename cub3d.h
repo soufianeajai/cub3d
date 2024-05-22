@@ -12,7 +12,7 @@
 # define WALL_STRIP_WIDTH 1
 # define FOV deg_to_rad(60)
 # define NUM_RAYS (WIDTH / WALL_STRIP_WIDTH)
-# define ANGLE_ANCREMENT (FOV / NUM_RAYS)
+# define ANGLE_INCREMENT (FOV / NUM_RAYS)
 # define DISTANCE_TO_PP ((WIDTH / 2) / tan(FOV / 2))
 # define MOVE_SPEED 10
 # define ROTATION_SPEED deg_to_rad(10)
@@ -125,4 +125,5 @@ void draw_minimap(t_game *game);
 void draw_player_mini(t_img *img, int x, int y, int color, t_game *game);
 void draw_mini_square(t_game *game, int x, int y, int color);
 void cast_all_rays(t_game *game);
+void draw_line(t_img *img, int x, int y, int end_x, int end_y);
 #endif

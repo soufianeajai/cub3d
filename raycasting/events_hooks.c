@@ -68,6 +68,6 @@ int	handle_keys(int keysym, t_game *game)
 		game->player.y = new_pos_y;
 	}
 	cast_all_rays(game);
-//	draw_minimap(game);
+//	draw_map(game);
 	return (0);
 }

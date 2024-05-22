@@ -5,12 +5,15 @@ int	main()
 	t_game game;
 	t_mlx	mlx;
 	t_input input;
+	t_ray  rays[NUM_RAYS + 1];
 
 	input = parsing("map.cub");
 //	read_matrix(input);
 	ft_connect(&mlx);
 	get_images(&mlx, &input);
 	game = init_game(mlx, input);
+	game.rays = rays;
+//	draw_map(&game);
 //	draw_minimap(&game);
  	cast_all_rays(&game);
 	mlx_key_hook(mlx.window, &ft_close, &mlx);
