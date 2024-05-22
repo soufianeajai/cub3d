@@ -6,6 +6,7 @@
 # include<math.h>
 # include<stdio.h>
 # include<unistd.h>
+#include <stdbool.h>
 # include "parsing/parsing.h"
 # define HEIGHT 640
 # define WIDTH 1024
@@ -48,6 +49,7 @@ typedef struct s_point {
   float y;
 } t_point;
 
+
 typedef struct s_mlx {
 	int			type;
 	void		*connect;
@@ -77,16 +79,11 @@ typedef struct s_player{
 
 typedef struct s_ray{
   float angle;
-  float distance;
-  int hit;
-  int is_facing_down;
-  int is_facing_right;
-  int vertical_hit;
-  t_point start;
-  t_point h_first_intersection;
-  t_point v_first_intersection;
-  t_point h_step;
-  t_point v_step;
+  int distance;
+  bool hit;
+  bool is_facing_down;
+  bool is_facing_right;
+  bool vertical_hit;
   t_point wall_hit;
   wall_orientation orientation;
 } t_ray;

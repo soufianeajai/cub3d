@@ -62,15 +62,15 @@ void draw_direction(t_img *img, int x, int y, t_game *game, float length)
     int end_x;
     int end_y;
 	int i = 0;
-	float angle;
+//	float angle;
 	(void)length;
-	angle = game->rays[0].angle - (FOV / 2);
+//	angle = game->rays[0].angle - (FOV / 2);
 	while (i < NUM_RAYS)
 	{
 		end_x = game->rays[i].wall_hit.x;
 		end_y = game->rays[i].wall_hit.y;
     	draw_line(img, x, y, end_x, end_y);
-		angle += ANGLE_INCREMENT;
+//		angle += ANGLE_INCREMENT;
 		i++;
 	}
 }
