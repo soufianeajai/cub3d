@@ -140,18 +140,18 @@ t_ray cast_ray(t_game *game, float ray_angle)
         ray = horizontal_intersection;
         ray.vertical_hit = 0;
         if (ray.is_facing_down)
-            ray.orientation = NORTH;
-        else
             ray.orientation = SOUTH;
+        else
+            ray.orientation = NORTH;
     }
     else
     {
         ray = vertical_intersection;
         ray.vertical_hit = 1;
         if (ray.is_facing_right)
-            ray.orientation = WEST;
-        else
             ray.orientation = EAST;
+        else
+            ray.orientation = WEST;
     }
     return (ray);
 }
