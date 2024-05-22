@@ -23,6 +23,16 @@ typedef struct s_input {
 int init_Data(t_input *input, char *file);
 void free_all_elements(t_input *input);
 
+void	fill_desc_map(char *line, t_input *input, int *index_start_map,
+		int *error);
+int	is_texture(char *line, t_input *input);
+int	check_espace(t_input *input, int i, int j, char c);
+int	is_not_map(char *line);
+int	all_elements_set(t_input *input);
+int	empty_line(char *line);
+char	*fill_elements(char *line, int i);
+int	check_digits(char **str);
+int	fill_rgb(char *line, int i);
 int is_wall(char c);
 char	*ft_substr(char *s,  int start, size_t len);
 int	ft_strcmp(const char *s1, const char *s2);

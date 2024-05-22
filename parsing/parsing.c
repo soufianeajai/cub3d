@@ -1,83 +1,5 @@
 #include "parsing.h"
 
-int	empty_line(char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i])
-	{
-		if (!white_space(line[i]))
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-char	*fill_elements(char *line, int i)
-{
-	int		j;
-	char	*str;
-
-	j = i;
-	if (empty_line(line))
-		return (NULL);
-	while (white_space(line[i]))
-		i++;
-	if (j == i)
-		return (NULL);
-	str = ft_substr(line, i, ft_strlen(line) - i);
-	return (str);
-}
-
-int	check_digits(char **str)
-{
-	int	i;
-	int	j;
-
-	j = 0;
-	i = 0;
-	while (j < 3)
-	{
-		i = 0;
-		while (white_space(str[0][i]))
-			i++;
-		while (str[j][i])
-		{
-			if (!ft_isdigit(str[j][i]) && str[j][i] != '\n')
-				return (0);
-			i++;
-		}
-		j++;
-	}
-	return (1);
-}
-int	fill_rgb(char *line, int i)
-{
-	long	r;
-	long	g;
-	long	b;
-	char	**tab;
-	int		j;
-
-	tab = ft_split(line + i, ',', &j);
-	if (!tab || j != 3 || !check_digits(tab))
-	{
-		ft_free(tab);
-		return (-1);
-	}
-	r = ft_atoi(tab[0]);
-	g = ft_atoi(tab[1]);
-	b = ft_atoi(tab[2]);
-	if (r >= 0 && r <= 255 && g >= 0 && g <= 255 && b >= 0 && b <= 255)
-	{
-		ft_free(tab);
-		return ((int)((r << 16) + (g << 8) + b));
-	}
-	ft_free(tab);
-	return (-1);
-}
-
 int	is_texture(char *line, t_input *input)
 {
 	int	i;
@@ -85,71 +7,18 @@ int	is_texture(char *line, t_input *input)
 	i = 0;
 	while (white_space(line[i]))
 		i++;
-	if (line[i] && line[i + 1])
-	{
-		if (line[i] == 'N' && line[i + 1] == 'O' && !input->no)
-			input->no = fill_elements(line, i + 2);
-		else if (line[i] == 'S' && line[i + 1] == 'O' && !input->so)
-			input->so = fill_elements(line, i + 2);
-		else if (line[i] == 'W' && line[i + 1] == 'E' && !input->we)
-			input->we = fill_elements(line, i + 2);
-		else if (line[i] == 'E' && line[i + 1] == 'A' && !input->ea)
-			input->ea = fill_elements(line, i + 2);
-		else if (line[i] == 'F' && line[i + 1] == ' ' && input->f_color == -1)
-			input->f_color = fill_rgb(line, i + 1);
-		else if (line[i] == 'C' && input->c_color == -1)
-			input->c_color = fill_rgb(line, i + 1);
-		else
-			return (0);
-		return (1);
-	}
-	return (0);
-}
-
-int	all_elements_set(t_input *input)
-{
-	if (input->no && input->so && input->we && input->ea && input->f_color != -1
-		&& input->c_color != -1)
-		return (1);
-	return (0);
-}
-
-void	fill_desc_map(char *line, t_input *input, int *index_start_map,
-		int *error)
-{
-	if (is_texture(line, input) && *error == 0)
-	{
-		*index_start_map += 1;
-		return ;
-	}
-	else
-	{
-		*error = 1;
-		if (all_elements_set(input)) // last element set is map !!
-		{
-			if (input->W < ft_strlen(line))
-				input->W = ft_strlen(line);
-			input->H += 1;
-		}
-	}
-}
-
-int	is_not_map(char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] == '1' || line[i] == '0' || is_direction(line[i]) != -1
-			|| white_space(line[i]))
-		{
-			i++;
-			continue ;
-		}
-		else
-			return (1);
-	}
+	if (line[i] == 'N' && line[i + 1] == 'O' && !input->no)
+		return (input->no = fill_elements(line, i + 2),1);
+	if (line[i] == 'S' && line[i + 1] == 'O' && !input->so)
+		return (input->so = fill_elements(line, i + 2),1);
+	if (line[i] == 'W' && line[i + 1] == 'E' && !input->we)
+		return (input->we = fill_elements(line, i + 2),1);
+	if (line[i] == 'E' && line[i + 1] == 'A' && !input->ea)
+		return (input->ea = fill_elements(line, i + 2),1);
+	if (line[i] == 'F' && line[i + 1] == ' ' && input->f_color == -1)
+		return (input->f_color = fill_rgb(line, i + 1),1);
+	if (line[i] == 'C' && input->c_color == -1)
+		return (input->c_color = fill_rgb(line, i + 1),1);
 	return (0);
 }
 
@@ -199,93 +68,76 @@ char	**fill_map(t_input *input, char *file, int index_start_map)
 		if (++i <= input->H && i != -2)
 			map[i] = get_full_len(line, input, &i);
 		map[i + 1] = NULL;
-        if (i == -2)
-            return (free(line), ft_free(map), close(fd), NULL);
+		if (i == -2)
+			return (free(line), ft_free(map), close(fd), NULL);
 		free(line);
 	}
-    
 	return (close(fd), map);
 }
 
-int is_valid_in_map(t_input *input, int i ,int j, int *flag)
+
+
+/*
+				!is_valid_in_map(input, i - 1, j - 1, &check)
+					|| !is_valid_in_map(input, i + 1, j - 1, &check) ||
+				!is_valid_in_map(input, i - 1, j + 1, &check)
+					|| !is_valid_in_map(input, i + 1, j + 1, &check)
+*/
+
+int	check_Error_espace(char **map, int i, t_input *input)
 {
-	if (i < 0 || i >= input->H || j < 0 || j >= input->W)
-			return (1);
-	if (input->map[i][j] == '2')
-		*flag = 1;
-	if (input->map[i][j] == '0')
-		return (0);
-	return (-1);
-}
-int check_Error_espace(char **map,int i, t_input *input)
-{
-	int j;
-	int check;
+	int	j;
 
 	j = -1;
-	check = 0;
 	while (map[i][++j])
 	{
-		if (map[i][j] == '2')
+		if (map[i][j] == '2' || map[i][j] == '0')
 		{
-			if (!is_valid_in_map(input, i, j - 1, &check) || !is_valid_in_map(input, i, j + 1, &check) || 
-				!is_valid_in_map(input, i - 1, j, &check) || !is_valid_in_map(input, i + 1, j, &check) ||
-				!is_valid_in_map(input, i - 1, j - 1, &check) || !is_valid_in_map(input, i + 1, j - 1, &check) ||
-				!is_valid_in_map(input, i - 1, j + 1, &check) || !is_valid_in_map(input, i + 1, j + 1, &check))
+			if (!check_espace(input, i, j - 1,map[i][j])
+				|| !check_espace(input, i, j + 1,map[i][j]) ||
+				!check_espace(input, i - 1, j,map[i][j])
+					|| !check_espace(input, i + 1, j,map[i][j]))
 			{
-				printf("\nError : map[%d][%d] = %c\n",i,j,map[i][j]);
-				return (0);
-			}
-			if (check == 0 )
-			{
-				
-				printf("\nError dont have one at least esapce '2': map[%d][%d] = %c\n",i,j,map[i][j]);
+				printf("\nError : map[%d][%d] = %c\n", i, j, map[i][j]);
 				return (0);
 			}
 		}
-		
 	}
 	return (1);
 }
 
 
-int parsing_map(char **map, t_input *input)
+int	parsing_map(char **map, t_input *input)
 {
-    int i;
-    int j;
-	//int check; // this for check if first 0 is in the first line or not (have a lot of 1 before 0)
-	
-	i = -1;
-    while (map[++i])
-    {
-        j = -1;
-        if (i == 0 || i == input->H - 1)
-        {
-            while (map[i][++j])
-            {
-                if (!is_wall(map[i][j]))
-                {
-                    printf("\nError : map[%d][%d] = %c\n",i,j,map[i][j]);
-                    return (0);
-                }
-            }
-        }
-        else
-        {
-			while (map[i][++j] && map[i][j] == '2');
-			if (map[i][j] != '1')
-				return (0);
+	int	i;
+	int	j;
 
-            j = input->W;
-            while (map[i][--j] && map[i][j] == '2')
-				;
-            if (map[i][j] != '1')
-                return (0);
-			if(check_Error_espace(map, i, input) == 0)
+	i = -1;
+	while (map[++i])
+	{
+		j = -1;
+		if (i == 0 || i == input->H - 1)
+		{
+			while (map[i][++j])
+				if (!is_wall(map[i][j]))
 					return (0);
 		}
-     }
-    return (1);
+		else
+		{
+			while (map[i][++j] && map[i][j] == '2')
+				;
+			if (map[i][j] != '1')
+				return (0);
+			j = input->W;
+			while (map[i][--j] && map[i][j] == '2')
+				;
+			if (map[i][j] != '1')
+				return (0);
+			if (check_Error_espace(map, i, input) == 0)
+				return (0);
+		}
+	}
+	return (1);
 }
 
 int	parsing(char *file, t_input *input)
@@ -311,14 +163,11 @@ int	parsing(char *file, t_input *input)
 		fill_desc_map(line, input, &index_start_map, &error);
 		free(line);
 	}
-	// we have nomber line for map :
-	printf("\n h = %d, w = %d, index_startmap : %d \n", input->H, input->W,
-			index_start_map);
 	if (input->H == 0 || index_start_map != 6)
 		return (free_all_elements(input), 0);
 	close(fd);
 	input->map = fill_map(input, file, index_start_map);
 	if (!input->map || parsing_map(input->map, input) == 0)
-        return (free_all_elements(input), 0);
+		return (free_all_elements(input), 0);
 	return (1);
 }

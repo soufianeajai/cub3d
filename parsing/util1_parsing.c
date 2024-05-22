@@ -85,10 +85,10 @@ char *replace_spaces(char *line)
     i = 0;
     while (line[i])
     {
-        if (white_space(line[i]) && line[i] != '\n')
+        if (white_space(line[i]) || line[i] == '\n')
             line[i] = '2';
-        else if (line[i] == '\n')
-            line[i] = '1';
+        //else if (line[i] == '\n')
+        //    line[i] = '1';
         i++;
     }
     return (line);

@@ -85,9 +85,9 @@ int white_space(char c)
 int is_direction(char c)
 {
 	if (c == 'N')
-		return (90);
-	if (c == 'S')
 		return (270);
+	if (c == 'S')
+		return (90);
 	if (c == 'E')
 		return (0);
 	if (c == 'W')

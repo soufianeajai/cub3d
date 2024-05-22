@@ -5,8 +5,8 @@
     - i need to check xpm file is exist or not
 }
 
-* N : pi/2 = 90
-* S ; 3pi/2 = 270
+* N : 3pi/2 = 270
+* S ; pi/ 2 = 90
 * E : 0 = 0
 * W : pi (3,14) = 180
 apres set value 0
@@ -14,3 +14,49 @@ apres set value 0
 * parsing : 3d map 
 
 ** test for if have permission for open .xmp file element of map !!
+
+
+
+
+
+
+        1111111111111111111111111
+        1000000000110000000000001
+        1011000001110000000000001
+        1001000000000000000000001
+        1001000000000000000000001
+111111111011000001110000000000001
+100000000011000011110111100111111
+1111011111111101 100000010001
+111101111111111   11010010001
+1100000011010101 100000010001
+10000000000000001100000010001
+10000000000000001101010010001
+11000001110101011111011110N0111
+11110111 11101011101111010001
+11111111 111111111111111111111
+
+
+if have  flag += 100 + 100 + 100 + 100  for 4 of '1'
+if have esapace =>  1 valid
+
+so  i have 400  is valid or  300+1 is valid or 200+2 or 100+3 or 0+4
+
+400
+301
+202
+103
+004
+
+
+or have another idea : is flag += 1 for esapace , flag *=10 for '1'
+ 
+
+calculer number de esapace 
+calculer number of 1 ->  / 10 
+
+
+
+// for 0  dont have \0 , espace
+
+//  i have problem add 1 for each line , !!!å
