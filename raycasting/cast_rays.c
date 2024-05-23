@@ -91,6 +91,7 @@ t_ray get_horizontal_intersection(t_game *game, t_ray ray)
             ray.wall_hit.x = next_intersection.x;
             ray.wall_hit.y = next_intersection.y;
             ray.distance = calculate_distance(game->player.x, game->player.y, ray.wall_hit.x, ray.wall_hit.y);
+            ray.distance = ray.distance * cos(ray.angle - normalize_angle(game->player.rotation_angle));
             break;
         }
         next_intersection.x += step.x;
@@ -117,6 +118,7 @@ t_ray get_vertical_intersection(t_game *game, t_ray ray)
             ray.wall_hit.x = next_intersection.x;
             ray.wall_hit.y = next_intersection.y;
             ray.distance = calculate_distance(game->player.x, game->player.y, ray.wall_hit.x, ray.wall_hit.y);
+            ray.distance = ray.distance * cos(ray.angle - normalize_angle(game->player.rotation_angle));
             break;
         }
         next_intersection.x += step.x;
@@ -156,18 +158,60 @@ t_ray cast_ray(t_game *game, float ray_angle)
     return (ray);
 }
 
+void black_screen(t_game *game)
+{
+    int i;
+    int j;
+
+    i = 0;
+    while (i < WIDTH)
+    {
+        j = 0;
+        while (j < HEIGHT)
+        {
+            my_mlx_pixel_put(&game->mlx.image, i, j, 0x00000000);
+            j++;
+        }
+        i++;
+    }
+}
+
+void draw_rec(t_game *game, int start_x, int start_y, int width, int height, int color)
+{
+    int i;
+    int j;
+
+    i = 0;
+    while (i < width)
+    {
+        j = 0;
+        while (j < height)
+        {
+            if (start_x + i >= 0 && start_x + i < WIDTH && start_y + j >= 0 && start_y + j < HEIGHT)
+                my_mlx_pixel_put(&game->mlx.image, start_x + i, start_y + j, color);
+            j++;
+        }
+        i++;
+    }
+}
+
 void cast_all_rays(t_game *game)
 {
     float ray_angle;
     int column;
+    int wall_height;
 
     column = 0;
     ray_angle = game->player.rotation_angle - (FOV / 2);
+    black_screen(game);
     while (column < NUM_RAYS)
     {
         game->rays[column] = cast_ray(game, ray_angle);
+        wall_height = (game->cube_size * DISTANCE_TO_PP)/ game->rays[column].distance;
+        draw_rec(game, column * WALL_STRIP_WIDTH, (game->map_height * game->cube_size - wall_height) / 2, WALL_STRIP_WIDTH, wall_height, 0x00FFFFFF);
         ray_angle += ANGLE_INCREMENT;
         column++;
     }
-    draw_map(game);
+    mlx_put_image_to_window(game->mlx.connect, game->mlx.window, game->mlx.image.ptr, 0, 0);
+//    draw_map(game);
 }
