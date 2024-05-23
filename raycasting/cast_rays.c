@@ -158,23 +158,7 @@ t_ray cast_ray(t_game *game, float ray_angle)
     return (ray);
 }
 
-void black_screen(t_game *game)
-{
-    int i;
-    int j;
 
-    i = 0;
-    while (i < WIDTH)
-    {
-        j = 0;
-        while (j < HEIGHT)
-        {
-            my_mlx_pixel_put(&game->mlx.image, i, j, 0x00000000);
-            j++;
-        }
-        i++;
-    }
-}
 
 void draw_rec(t_game *game, int start_x, int start_y, int width, int height, int color)
 {
@@ -194,7 +178,9 @@ void draw_rec(t_game *game, int start_x, int start_y, int width, int height, int
         i++;
     }
 }
-
+void black_screen(t_game *game) {
+    draw_rec(game, 0, 0, WIDTH, HEIGHT, 0x000000);
+}
 void cast_all_rays(t_game *game)
 {
     float ray_angle;
