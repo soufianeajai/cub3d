@@ -1,6 +1,6 @@
 #include"../cub3d.h"
 
-int calculate_distance(float x1, float y1, float x2, float y2)
+float calculate_distance(float x1, float y1, float x2, float y2)
 {
     return (sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
 }
@@ -33,7 +33,7 @@ t_point get_first_intersection(t_game *game, t_ray *ray, axes axis)
     }
     return (first_intersection);
 }
-
+ 
 t_ray init_ray(float ray_angle)
 {
     t_ray ray;
@@ -77,21 +77,21 @@ t_ray get_horizontal_intersection(t_game *game, t_ray ray)
 {
     t_point next_intersection;
     t_point step;
+    t_point to_check;
 
     next_intersection = get_first_intersection(game, &ray, Y);
     step = get_step(game, &ray, Y);
-    if (!ray.is_facing_down)
-        next_intersection.y--;
     while (next_intersection.x >= 0 && next_intersection.x < game->map_width * game->cube_size &&
            next_intersection.y >= 0 && next_intersection.y < game->map_height * game->cube_size)
     {
-        if (game->map[(int)(next_intersection.y / game->cube_size)][(int)(next_intersection.x / game->cube_size)] == '1')
+        to_check = next_intersection;
+        if (!ray.is_facing_down)
+            to_check.y--;
+        if (game->map[(int)(to_check.y / game->cube_size)][(int)(to_check.x / game->cube_size)] == '1')
         {
             ray.hit = 1;
             ray.wall_hit.x = next_intersection.x;
             ray.wall_hit.y = next_intersection.y;
-            if (!ray.is_facing_down)
-                ray.wall_hit.y += 1;
             ray.distance = calculate_distance(game->player.x, game->player.y, ray.wall_hit.x, ray.wall_hit.y);
             ray.distance = ray.distance * cos(ray.angle - normalize_angle(game->player.rotation_angle));
             break;
@@ -106,20 +106,20 @@ t_ray get_vertical_intersection(t_game *game, t_ray ray)
 {
     t_point next_intersection;
     t_point step;
+    t_point to_check;
 
     next_intersection = get_first_intersection(game, &ray, X);
     step = get_step(game, &ray, X);
-    if (!ray.is_facing_right)
-        next_intersection.x--;
     while (next_intersection.x >= 0 && next_intersection.x < game->map_width * game->cube_size &&
            next_intersection.y >= 0 && next_intersection.y < game->map_height * game->cube_size)
     {
-        if (game->map[(int)(next_intersection.y / game->cube_size)][(int)(next_intersection.x / game->cube_size)] == '1')
+        to_check = next_intersection;
+        if (!ray.is_facing_right)
+            to_check.x--;
+        if (game->map[(int)(to_check.y / game->cube_size)][(int)(to_check.x / game->cube_size)] == '1')
         {
             ray.hit = 1;
             ray.wall_hit.x = next_intersection.x;
-            if (!ray.is_facing_right)
-                ray.wall_hit.x += 1;
             ray.wall_hit.y = next_intersection.y;
             ray.distance = calculate_distance(game->player.x, game->player.y, ray.wall_hit.x, ray.wall_hit.y);
             ray.distance = ray.distance * cos(ray.angle - normalize_angle(game->player.rotation_angle));
@@ -189,7 +189,7 @@ void cast_all_rays(t_game *game)
 {
     float ray_angle;
     int column;
-    int wall_height;
+    float wall_height;
 
     column = 0;
     ray_angle = (game->player.rotation_angle) - (FOV / 2);

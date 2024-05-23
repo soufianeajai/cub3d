@@ -79,7 +79,7 @@ typedef struct s_player{
 
 typedef struct s_ray{
   float angle;
-  int distance;
+  float distance;
   bool hit;
   bool is_facing_down;
   bool is_facing_right;
