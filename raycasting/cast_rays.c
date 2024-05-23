@@ -90,6 +90,8 @@ t_ray get_horizontal_intersection(t_game *game, t_ray ray)
             ray.hit = 1;
             ray.wall_hit.x = next_intersection.x;
             ray.wall_hit.y = next_intersection.y;
+            if (!ray.is_facing_down)
+                ray.wall_hit.y += 1;
             ray.distance = calculate_distance(game->player.x, game->player.y, ray.wall_hit.x, ray.wall_hit.y);
             ray.distance = ray.distance * cos(ray.angle - normalize_angle(game->player.rotation_angle));
             break;
@@ -116,6 +118,8 @@ t_ray get_vertical_intersection(t_game *game, t_ray ray)
         {
             ray.hit = 1;
             ray.wall_hit.x = next_intersection.x;
+            if (!ray.is_facing_right)
+                ray.wall_hit.x += 1;
             ray.wall_hit.y = next_intersection.y;
             ray.distance = calculate_distance(game->player.x, game->player.y, ray.wall_hit.x, ray.wall_hit.y);
             ray.distance = ray.distance * cos(ray.angle - normalize_angle(game->player.rotation_angle));
@@ -188,12 +192,12 @@ void cast_all_rays(t_game *game)
     int wall_height;
 
     column = 0;
-    ray_angle = game->player.rotation_angle - (FOV / 2);
+    ray_angle = (game->player.rotation_angle) - (FOV / 2);
     black_screen(game);
     while (column < NUM_RAYS)
     {
         game->rays[column] = cast_ray(game, ray_angle);
-        wall_height = (game->cube_size * DISTANCE_TO_PP)/ game->rays[column].distance;
+        wall_height = game->cube_size * DISTANCE_TO_PP / game->rays[column].distance;
         draw_rec(game, column * WALL_STRIP_WIDTH, (game->map_height * game->cube_size - wall_height) / 2, WALL_STRIP_WIDTH, wall_height, 0x00FFFFFF);
         ray_angle += ANGLE_INCREMENT;
         column++;
