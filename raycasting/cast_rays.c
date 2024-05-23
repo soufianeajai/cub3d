@@ -93,7 +93,6 @@ t_ray get_horizontal_intersection(t_game *game, t_ray ray)
             ray.wall_hit.x = next_intersection.x;
             ray.wall_hit.y = next_intersection.y;
             ray.distance = calculate_distance(game->player.x, game->player.y, ray.wall_hit.x, ray.wall_hit.y);
-            ray.distance = ray.distance * cos(ray.angle - normalize_angle(game->player.rotation_angle));
             break;
         }
         next_intersection.x += step.x;
@@ -122,7 +121,6 @@ t_ray get_vertical_intersection(t_game *game, t_ray ray)
             ray.wall_hit.x = next_intersection.x;
             ray.wall_hit.y = next_intersection.y;
             ray.distance = calculate_distance(game->player.x, game->player.y, ray.wall_hit.x, ray.wall_hit.y);
-            ray.distance = ray.distance * cos(ray.angle - normalize_angle(game->player.rotation_angle));
             break;
         }
         next_intersection.x += step.x;
@@ -140,7 +138,6 @@ t_ray cast_ray(t_game *game, float ray_angle)
     ray = init_ray(ray_angle);
     horizontal_intersection = get_horizontal_intersection(game, ray);
     vertical_intersection = get_vertical_intersection(game, ray);
-
     if (horizontal_intersection.distance < vertical_intersection.distance)
     {
         ray = horizontal_intersection;
@@ -159,10 +156,28 @@ t_ray cast_ray(t_game *game, float ray_angle)
         else
             ray.orientation = WEST;
     }
+    ray.distance = ray.distance * cos(ray.angle - normalize_angle(game->player.rotation_angle));
     return (ray);
 }
 
+void draw_celling(t_game *game, int start_x, int start_y, int width, int height, int color)
+{
+    int i;
+    int j;
 
+    i = 0;
+    while (i < width)
+    {
+        j = 0;
+        while (j < height)
+        {
+            if (start_x + i >= 0 && start_x + i < WIDTH && start_y + j >= 0 && start_y + j < HEIGHT)
+                my_mlx_pixel_put(&game->mlx.image, start_x + i, start_y + j, color);
+            j++;
+        }
+        i++;
+    }
+}
 
 void draw_rec(t_game *game, int start_x, int start_y, int width, int height, int color)
 {
@@ -182,7 +197,8 @@ void draw_rec(t_game *game, int start_x, int start_y, int width, int height, int
         i++;
     }
 }
-void black_screen(t_game *game) {
+void black_screen(t_game *game)
+{
     draw_rec(game, 0, 0, WIDTH, HEIGHT, 0x000000);
 }
 void cast_all_rays(t_game *game)
@@ -197,8 +213,10 @@ void cast_all_rays(t_game *game)
     while (column < NUM_RAYS)
     {
         game->rays[column] = cast_ray(game, ray_angle);
-        wall_height = game->cube_size * DISTANCE_TO_PP / game->rays[column].distance;
-        draw_rec(game, column * WALL_STRIP_WIDTH, (game->map_height * game->cube_size - wall_height) / 2, WALL_STRIP_WIDTH, wall_height, 0x00FFFFFF);
+        wall_height = (game->cube_size / game->rays[column].distance)* DISTANCE_TO_PP;
+        printf("Ray %d: distance %f wall %f\n", column, game->rays[column].distance, wall_height);
+        draw_celling(game, column * WALL_STRIP_WIDTH, 0, WALL_STRIP_WIDTH, (game->map_height * game->cube_size - wall_height) / 2, 0x000000FF);
+        draw_rec(game, column * WALL_STRIP_WIDTH, ((game->map_height * game->cube_size/2) - (wall_height / 2)), WALL_STRIP_WIDTH, wall_height, 0x00FFFFFF);
         ray_angle += ANGLE_INCREMENT;
         column++;
     }
