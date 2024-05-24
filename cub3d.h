@@ -6,7 +6,7 @@
 # include<math.h>
 # include<stdio.h>
 # include<unistd.h>
-#include <stdbool.h>
+# include <stdbool.h>
 # include "parsing/parsing.h"
 # define HEIGHT 640
 # define WIDTH 1024
@@ -116,7 +116,7 @@ double rad_to_deg(double angle);
 void read_matrix(t_input input);
 void draw_square(t_game *game, int x, int y, int color);
 void draw_map(t_game *game);
-void draw_direction(t_img *img, int x, int y, t_game *game, float length);
+void draw_direction(t_img *img, int x, int y, t_game *game, int length);
 void draw_player(t_img *img, int x, int y, int color, t_game *game);
 void draw_minimap(t_game *game);
 void draw_player_mini(t_img *img, int x, int y, int color, t_game *game);

@@ -19,7 +19,7 @@ void draw_player(t_img *img, int x, int y, int color, t_game *game)
 		}
 		i++;
 	}
-	draw_direction(img, x, y, game, game->cube_size);
+	draw_direction(img, x, y, game, r*3);
 }
 
 void draw_line(t_img *img, int x, int y, int end_x, int end_y)
@@ -57,18 +57,17 @@ void draw_line(t_img *img, int x, int y, int end_x, int end_y)
     }
 }
 
-void draw_direction(t_img *img, int x, int y, t_game *game, float length)
+void draw_direction(t_img *img, int x, int y, t_game *game, int length)
 {
     int end_x;
     int end_y;
 	int i = 0;
-//	float angle;
-	(void)length;
-//	angle = game->rays[0].angle - (FOV / 2);
+	float angle;
+	angle = game->player.rotation_angle;
 	while (i < NUM_RAYS)
 	{
-		end_x = game->rays[i].wall_hit.x;
-		end_y = game->rays[i].wall_hit.y;
+		end_x = x + (int)(length*cos(angle));
+		end_y = y + (int)(length*sin(angle));
     	draw_line(img, x, y, end_x, end_y);
 //		angle += ANGLE_INCREMENT;
 		i++;

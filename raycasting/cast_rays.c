@@ -197,9 +197,10 @@ void draw_rec(t_game *game, int start_x, int start_y, int width, int height, int
         i++;
     }
 }
-void black_screen(t_game *game)
+
+void draw_floor(t_game *game)
 {
-    draw_rec(game, 0, 0, WIDTH, HEIGHT, 0x000000);
+    draw_rec(game, 0, 0, WIDTH, HEIGHT, game->f_color);
 }
 void cast_all_rays(t_game *game)
 {
@@ -209,17 +210,16 @@ void cast_all_rays(t_game *game)
 
     column = 0;
     ray_angle = (game->player.rotation_angle) - (FOV / 2);
-    black_screen(game);
+    draw_floor(game);
     while (column < NUM_RAYS)
     {
         game->rays[column] = cast_ray(game, ray_angle);
         wall_height = (game->cube_size / game->rays[column].distance)* DISTANCE_TO_PP;
-        printf("Ray %d: distance %f wall %f\n", column, game->rays[column].distance, wall_height);
-        draw_celling(game, column * WALL_STRIP_WIDTH, 0, WALL_STRIP_WIDTH, (game->map_height * game->cube_size - wall_height) / 2, 0x000000FF);
-        draw_rec(game, column * WALL_STRIP_WIDTH, ((game->map_height * game->cube_size/2) - (wall_height / 2)), WALL_STRIP_WIDTH, wall_height, 0x00FFFFFF);
+        draw_celling(game, column * WALL_STRIP_WIDTH, 0, WALL_STRIP_WIDTH, (game->map_height * game->cube_size - wall_height) / 2, game->c_color);
+        draw_rec(game, column * WALL_STRIP_WIDTH, ((game->map_height * game->cube_size/2) - (wall_height / 2)), WALL_STRIP_WIDTH, wall_height, 0x00F5DEB3);
         ray_angle += ANGLE_INCREMENT;
         column++;
     }
     mlx_put_image_to_window(game->mlx.connect, game->mlx.window, game->mlx.image.ptr, 0, 0);
-//    draw_map(game);
+//    draw_minimap(game);
 }

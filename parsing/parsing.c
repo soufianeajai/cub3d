@@ -14,9 +14,9 @@ void fill_desc_map(char *line, t_input *input, int *index, size_t *len)
     else if (!ft_strcmp(id,"EA"))
         input->ea =ft_substr(line, 3, ft_strlen(line + 3) - 1);
     else if (!ft_strcmp(id,"F "))
-        input->f_color = (220 << 16) + (100 << 8) + 0;
+        input->f_color = (0 << 16) + (0 << 8) + 0;
     else if (!ft_strcmp(id,"C "))
-        input->f_color = (225 << 16) + (30 << 8) + 0;
+        input->c_color = (135 << 16) + (206 << 8) + 250;
     else
     {
         if (*len < ft_strlen(line))
@@ -24,6 +24,7 @@ void fill_desc_map(char *line, t_input *input, int *index, size_t *len)
         *index += 1; 
     }
 }
+
 int empty_line(char *line)
 {
     int i;
