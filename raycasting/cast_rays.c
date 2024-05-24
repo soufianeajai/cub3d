@@ -251,7 +251,6 @@ void cast_all_rays(t_game *game)
     float ray_angle;
     int column;
     float wall_height;
-
     column = 0;
     ray_angle = (game->player.rotation_angle) - (FOV / 2);
     draw_floor(game);
@@ -265,5 +264,5 @@ void cast_all_rays(t_game *game)
         column++;
     }
     mlx_put_image_to_window(game->mlx.connect, game->mlx.window, game->mlx.image.ptr, 0, 0);
-//    draw_minimap(game);
+    draw_minimap(game);
 }

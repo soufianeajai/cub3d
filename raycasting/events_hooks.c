@@ -26,7 +26,8 @@ int	handle_keys(int keysym, t_game *game)
 {
 	float new_pos_x;
 	float new_pos_y;
-	
+	int map_x;
+	int map_y;
 	new_pos_x = game->player.x;
 	new_pos_y = game->player.y;
 	if (keysym == RIGHT_ARROW)
@@ -41,32 +42,33 @@ int	handle_keys(int keysym, t_game *game)
 	}
 	else if (keysym == W_KEY)
 	{
-		new_pos_y += sin(game->player.rotation_angle) * MOVE_SPEED;
-		new_pos_x += cos(game->player.rotation_angle) * MOVE_SPEED;
+		new_pos_y += sin(game->player.rotation_angle) * (game->cube_size);
+		new_pos_x += cos(game->player.rotation_angle) * (game->cube_size);
 	}
 	else if (keysym == S_KEY)
 	{
-		new_pos_y -= sin(game->player.rotation_angle) * MOVE_SPEED;
-		new_pos_x -= cos(game->player.rotation_angle) * MOVE_SPEED;
+		new_pos_y -= sin(game->player.rotation_angle) * (game->cube_size);
+		new_pos_x -= cos(game->player.rotation_angle) * (game->cube_size);
 	}
 	else if (keysym == A_KEY)
 	{
-		new_pos_y += sin(game->player.rotation_angle - M_PI_2) * MOVE_SPEED;
-		new_pos_x += cos(game->player.rotation_angle - M_PI_2) * MOVE_SPEED;
+		new_pos_y += sin(game->player.rotation_angle - M_PI_2) * (game->cube_size/3);
+		new_pos_x += cos(game->player.rotation_angle - M_PI_2) * (game->cube_size/3);
 	}
 	else if (keysym == D_KEY)
 	{
-		new_pos_y += sin(game->player.rotation_angle + M_PI_2) * MOVE_SPEED;
-		new_pos_x += cos(game->player.rotation_angle + M_PI_2) * MOVE_SPEED;
+		new_pos_y += sin(game->player.rotation_angle + M_PI_2) * (game->cube_size/3);
+		new_pos_x += cos(game->player.rotation_angle + M_PI_2) * (game->cube_size/3);
 	}
-	if (new_pos_x >= 0 && new_pos_x < ((game->map_width * game->cube_size) - game->cube_size) &&
-		new_pos_y >= 0 && new_pos_y < ((game->map_height * game->cube_size) - game->cube_size) &&
-		game->map[(int)(new_pos_y / game->cube_size)][(int)(new_pos_x / game->cube_size)] == '0')
-	{
-		game->player.x = new_pos_x;
-		game->player.y = new_pos_y;
-	}
-	cast_all_rays(game);
-//	draw_map(game);
-	return (0);
+	map_x = (int)(new_pos_x / game->cube_size);
+    map_y = (int)(new_pos_y / game->cube_size);
+    if (new_pos_x > game->cube_size && new_pos_x < (game->map_width * game->cube_size) &&
+        new_pos_y > game->cube_size && new_pos_y < (game->map_height * game->cube_size) &&
+        game->map[map_y][map_x] == '0')
+    {
+        game->player.x = new_pos_x;
+        game->player.y = new_pos_y;
+    }
+    cast_all_rays(game);
+    return (0);
 }
