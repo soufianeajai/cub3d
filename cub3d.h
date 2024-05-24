@@ -20,6 +20,12 @@
 # define MINI_HEIGHT 113
 # define MINI_WIDTH 180
 # define MINI_CUBE_SIZE 20
+# define RIGHT_ARROW 124
+# define LEFT_ARROW 123
+# define W_KEY 13
+# define S_KEY 1
+# define A_KEY 0
+# define D_KEY 2
 
 typedef enum {
     NORTH,
@@ -84,6 +90,7 @@ typedef struct s_ray{
   bool is_facing_down;
   bool is_facing_right;
   bool vertical_hit;
+  float texture_offset;
   t_point wall_hit;
   wall_orientation orientation;
 } t_ray;

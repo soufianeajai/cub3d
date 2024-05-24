@@ -53,8 +53,10 @@ void	my_mlx_pixel_put(t_img *image, int x, int y, int color)
 {
 	char	*pixel;
 	int		offset;
-
-	offset = y * image->line_len + x * (image->bpp / 8);
-	pixel = image->addr + offset;
-	*(int *)pixel = color;
+	if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT)
+	{
+		offset = y * image->line_len + x * (image->bpp / 8);
+		pixel = image->addr + offset;
+		*(int *)pixel = color;
+	}
 }

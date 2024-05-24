@@ -146,6 +146,7 @@ t_ray cast_ray(t_game *game, float ray_angle)
             ray.orientation = SOUTH;
         else
             ray.orientation = NORTH;
+        ray.texture_offset = fmod(ray.wall_hit.x, game->cube_size);
     }
     else
     {
@@ -155,6 +156,7 @@ t_ray cast_ray(t_game *game, float ray_angle)
             ray.orientation = EAST;
         else
             ray.orientation = WEST;
+        ray.texture_offset = fmod(ray.wall_hit.y, game->cube_size);
     }
     ray.distance = ray.distance * cos(ray.angle - normalize_angle(game->player.rotation_angle));
     return (ray);
@@ -202,6 +204,48 @@ void draw_floor(t_game *game)
 {
     draw_rec(game, 0, 0, WIDTH, HEIGHT, game->f_color);
 }
+int get_texture_pixel(t_img *texture, int x, int y)
+{
+    char *pixel = texture->addr + (y * texture->line_len + x * (texture->bpp / 8));
+    return *(int *)pixel;
+}
+t_img *get_orientation_texture(t_game *game, wall_orientation orientation)
+{
+    t_img *texture;
+
+    if (orientation == NORTH)
+        texture = &game->mlx.north_wall_image;
+    else if (orientation == SOUTH)
+        texture = &game->mlx.south_wall_image;
+    else if (orientation == EAST)
+        texture = &game->mlx.east_wall_image;
+    else
+        texture = &game->mlx.west_wall_image;
+    return (texture);
+}
+
+void draw_textured_wall(t_game *game, int column, t_ray ray, float wall_height)
+{
+    t_img *texture;
+    int texture_x;
+    int texture_y;
+    int pixel_color;
+    int start_y;
+    int y;
+
+    texture = get_orientation_texture(game, ray.orientation);
+    texture_x = (int)(ray.texture_offset / game->cube_size * texture->width);
+    start_y = (game->map_height * game->cube_size / 2) - (wall_height / 2);
+    y = start_y;
+    while (y < start_y + wall_height)
+    {
+        texture_y = (int)((y - start_y) / wall_height * texture->height);
+        pixel_color = get_texture_pixel(texture, texture_x, texture_y);
+        my_mlx_pixel_put(&game->mlx.image, column * WALL_STRIP_WIDTH, y, pixel_color);
+        y++;
+    }
+}
+
 void cast_all_rays(t_game *game)
 {
     float ray_angle;
@@ -216,7 +260,7 @@ void cast_all_rays(t_game *game)
         game->rays[column] = cast_ray(game, ray_angle);
         wall_height = (game->cube_size / game->rays[column].distance)* DISTANCE_TO_PP;
         draw_celling(game, column * WALL_STRIP_WIDTH, 0, WALL_STRIP_WIDTH, (game->map_height * game->cube_size - wall_height) / 2, game->c_color);
-        draw_rec(game, column * WALL_STRIP_WIDTH, ((game->map_height * game->cube_size/2) - (wall_height / 2)), WALL_STRIP_WIDTH, wall_height, 0x00F5DEB3);
+        draw_textured_wall(game, column, game->rays[column], wall_height);
         ray_angle += ANGLE_INCREMENT;
         column++;
     }

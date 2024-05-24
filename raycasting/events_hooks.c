@@ -29,39 +29,38 @@ int	handle_keys(int keysym, t_game *game)
 	
 	new_pos_x = game->player.x;
 	new_pos_y = game->player.y;
-	if (keysym == 124) // right arrow
+	if (keysym == RIGHT_ARROW)
 	{
 		game->player.turn_direction = +1;
 		game->player.rotation_angle += ROTATION_SPEED * game->player.turn_direction;
 	}
-	else if (keysym == 123) // left arrow
+	else if (keysym == LEFT_ARROW)
 	{
 		game->player.turn_direction = -1;
 		game->player.rotation_angle += ROTATION_SPEED * game->player.turn_direction;
 	}
-	else if (keysym == 13) // W key
+	else if (keysym == W_KEY)
 	{
 		new_pos_y += sin(game->player.rotation_angle) * MOVE_SPEED;
 		new_pos_x += cos(game->player.rotation_angle) * MOVE_SPEED;
 	}
-	else if (keysym == 1) // S key (Backward)
+	else if (keysym == S_KEY)
 	{
 		new_pos_y -= sin(game->player.rotation_angle) * MOVE_SPEED;
 		new_pos_x -= cos(game->player.rotation_angle) * MOVE_SPEED;
 	}
-	else if (keysym == 0) // A key (Left)
+	else if (keysym == A_KEY)
 	{
 		new_pos_y += sin(game->player.rotation_angle - M_PI_2) * MOVE_SPEED;
 		new_pos_x += cos(game->player.rotation_angle - M_PI_2) * MOVE_SPEED;
 	}
-	else if (keysym == 2) // D key (Right)
+	else if (keysym == D_KEY)
 	{
 		new_pos_y += sin(game->player.rotation_angle + M_PI_2) * MOVE_SPEED;
 		new_pos_x += cos(game->player.rotation_angle + M_PI_2) * MOVE_SPEED;
 	}
-	// Check for collisions with walls before updating position
-	if (new_pos_x >= 0 && new_pos_x < game->map_width * game->cube_size &&
-		new_pos_y >= 0 && new_pos_y < game->map_height * game->cube_size &&
+	if (new_pos_x >= 0 && new_pos_x < ((game->map_width * game->cube_size) - game->cube_size) &&
+		new_pos_y >= 0 && new_pos_y < ((game->map_height * game->cube_size) - game->cube_size) &&
 		game->map[(int)(new_pos_y / game->cube_size)][(int)(new_pos_x / game->cube_size)] == '0')
 	{
 		game->player.x = new_pos_x;
