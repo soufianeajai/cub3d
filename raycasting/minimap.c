@@ -65,7 +65,7 @@ void draw_minimap(t_game *game)
 				else if (game->map[y][x] == '0')
 					draw_mini_square(game, (x - start_x) * MINI_CUBE_SIZE, (y - start_y) * MINI_CUBE_SIZE, 0x00FFFFFF);
 				else if (game->map[y][x] == '2')
-					draw_mini_square(game, (x - start_x) * MINI_CUBE_SIZE, (y - start_y) * MINI_CUBE_SIZE, 0x000000FF);
+					draw_mini_square(game, (x - start_x) * MINI_CUBE_SIZE, (y - start_y) * MINI_CUBE_SIZE, 0x00000000);
 			}
 			x++;
 		}
