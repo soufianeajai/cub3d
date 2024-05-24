@@ -64,12 +64,12 @@ char	**fill_map(t_input *input, char *file, int index_start_map)
 			continue ;
 		}
 		if (is_not_map(line))
-			return (free(line), ft_free(map), close(fd), NULL);
+			return (free(line), ft_free(map), close(fd), printf("1HHHHHHHH\n"),NULL);
 		if (++i <= input->H && i != -2)
 			map[i] = get_full_len(line, input, &i);
 		map[i + 1] = NULL;
 		if (i == -2)
-			return (free(line), ft_free(map), close(fd), NULL);
+			return (free(line), ft_free(map), close(fd),printf("2HHHHHHHH\n"), NULL);
 		free(line);
 	}
 	return (close(fd), map);
@@ -167,7 +167,10 @@ int	parsing(char *file, t_input *input)
 		return (free_all_elements(input), 0);
 	close(fd);
 	input->map = fill_map(input, file, index_start_map);
-	if (!input->map || parsing_map(input->map, input) == 0)
-		return (free_all_elements(input), 0);
+	if (!input->map || parsing_map(input->map, input) == 0 || !all_elements_set(input,1))
+		{
+			printf("HHHHHHHH\n");
+			return (free_all_elements(input), 0);}
+		
 	return (1);
 }

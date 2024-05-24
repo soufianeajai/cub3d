@@ -34,16 +34,19 @@ int	check_digits(char **str)
 {
 	int	i;
 	int	j;
+	int flag;
 
 	j = 0;
 	i = 0;
 	while (j < 3)
 	{
 		i = 0;
-		while (white_space(str[0][i]))
-			i++;
+		flag  = 0;
 		while (str[j][i])
 		{
+			while (white_space(str[j][i]) && flag == 0)
+				i++;
+			flag = 1;
 			if (!ft_isdigit(str[j][i]) && str[j][i] != '\n')
 				return (0);
 			i++;

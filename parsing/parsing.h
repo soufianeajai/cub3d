@@ -28,7 +28,7 @@ void	fill_desc_map(char *line, t_input *input, int *index_start_map,
 int	is_texture(char *line, t_input *input);
 int	check_espace(t_input *input, int i, int j, char c);
 int	is_not_map(char *line);
-int	all_elements_set(t_input *input);
+int	all_elements_set(t_input *input, int flag);
 int	empty_line(char *line);
 char	*fill_elements(char *line, int i);
 int	check_digits(char **str);

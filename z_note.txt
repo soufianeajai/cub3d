@@ -60,3 +60,6 @@ calculer number of 1 ->  / 10
 // for 0  dont have \0 , espace
 
 //  i have problem add 1 for each line , !!!å
+
+all is good !!
+//errro in rgb tab , error in multiple map , error in when dont add user bettween 11111

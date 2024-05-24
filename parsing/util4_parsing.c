@@ -16,7 +16,7 @@ void	fill_desc_map(char *line, t_input *input, int *index_start_map,
 			return ;
 		}
 		*error = 1;
-		if (all_elements_set(input) && *index_start_map == 6) // last element set is map !!
+		if (all_elements_set(input,0) && *index_start_map == 6) // last element set is map !!
 		{
 			if (input->W < ft_strlen(line))
 				input->W = ft_strlen(line);
@@ -60,10 +60,20 @@ int	is_not_map(char *line)
 	return (0);
 }
 
-int	all_elements_set(t_input *input)
+int	all_elements_set(t_input *input, int flag)
 {
+
 	if (input->no && input->so && input->we && input->ea && input->f_color != -1
 		&& input->c_color != -1)
-		return (1);
+	{
+		if (flag == 0)
+			return (1);
+	}
+	if (flag == 1)
+	{
+		if (input->pos_x != -1 && input->pos_y != -1 && input->direction != -1)
+			return (1);
+	}
 	return (0);
+
 }
