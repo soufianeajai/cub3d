@@ -162,7 +162,6 @@ t_ray cast_ray(t_game *game, float ray_angle)
     return (ray);
 }
 
-
 void draw_rec(t_game *game, int start_x, int start_y, int width, int height, int color)
 {
     int i;
@@ -181,6 +180,7 @@ void draw_rec(t_game *game, int start_x, int start_y, int width, int height, int
         i++;
     }
 }
+
 void draw_celling(t_game *game, int start_x, int start_y, int width, int height, int color)
 {
     draw_rec(game, start_x, start_y, width, height, color);
@@ -190,6 +190,7 @@ void draw_floor(t_game *game, int start_x, int start_y, int width, int height, i
 {
     draw_rec(game, start_x, start_y,width, height, color);
 }
+
 float get_shadow_factor(float distance)
 {
     float shadow_factor;
@@ -207,6 +208,7 @@ float get_shadow_factor(float distance)
         shadow_factor = 1;
     return(shadow_factor);
 }
+
 int blend_colors(int pixel_color, float distance)
 {
     float factor;
@@ -223,6 +225,7 @@ int blend_colors(int pixel_color, float distance)
 
     return ((red << 16) + (green << 8) + blue);
 }
+
 int get_texture_pixel(t_img *texture, int x, int y, float distance)
 {
     int pixel_color;
@@ -232,6 +235,7 @@ int get_texture_pixel(t_img *texture, int x, int y, float distance)
     pixel_color = blend_colors(pixel_color, distance);
     return (pixel_color);
 }
+
 t_img *get_orientation_texture(t_game *game, wall_orientation orientation)
 {
     t_img *texture;
@@ -246,9 +250,6 @@ t_img *get_orientation_texture(t_game *game, wall_orientation orientation)
         texture = &game->mlx.west_wall_image;
     return (texture);
 }
-
-
-
 
 void draw_textured_wall(t_game *game, int column, t_ray ray, float wall_height)
 {
