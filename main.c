@@ -57,5 +57,3 @@ t_game init_game(t_mlx mlx, t_input input)
 	game.last_mouse_x = -1;
 	return (game);
 }
-
-w
