@@ -10,13 +10,12 @@
 # include "parsing/parsing.h"
 # define HEIGHT 640
 # define WIDTH 1024
-# define WALL_STRIP_WIDTH 1
 # define FOV deg_to_rad(60)
-# define NUM_RAYS (WIDTH / WALL_STRIP_WIDTH)
+# define NUM_RAYS WIDTH
 # define ANGLE_INCREMENT (FOV / NUM_RAYS)
 # define DISTANCE_TO_PP ((WIDTH / 2) / tan(FOV / 2))
 # define MOVE_SPEED 15
-# define ROTATION_SPEED deg_to_rad(10)
+# define ROTATION_SPEED deg_to_rad(8)
 # define MINI_HEIGHT 113
 # define MINI_WIDTH 180
 # define MINI_CUBE_SIZE 20
@@ -26,6 +25,7 @@
 # define S_KEY 1
 # define A_KEY 0
 # define D_KEY 2
+# define MAX_DISTANCE 300
 
 typedef enum {
     NORTH,

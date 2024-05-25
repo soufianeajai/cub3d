@@ -190,10 +190,47 @@ void draw_floor(t_game *game, int start_x, int start_y, int width, int height, i
 {
     draw_rec(game, start_x, start_y,width, height, color);
 }
-int get_texture_pixel(t_img *texture, int x, int y)
+float get_shadow_factor(float distance)
 {
+    float shadow_factor;
+
+    shadow_factor = distance / WIDTH;
+    if (shadow_factor < 0.2)
+        shadow_factor = shadow_factor*shadow_factor*shadow_factor*shadow_factor;
+    else if (shadow_factor < 0.4)
+        shadow_factor = shadow_factor*shadow_factor*shadow_factor;
+    else if (shadow_factor < 0.6)
+        shadow_factor = shadow_factor*shadow_factor;
+    else if (shadow_factor < 0.8)
+        shadow_factor = shadow_factor * 1;
+    else
+        shadow_factor = 1;
+    return(shadow_factor);
+}
+int blend_colors(int pixel_color, float distance)
+{
+    float factor;
+    unsigned int red;
+    unsigned int green;
+    unsigned int blue;
+
+    factor = get_shadow_factor(distance);
+    if (factor == 1)
+        return (0);
+    red = ((pixel_color >> 16) % 256) * (1 - factor);
+    green = ((pixel_color >> 8) % 256) * (1 - factor);
+    blue = (pixel_color % 256) * (1 - factor);
+
+    return ((red << 16) + (green << 8) + blue);
+}
+int get_texture_pixel(t_img *texture, int x, int y, float distance)
+{
+    int pixel_color;
+
     char *pixel = texture->addr + (y * texture->line_len + x * (texture->bpp / 8));
-    return *(int *)pixel;
+    pixel_color = *(int *)pixel;
+    pixel_color = blend_colors(pixel_color, distance);
+    return (pixel_color);
 }
 t_img *get_orientation_texture(t_game *game, wall_orientation orientation)
 {
@@ -210,6 +247,9 @@ t_img *get_orientation_texture(t_game *game, wall_orientation orientation)
     return (texture);
 }
 
+
+
+
 void draw_textured_wall(t_game *game, int column, t_ray ray, float wall_height)
 {
     t_img *texture;
@@ -217,6 +257,7 @@ void draw_textured_wall(t_game *game, int column, t_ray ray, float wall_height)
     int texture_y;
     int start_y;
     int y;
+    int pixel_color; 
 
     texture = get_orientation_texture(game, ray.orientation);
     texture_x = (int)(ray.texture_offset / game->cube_size * texture->width);
@@ -225,26 +266,33 @@ void draw_textured_wall(t_game *game, int column, t_ray ray, float wall_height)
     while (y < start_y + wall_height)
     {
         texture_y = (int)((y - start_y) / wall_height * texture->height);
-        my_mlx_pixel_put(&game->mlx.image, column * WALL_STRIP_WIDTH, y, get_texture_pixel(texture, texture_x, texture_y));
+        pixel_color = get_texture_pixel(texture, texture_x, texture_y, ray.distance);
+        my_mlx_pixel_put(&game->mlx.image, column, y, pixel_color);
         y++;
     }
+}
+
+void draw_column(t_game *game, int column)
+{
+    float wall_height;
+
+    wall_height = (game->cube_size / game->rays[column].distance)* DISTANCE_TO_PP;
+    draw_floor(game, column, 0,1, HEIGHT, game->f_color);
+    draw_celling(game, column, 0,1, (game->map_height * game->cube_size - wall_height) / 2, game->c_color);
+    draw_textured_wall(game, column, game->rays[column], wall_height);
 }
 
 void cast_all_rays(t_game *game)
 {
     float ray_angle;
     int column;
-    float wall_height;
 
     column = 0;
     ray_angle = (game->player.rotation_angle) - (FOV / 2);
     while (column < NUM_RAYS)
     {
         game->rays[column] = cast_ray(game, ray_angle);
-        wall_height = (game->cube_size / game->rays[column].distance)* DISTANCE_TO_PP;
-        draw_floor(game, column, 0,1, HEIGHT, game->f_color);
-        draw_celling(game, column, 0,1, (game->map_height * game->cube_size - wall_height) / 2, game->c_color);
-        draw_textured_wall(game, column, game->rays[column], wall_height);
+        draw_column(game, column);
         ray_angle += ANGLE_INCREMENT;
         column++;
     }
