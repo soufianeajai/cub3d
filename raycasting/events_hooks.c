@@ -21,26 +21,32 @@ int	ft_close2(t_mlx *mlx)
 	exit(0);
 	return (0);
 }
+
+
 int mouse_move(int x, int y, t_game *game)
 {
+	int dx = 0;
+	dx = (x - game->last_mouse_x);
     if (x > 0 && x < WIDTH && y > 0 && y < HEIGHT )
 	{
+		dx = (x - game->last_mouse_x);
 		if (game->last_mouse_x == -1)
 			game->last_mouse_x = x;
 		else if (x > game->last_mouse_x)
 			game->player.turn_direction = +1;
 		else if (x < game->last_mouse_x)
 			game->player.turn_direction = -1;
-    	game->player.rotation_angle += ROTATION_SPEED*game->player.turn_direction/2;
+    	game->player.rotation_angle += ROTATION_SPEED*dx/80;
 		game->last_mouse_x = x;
-	cast_all_rays(game);
 	}
-	else
+	else if (game->last_mouse_x != -1)
 	{
-		game->player.rotation_angle += ROTATION_SPEED*game->player.turn_direction/2;
+		dx = (x - game->last_mouse_x);
+		game->player.rotation_angle += ROTATION_SPEED*game->player.turn_direction;
 		cast_all_rays(game);
 		game->last_mouse_x = x;
 	}
+	cast_all_rays(game);
     return (0);
 }
 

@@ -12,10 +12,10 @@ int	main()
 	game = init_game(mlx, input);
 	game.rays = rays;
  	cast_all_rays(&game);
-	mlx_hook(mlx.window, 6, 1L << 6,&mouse_move,&game);
 	mlx_key_hook(mlx.window, &ft_close, &mlx);
  	mlx_hook(mlx.window, 17,0, &ft_close2, &mlx);
 	mlx_hook(mlx.window, 2, 0, &handle_keys, &game);
+	mlx_hook(mlx.window, 6, 1L << 6,&mouse_move,&game);
  	mlx_loop(mlx.connect);
 	return (0);
 }
@@ -58,3 +58,4 @@ t_game init_game(t_mlx mlx, t_input input)
 	return (game);
 }
 
+w
