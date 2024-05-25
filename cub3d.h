@@ -50,12 +50,6 @@ typedef struct t_image {
   int   mini_cube;
 }	t_img;
 
-typedef struct s_point {
-  float x;
-  float y;
-} t_point;
-
-
 typedef struct s_mlx {
 	int			type;
 	void		*connect;
@@ -68,15 +62,16 @@ typedef struct s_mlx {
   t_img		west_wall_image;
 }	t_mlx;
 
+typedef struct s_point {
+  float x;
+  float y;
+} t_point;
+
 typedef struct s_player{
   float  x;
   float  y;
   int map_x;
   int map_y;
-  float width;
-  float height;
-  int x_walk_dir;
-  int y_walk_dir;
   int turn_direction;
   float rotation_angle;
   float walk_speed;
@@ -107,7 +102,7 @@ typedef struct s_game{
   int   f_color;
 } t_game;
 
-int	ft_connect(t_mlx *mlx);
+int	ft_connect(t_mlx *mlx, t_input *input);
 void	my_mlx_pixel_put(t_img *image, int x, int y, int color);
 void	ft_error(void	*ptr, char *msg);
 int	handle_keys(int keysym, t_game *game);
@@ -130,4 +125,6 @@ void draw_player_mini(t_img *img, int x, int y, int color, t_game *game);
 void draw_mini_square(t_game *game, int x, int y, int color);
 void cast_all_rays(t_game *game);
 void draw_line(t_img *img, int x, int y, int end_x, int end_y);
+int get_cube_size(t_game game);
+
 #endif

@@ -162,24 +162,6 @@ t_ray cast_ray(t_game *game, float ray_angle)
     return (ray);
 }
 
-void draw_celling(t_game *game, int start_x, int start_y, int width, int height, int color)
-{
-    int i;
-    int j;
-
-    i = 0;
-    while (i < width)
-    {
-        j = 0;
-        while (j < height)
-        {
-            if (start_x + i >= 0 && start_x + i < WIDTH && start_y + j >= 0 && start_y + j < HEIGHT)
-                my_mlx_pixel_put(&game->mlx.image, start_x + i, start_y + j, color);
-            j++;
-        }
-        i++;
-    }
-}
 
 void draw_rec(t_game *game, int start_x, int start_y, int width, int height, int color)
 {
@@ -199,10 +181,14 @@ void draw_rec(t_game *game, int start_x, int start_y, int width, int height, int
         i++;
     }
 }
-
-void draw_floor(t_game *game)
+void draw_celling(t_game *game, int start_x, int start_y, int width, int height, int color)
 {
-    draw_rec(game, 0, 0, WIDTH, HEIGHT, game->f_color);
+    draw_rec(game, start_x, start_y, width, height, color);
+}
+
+void draw_floor(t_game *game, int start_x, int start_y, int width, int height, int color)
+{
+    draw_rec(game, start_x, start_y,width, height, color);
 }
 int get_texture_pixel(t_img *texture, int x, int y)
 {
@@ -229,7 +215,6 @@ void draw_textured_wall(t_game *game, int column, t_ray ray, float wall_height)
     t_img *texture;
     int texture_x;
     int texture_y;
-    int pixel_color;
     int start_y;
     int y;
 
@@ -240,8 +225,7 @@ void draw_textured_wall(t_game *game, int column, t_ray ray, float wall_height)
     while (y < start_y + wall_height)
     {
         texture_y = (int)((y - start_y) / wall_height * texture->height);
-        pixel_color = get_texture_pixel(texture, texture_x, texture_y);
-        my_mlx_pixel_put(&game->mlx.image, column * WALL_STRIP_WIDTH, y, pixel_color);
+        my_mlx_pixel_put(&game->mlx.image, column * WALL_STRIP_WIDTH, y, get_texture_pixel(texture, texture_x, texture_y));
         y++;
     }
 }
@@ -251,14 +235,15 @@ void cast_all_rays(t_game *game)
     float ray_angle;
     int column;
     float wall_height;
+
     column = 0;
     ray_angle = (game->player.rotation_angle) - (FOV / 2);
-    draw_floor(game);
     while (column < NUM_RAYS)
     {
         game->rays[column] = cast_ray(game, ray_angle);
         wall_height = (game->cube_size / game->rays[column].distance)* DISTANCE_TO_PP;
-        draw_celling(game, column * WALL_STRIP_WIDTH, 0, WALL_STRIP_WIDTH, (game->map_height * game->cube_size - wall_height) / 2, game->c_color);
+        draw_floor(game, column, 0,1, HEIGHT, game->f_color);
+        draw_celling(game, column, 0,1, (game->map_height * game->cube_size - wall_height) / 2, game->c_color);
         draw_textured_wall(game, column, game->rays[column], wall_height);
         ray_angle += ANGLE_INCREMENT;
         column++;

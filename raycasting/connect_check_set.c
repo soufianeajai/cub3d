@@ -1,6 +1,6 @@
 #include"../cub3d.h"
 
-int	ft_connect(t_mlx *mlx)
+int	ft_connect(t_mlx *mlx, t_input *input)
 {
 	mlx->connect = mlx_init();
 	if (!mlx->connect)
@@ -21,6 +21,7 @@ int	ft_connect(t_mlx *mlx)
 	mlx->image.addr = mlx_get_data_addr(mlx->image.ptr, \
 			&(mlx->image.bpp), &(mlx->image.line_len), &(mlx->image.endian));
 	mlx->minimap_image.addr = mlx_get_data_addr(mlx->minimap_image.ptr, &(mlx->minimap_image.bpp), &(mlx->minimap_image.line_len), &(mlx->minimap_image.endian));
+	get_images(mlx, input);
 	return (0);
 }
 
