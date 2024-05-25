@@ -21,6 +21,28 @@ int	ft_close2(t_mlx *mlx)
 	exit(0);
 	return (0);
 }
+int mouse_move(int x, int y, t_game *game)
+{
+    if (x > 0 && x < WIDTH && y > 0 && y < HEIGHT )
+	{
+		if (game->last_mouse_x == -1)
+			game->last_mouse_x = x;
+		else if (x > game->last_mouse_x)
+			game->player.turn_direction = +1;
+		else if (x < game->last_mouse_x)
+			game->player.turn_direction = -1;
+    	game->player.rotation_angle += ROTATION_SPEED*game->player.turn_direction/2;
+		game->last_mouse_x = x;
+	cast_all_rays(game);
+	}
+	else
+	{
+		game->player.rotation_angle += ROTATION_SPEED*game->player.turn_direction/2;
+		cast_all_rays(game);
+		game->last_mouse_x = x;
+	}
+    return (0);
+}
 
 int	handle_keys(int keysym, t_game *game)
 {

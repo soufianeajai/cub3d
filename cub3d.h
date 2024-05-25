@@ -14,7 +14,7 @@
 # define NUM_RAYS WIDTH
 # define ANGLE_INCREMENT (FOV / NUM_RAYS)
 # define DISTANCE_TO_PP ((WIDTH / 2) / tan(FOV / 2))
-# define MOVE_SPEED 20
+# define MOVE_SPEED 10
 # define ROTATION_SPEED deg_to_rad(8)
 # define MINI_HEIGHT 113
 # define MINI_WIDTH 180
@@ -100,11 +100,13 @@ typedef struct s_game{
   int cube_size;
   int   c_color;
   int   f_color;
+  int last_mouse_x;
 } t_game;
 
 int	ft_connect(t_mlx *mlx, t_input *input);
 void	my_mlx_pixel_put(t_img *image, int x, int y, int color);
 void	ft_error(void	*ptr, char *msg);
+int mouse_move(int x, int y, t_game *game);
 int	handle_keys(int keysym, t_game *game);
 int	ft_close(int keysym, t_mlx *mlx);
 int	ft_close2(t_mlx *mlx);
