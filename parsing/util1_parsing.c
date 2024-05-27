@@ -1,0 +1,117 @@
+#include "parsing.h"
+void ft_free(char **tab)
+{
+	int i;
+
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
+    tab = NULL;
+}
+
+int init_Data(t_input *input, char *file)
+{
+    input->pos_x = -1;
+    input->pos_y = -1;
+    input->direction = -1;
+    input->H = 0;
+    input->W = 0;
+    input->no = NULL;
+    input->so = NULL;
+    input->we = NULL;
+    input->ea = NULL;
+    input->f_color = -1;
+    input->c_color = -1;
+    input->map = NULL;
+    return (open(file, O_RDONLY));
+}
+
+void free_all_elements(t_input *input)
+{
+    free(input->no);
+    input->no = NULL;
+    free(input->so);
+    input->so = NULL;
+    free(input->we);
+    input->we = NULL;
+    free(input->ea);
+    input->ea = NULL;
+    if (input->map)
+        ft_free(input->map);
+}
+void set_player(t_input *input,int deg, int x, int y)
+{
+    if (deg == -1)
+        return ;
+    input->direction = deg;
+    input->pos_x = x;
+    input->pos_y = y;
+}
+char *get_full_len(char *line,t_input *input, int *position)
+{
+    char *new_line;
+    int i;
+
+    i = 0;
+    new_line = malloc(input->W + 1);
+    if (!new_line)
+        return (NULL);
+    while (line[i])
+    {
+        
+        if(is_direction(line[i]) != -1 && input->direction != -1)
+            return (free(new_line), *position = -2, NULL);
+        set_player(input, is_direction(line[i]),i, *position);
+        if(is_direction(line[i]) != -1)
+            new_line[i] = '0';
+        else
+            new_line[i] = line[i];
+        i++;
+    }
+    while (i < input->W)
+        new_line[i++] = '2';
+    new_line[i] = '\0';
+    return (replace_spaces(new_line));
+}
+
+char *replace_spaces(char *line)
+{
+    int i;
+
+    i = 0;
+    while (line[i])
+    {
+        if (white_space(line[i]) || line[i] == '\n')
+            line[i] = '2';
+        //else if (line[i] == '\n')
+        //    line[i] = '1';
+        i++;
+    }
+    return (line);
+}
+
+void free_tab_len(char **tab, int len)
+{
+	int i;
+
+	i = 0;
+    len = 0;
+	while (i <  len)
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
+    tab = NULL;
+}
+
+int is_wall(char c)
+{
+    if (c == '1' || c == '2')
+        return (1);
+    return (0);
+}

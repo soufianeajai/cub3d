@@ -1,25 +1,37 @@
 #include"../cub3d.h"
-void get_images(t_mlx *mlx, t_input *input)
+int get_images(t_mlx *mlx, t_input *input)
 {
-	mlx->north_wall_image = get_image_from_xpm(mlx->connect, input->no);
-	mlx->south_wall_image = get_image_from_xpm(mlx->connect, input->so);
-	mlx->east_wall_image = get_image_from_xpm(mlx->connect, input->ea);
-	mlx->west_wall_image = get_image_from_xpm(mlx->connect, input->we);
+	if (!get_image_from_xpm(mlx->connect, input->no,&mlx->north_wall_image))
+		return (0);
+	if (!get_image_from_xpm(mlx->connect, input->so,&mlx->south_wall_image))
+	{
+		mlx_destroy_image(mlx->connect, mlx->north_wall_image.ptr);
+		return (0);
+	}
+	if (!get_image_from_xpm(mlx->connect, input->ea,&mlx->east_wall_image))
+	{
+		mlx_destroy_image(mlx->connect, mlx->north_wall_image.ptr);
+		mlx_destroy_image(mlx->connect, mlx->south_wall_image.ptr);
+		return (0);
+	}
+	if (!get_image_from_xpm(mlx->connect, input->we,&mlx->west_wall_image))
+	{
+		mlx_destroy_image(mlx->connect, mlx->north_wall_image.ptr);
+		mlx_destroy_image(mlx->connect, mlx->south_wall_image.ptr);
+		mlx_destroy_image(mlx->connect, mlx->east_wall_image.ptr);
+		return (0);
+	}
+
+	return (1);
 }
 
-t_img  get_image_from_xpm(void *mlx_ptr, char *path_xpm)
+int  get_image_from_xpm(void *mlx_ptr, char *path_xpm, t_img *img)
 {
-  t_img img;
-
-  img.ptr = mlx_xpm_file_to_image(mlx_ptr, path_xpm, &img.width, &img.height);
-  if (!img.ptr)
-  {
-	printf("The xpm file is invalid %s\n", path_xpm);
-	// to free the memory
-	exit(0);
-  }
-  img.addr = mlx_get_data_addr(img.ptr, &img.bpp, &img.line_len, &img.endian);
-  return (img);
+  img->ptr = mlx_xpm_file_to_image(mlx_ptr, path_xpm, &img->width, &img->height);
+  if (!img->ptr)
+	return (0);
+  img->addr = mlx_get_data_addr(img->ptr, &img->bpp, &img->line_len, &img->endian);
+  return (1);
 }
 
 void read_matrix(t_input input)

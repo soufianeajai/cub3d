@@ -158,7 +158,7 @@ t_ray cast_ray(t_game *game, float ray_angle)
             ray.orientation = WEST;
         ray.texture_offset = fmod(ray.wall_hit.y, game->cube_size);
     }
-    ray.distance = ray.distance * cos(ray.angle - normalize_angle(game->player.rotation_angle));
+    ray.distance = ray.distance * cos(ray.angle - (game->player.rotation_angle));
     return (ray);
 }
 

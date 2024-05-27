@@ -8,13 +8,13 @@
 # include<unistd.h>
 # include <stdbool.h>
 # include "parsing/parsing.h"
-# define HEIGHT 640
-# define WIDTH 1024
+# define HEIGHT 900
+# define WIDTH 1500
 # define FOV deg_to_rad(60)
 # define NUM_RAYS WIDTH
 # define ANGLE_INCREMENT (FOV / NUM_RAYS)
 # define DISTANCE_TO_PP ((WIDTH / 2) / tan(FOV / 2))
-# define MOVE_SPEED 10
+# define MOVE_SPEED 20
 # define ROTATION_SPEED deg_to_rad(8)
 # define MINI_HEIGHT 113
 # define MINI_WIDTH 180
@@ -105,15 +105,15 @@ typedef struct s_game{
 
 int	ft_connect(t_mlx *mlx, t_input *input);
 void	my_mlx_pixel_put(t_img *image, int x, int y, int color);
-void	ft_error(void	*ptr, char *msg);
+void	ft_error(void	*ptr, char *msg,t_input *input);
 int mouse_move(int x, int y, t_game *game);
 int	handle_keys(int keysym, t_game *game);
 int	ft_close(int keysym, t_mlx *mlx);
 int	ft_close2(t_mlx *mlx);
 void	free_ptr(void *ptr);
-void get_images(t_mlx *mlx, t_input *input);
+int get_images(t_mlx *mlx, t_input *input);
 t_game init_game(t_mlx mlx, t_input input);
-t_img  get_image_from_xpm(void *mlx_ptr, char *path_xpm);
+int  get_image_from_xpm(void *mlx_ptr, char *path_xpm, t_img *img);
 void copy_image(t_img *image, t_img wall_image, int x, int y);
 double deg_to_rad(double angle);
 double rad_to_deg(double angle);
@@ -128,5 +128,6 @@ void draw_mini_square(t_game *game, int x, int y, int color);
 void cast_all_rays(t_game *game);
 void draw_line(t_img *img, int x, int y, int end_x, int end_y);
 int get_cube_size(t_game game);
-
+t_ray cast_ray(t_game *game, float ray_angle);
+float normalize_angle(float angle);
 #endif
