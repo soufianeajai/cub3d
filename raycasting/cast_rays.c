@@ -40,7 +40,7 @@ t_ray init_ray(float ray_angle)
 
     ray.angle = normalize_angle(ray_angle);
     ray.distance = INT32_MAX;
-    ray.hit = 0;
+    ray.is_wall = 1;
     ray.wall_hit.x = 0;
     ray.wall_hit.y = 0;
     ray.is_facing_down = (ray.angle > 0 && ray.angle < M_PI);
@@ -89,7 +89,8 @@ t_ray get_horizontal_intersection(t_game *game, t_ray ray)
             to_check.y--;
         if (game->map[(int)(to_check.y / game->cube_size)][(int)(to_check.x / game->cube_size)] == '1')
         {
-            ray.hit = 1;
+            if ((int)(to_check.y / game->cube_size) == game->door.y && (int)(to_check.x / game->cube_size) == game->door.x)
+                ray.is_wall = 0;
             ray.wall_hit.x = next_intersection.x;
             ray.wall_hit.y = next_intersection.y;
             ray.distance = calculate_distance(game->player.x, game->player.y, ray.wall_hit.x, ray.wall_hit.y);
@@ -117,7 +118,8 @@ t_ray get_vertical_intersection(t_game *game, t_ray ray)
             to_check.x--;
         if (game->map[(int)(to_check.y / game->cube_size)][(int)(to_check.x / game->cube_size)] == '1')
         {
-            ray.hit = 1;
+            if ((int)(to_check.y / game->cube_size) == game->door.y && (int)(to_check.x / game->cube_size) == game->door.x)
+                ray.is_wall = 0;
             ray.wall_hit.x = next_intersection.x;
             ray.wall_hit.y = next_intersection.y;
             ray.distance = calculate_distance(game->player.x, game->player.y, ray.wall_hit.x, ray.wall_hit.y);
@@ -146,6 +148,8 @@ t_ray cast_ray(t_game *game, float ray_angle)
             ray.orientation = SOUTH;
         else
             ray.orientation = NORTH;
+        if (!ray.is_wall)
+            ray.orientation = DOOR;
         ray.texture_offset = fmod(ray.wall_hit.x, game->cube_size);
     }
     else
@@ -156,6 +160,8 @@ t_ray cast_ray(t_game *game, float ray_angle)
             ray.orientation = EAST;
         else
             ray.orientation = WEST;
+        if (!ray.is_wall)
+            ray.orientation = DOOR;
         ray.texture_offset = fmod(ray.wall_hit.y, game->cube_size);
     }
     ray.distance = ray.distance * cos(ray.angle - (game->player.rotation_angle));
@@ -246,8 +252,10 @@ t_img *get_orientation_texture(t_game *game, wall_orientation orientation)
         texture = &game->mlx.south_wall_image;
     else if (orientation == EAST)
         texture = &game->mlx.east_wall_image;
-    else
+    else if (orientation == WEST)
         texture = &game->mlx.west_wall_image;
+    else
+        texture = &game->mlx.door_image;
     return (texture);
 }
 
@@ -271,7 +279,10 @@ void draw_textured_wall(t_game *game, int column, float wall_height)
     y = start_y;
     while (y < end_y)
     {
-        my_mlx_pixel_put(&game->mlx.image, column, y, get_texture_pixel(texture, texture_pos.x, texture_pos.y, game->rays[column].distance));
+        if (game->rays[column].is_wall == 0)
+            my_mlx_pixel_put(&game->mlx.image, column, y, get_texture_pixel(texture, texture_pos.x, texture_pos.y, game->rays[column].distance));
+        else
+            my_mlx_pixel_put(&game->mlx.image, column, y, get_texture_pixel(texture, texture_pos.x, texture_pos.y, game->rays[column].distance));
         texture_pos.y += (float)texture->height / wall_height;
         y++;
     }

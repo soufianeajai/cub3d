@@ -35,11 +35,12 @@ int	main(int ac , char **av)
 	if (!check_argument(ac, av) || !parsing(av[1],&input))
 	{
 		printf("Map Error\n");
-		system("leaks cub3d");
 		return (1);
 	}
-	// flood_fill(&input, input.pos_x, input.pos_y,'x');
-	// read_matrix(input);
+	get_position_door(input, &input.door_x, &input.door_y,input.map);
+	mise_a_jour_map(input);
+	printf("door x = %d door y = %d\n",input.door_x,input.door_y);
+//	read_matrix(input);
 	ft_connect(&mlx, &input);
 	game = init_game(mlx, input);
 	game.rays = rays;
@@ -89,5 +90,7 @@ t_game init_game(t_mlx mlx, t_input input)
 	game.player.turn_speed = deg_to_rad(45);
 	game.player.rotation_angle = deg_to_rad(input.direction);
 	game.last_mouse_x = -1;
+	game.door.x = input.door_x;
+	game.door.y = input.door_y;
 	return (game);
 }

@@ -34,7 +34,6 @@ void	ft_error(void	*ptr, char *msg, t_input *input)
 	free_all_elements(input);
 	free_ptr(ptr);
 	perror(msg);
-	system("leaks cub3d");
 	exit(1);
 }
 

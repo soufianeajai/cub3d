@@ -76,33 +76,3 @@ void mise_a_jour_map(t_input input)
     }
 }
 
-int	main(int ac , char **av)
-{
-	// t_game game;
-	// t_mlx	mlx;
-	// t_ray  rays[NUM_RAYS + 1];
-	t_input input;
-
-	if (!check_argument(ac, av) || !parsing(av[1],&input))
-	{
-		printf("Map Error\n");
-		system("leaks cub3d");
-		return (1);
-	}
-	get_position_door(input, &input.door_x, &input.door_y,input.map);
-	mise_a_jour_map(input);
-	printf("door x = %d door y = %d\n",input.door_x,input.door_y);
-	read_matrix(input);
-	// ft_connect(&mlx, &input);
-	// game = init_game(mlx, input);
-	// game.rays = rays;
- 	// cast_all_rays(&game);
-	// mlx_key_hook(mlx.window, &ft_close, &mlx);
-	// // free input
- 	// mlx_hook(mlx.window, 17,0, &ft_close2, &mlx);
-	// // free input
-	// mlx_hook(mlx.window, 2, 0, &handle_keys, &game);
-	// mlx_hook(mlx.window, 6, 1L << 6,&mouse_move,&game);
- 	// mlx_loop(mlx.connect);
-	return (0);
-}

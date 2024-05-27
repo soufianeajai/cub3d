@@ -31,7 +31,8 @@ typedef enum {
     NORTH,
     SOUTH,
     EAST,
-    WEST
+    WEST,
+    DOOR,
 } wall_orientation;
 
 typedef enum {
@@ -60,6 +61,7 @@ typedef struct s_mlx {
   t_img		south_wall_image;
   t_img		east_wall_image;
   t_img		west_wall_image;
+  t_img		door_image;
 }	t_mlx;
 
 typedef struct s_point {
@@ -81,7 +83,7 @@ typedef struct s_player{
 typedef struct s_ray{
   float angle;
   float distance;
-  bool hit;
+  bool is_wall;
   bool is_facing_down;
   bool is_facing_right;
   bool vertical_hit;
@@ -100,6 +102,7 @@ typedef struct s_game{
   int cube_size;
   int   c_color;
   int   f_color;
+  t_point door;
   int last_mouse_x;
 } t_game;
 

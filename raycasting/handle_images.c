@@ -21,6 +21,14 @@ int get_images(t_mlx *mlx, t_input *input)
 		mlx_destroy_image(mlx->connect, mlx->east_wall_image.ptr);
 		return (0);
 	}
+	if (!get_image_from_xpm(mlx->connect, "./maps/door.xpm",&mlx->door_image))
+	{
+		mlx_destroy_image(mlx->connect, mlx->north_wall_image.ptr);
+		mlx_destroy_image(mlx->connect, mlx->south_wall_image.ptr);
+		mlx_destroy_image(mlx->connect, mlx->east_wall_image.ptr);
+		mlx_destroy_image(mlx->connect, mlx->west_wall_image.ptr);
+		return (0);
+	}
 
 	return (1);
 }

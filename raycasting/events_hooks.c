@@ -8,7 +8,6 @@ int	ft_close(int keysym, t_mlx *mlx)
 		mlx_destroy_window(mlx->connect, mlx->window);
 		mlx_destroy_image(mlx->connect, mlx->image.ptr);
 		free_ptr(mlx->connect);
-		system("leaks cub3d");
 		exit(0);
 	}
 	return (0);
