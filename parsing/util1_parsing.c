@@ -15,6 +15,8 @@ void ft_free(char **tab)
 
 int init_Data(t_input *input, char *file)
 {
+    input->door_x = -1;
+    input->door_y = -1;
     input->pos_x = -1;
     input->pos_y = -1;
     input->direction = -1;

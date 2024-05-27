@@ -25,6 +25,9 @@ typedef struct s_input {
 int init_Data(t_input *input, char *file);
 void free_all_elements(t_input *input);
 
+void mise_a_jour_map(t_input input);
+int get_position_door(t_input input, int *x, int *y, char **map);
+void flood_fill(t_input input, int x, int y, char **map);
 void	fill_desc_map(char *line, t_input *input, int *index_start_map,
 		int *error);
 int	is_texture(char *line, t_input *input);
