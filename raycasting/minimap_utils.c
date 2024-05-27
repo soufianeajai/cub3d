@@ -135,11 +135,11 @@ void draw_mini_square(t_game *game, int x, int y, int color)
 	int i;
 	int j;
 
-	i = 1;
-	draw_mini_border(game, x, y);
+	i = 0;
+//	draw_mini_border(game, x, y);
 	while (i < MINI_CUBE_SIZE)
 	{
-		j = 1;
+		j = 0;
 		while (j < MINI_CUBE_SIZE)
 		{
 			my_mlx_pixel_put(&game->mlx.minimap_image, x + i, y + j, color);
