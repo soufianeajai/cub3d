@@ -14,7 +14,7 @@
 # define NUM_RAYS WIDTH
 # define ANGLE_INCREMENT (FOV / NUM_RAYS)
 # define DISTANCE_TO_PP ((WIDTH / 2) / tan(FOV / 2))
-# define MOVE_SPEED 20
+# define MOVE_SPEED 15
 # define ROTATION_SPEED deg_to_rad(8)
 # define MINI_HEIGHT 113
 # define MINI_WIDTH 180

@@ -195,7 +195,7 @@ float get_shadow_factor(float distance)
 {
     float shadow_factor;
 
-    shadow_factor = distance / WIDTH;
+    shadow_factor = (distance / WIDTH) * 2;
     if (shadow_factor < 0.2)
         shadow_factor = shadow_factor*shadow_factor*shadow_factor*shadow_factor;
     else if (shadow_factor < 0.4)

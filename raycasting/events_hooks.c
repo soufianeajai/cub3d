@@ -51,69 +51,77 @@ int mouse_move(int x, int y, t_game *game)
     return (0);
 }
 
-int handle_move(t_game game, float pos_x, float pos_y)
+int is_collision(t_game *game, float x, float y)
 {
-	t_ray ray;
-	t_ray ray_down;
+    int map_x;
+    int map_y;
 
-
-	game.player.x = pos_x;
-	game.player.y = pos_y;
-	ray = cast_ray(&game, game.player.rotation_angle);
-	ray_down = cast_ray(&game, (game.player.rotation_angle - M_PI));
-	if (ray.distance < game.cube_size / 4 || -ray_down.distance < game.cube_size / 4)
-		return (0);
-	return (1);
+	map_x = (int)(x / game->cube_size);
+	map_y = (int)(y / game->cube_size);
+	if (map_x >= 0 && map_x < game->map_width && map_y >= 0 && map_y < game->map_height)
+    	return (game->map[map_y][map_x] != '0');
+	return (0);
+}
+void handle_arrows(t_game *game, int keysym)
+{
+	if (keysym == RIGHT_ARROW)
+    {
+        game->player.turn_direction = +1;
+        game->player.rotation_angle += ROTATION_SPEED * game->player.turn_direction;
+    }
+    else if (keysym == LEFT_ARROW)
+    {
+        game->player.turn_direction = -1;
+        game->player.rotation_angle += ROTATION_SPEED * game->player.turn_direction;
+    }
+}
+void handle_movements(t_game *game, int keysym, float *new_pos_x, float *new_pos_y)
+{
+	handle_arrows(game, keysym);
+    if (keysym == W_KEY)
+    {
+        *new_pos_y += sin(game->player.rotation_angle) * MOVE_SPEED;
+        *new_pos_x += cos(game->player.rotation_angle) * MOVE_SPEED;
+    }
+    else if (keysym == S_KEY)
+    {
+        *new_pos_y -= sin(game->player.rotation_angle) * MOVE_SPEED;
+        *new_pos_x -= cos(game->player.rotation_angle) * MOVE_SPEED;
+    }
+    else if (keysym == A_KEY)
+    {
+        *new_pos_y += sin(game->player.rotation_angle - M_PI_2) * MOVE_SPEED;
+        *new_pos_x += cos(game->player.rotation_angle - M_PI_2) * MOVE_SPEED;
+    }
+    else if (keysym == D_KEY)
+    {
+        *new_pos_y += sin(game->player.rotation_angle + M_PI_2) * MOVE_SPEED;
+        *new_pos_x += cos(game->player.rotation_angle + M_PI_2) * MOVE_SPEED;
+    }
 }
 
-
-int	handle_keys(int keysym, t_game *game)
+int handle_keys(int keysym, t_game *game)
 {
-	float new_pos_x;
-	float new_pos_y;
-	int map_x;
-	int map_y;
+    float new_pos_x;
+    float new_pos_y;
+    float border;
 	
-	new_pos_x = game->player.x;
-	new_pos_y = game->player.y;
-	if (keysym == W_KEY)
-	{
-		new_pos_y += sin(game->player.rotation_angle) * game->cube_size/2;
-		new_pos_x += cos(game->player.rotation_angle) * game->cube_size/2;
-	}
-	else if (keysym == S_KEY)
-	{
-		new_pos_y -= sin(game->player.rotation_angle) * game->cube_size/2;
-		new_pos_x -= cos(game->player.rotation_angle) * game->cube_size/2;
-	}
-	else if (keysym == A_KEY)
-	{
-		new_pos_y += sin(game->player.rotation_angle - M_PI_2) * game->cube_size/2;
-		new_pos_x += cos(game->player.rotation_angle - M_PI_2) * game->cube_size/2;
-	}
-	else if (keysym == D_KEY)
-	{
-		new_pos_y += sin(game->player.rotation_angle + M_PI_2) * game->cube_size/2;
-		new_pos_x += cos(game->player.rotation_angle + M_PI_2) * game->cube_size/2;
-	}
-	if (keysym == RIGHT_ARROW)
-	{
-		game->player.turn_direction = +1;
-		game->player.rotation_angle += ROTATION_SPEED * game->player.turn_direction;
-	}
-	else if (keysym == LEFT_ARROW)
-	{
-		game->player.turn_direction = -1;
-		game->player.rotation_angle += ROTATION_SPEED * game->player.turn_direction;
-	}
-	map_x = (int)(new_pos_x / game->cube_size);
-    map_y = (int)(new_pos_y / game->cube_size);
-    if (map_x >= 0 && map_x < game->map_width && map_y >= 0 && map_y < game->map_height &&
-        game->map[map_y][map_x] == '0' && handle_move(*game, new_pos_x, new_pos_y))
+	border = game->cube_size / 6;
+    new_pos_x = game->player.x;
+    new_pos_y = game->player.y;
+   	handle_movements(game, keysym, &new_pos_x, &new_pos_y);
+    if (new_pos_x > game->cube_size && new_pos_x < (game->map_width * game->cube_size) &&
+        new_pos_y > game->cube_size && new_pos_y < (game->map_height * game->cube_size))
     {
-        game->player.x = new_pos_x;
-        game->player.y = new_pos_y;
+        if (!is_collision(game, new_pos_x - border, new_pos_y - border) &&
+            !is_collision(game, new_pos_x + border, new_pos_y - border) &&
+            !is_collision(game, new_pos_x - border, new_pos_y + border) &&
+            !is_collision(game, new_pos_x + border, new_pos_y + border))
+        {
+            game->player.x = new_pos_x;
+            game->player.y = new_pos_y;
+        }
     }
-	cast_all_rays(game);
+    cast_all_rays(game);
     return (0);
 }
