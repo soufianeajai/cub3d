@@ -195,7 +195,7 @@ float get_shadow_factor(float distance)
 {
     float shadow_factor;
 
-    shadow_factor = distance / WIDTH;
+    shadow_factor = (distance / WIDTH) * 2;
     if (shadow_factor < 0.2)
         shadow_factor = shadow_factor*shadow_factor*shadow_factor*shadow_factor;
     else if (shadow_factor < 0.4)
@@ -251,24 +251,28 @@ t_img *get_orientation_texture(t_game *game, wall_orientation orientation)
     return (texture);
 }
 
-void draw_textured_wall(t_game *game, int column, t_ray ray, float wall_height)
+void draw_textured_wall(t_game *game, int column, float wall_height)
 {
     t_img *texture;
-    int texture_x;
-    int texture_y;
+    t_point texture_pos;
     int start_y;
+    int end_y;
     int y;
-    int pixel_color; 
 
-    texture = get_orientation_texture(game, ray.orientation);
-    texture_x = (int)(ray.texture_offset / game->cube_size * texture->width);
+    texture = get_orientation_texture(game, game->rays[column].orientation);
+    texture_pos.x = (int)(game->rays[column].texture_offset / game->cube_size * texture->width);
     start_y = (game->map_height * game->cube_size / 2) - (wall_height / 2);
+    end_y = start_y + wall_height;
+    texture_pos.y = 0;
+    if (start_y < 0)
+        start_y = 0;
+    if (end_y >= HEIGHT)
+        end_y = HEIGHT - 1;
     y = start_y;
-    while (y < start_y + wall_height)
+    while (y < end_y)
     {
-        texture_y = (int)((y - start_y) / wall_height * texture->height);
-        pixel_color = get_texture_pixel(texture, texture_x, texture_y, ray.distance);
-        my_mlx_pixel_put(&game->mlx.image, column, y, pixel_color);
+        my_mlx_pixel_put(&game->mlx.image, column, y, get_texture_pixel(texture, texture_pos.x, texture_pos.y, game->rays[column].distance));
+        texture_pos.y += (float)texture->height / wall_height;
         y++;
     }
 }
@@ -280,7 +284,7 @@ void draw_column(t_game *game, int column)
     wall_height = (game->cube_size / game->rays[column].distance)* DISTANCE_TO_PP;
     draw_floor(game, column, 0,1, HEIGHT, game->f_color);
     draw_celling(game, column, 0,1, (game->map_height * game->cube_size - wall_height) / 2, game->c_color);
-    draw_textured_wall(game, column, game->rays[column], wall_height);
+    draw_textured_wall(game, column, wall_height);
 }
 
 void cast_all_rays(t_game *game)
