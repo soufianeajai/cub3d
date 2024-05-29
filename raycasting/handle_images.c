@@ -21,7 +21,7 @@ int get_images(t_mlx *mlx, t_input *input)
 		mlx_destroy_image(mlx->connect, mlx->east_wall_image.ptr);
 		return (0);
 	}
-	if (!get_image_from_xpm(mlx->connect, "/Users/afanidi/Downloads/1door.xpm",&mlx->door_image))
+	if (!get_image_from_xpm(mlx->connect, "./maps/1door.xpm",&mlx->door_image))
 	{
 		mlx_destroy_image(mlx->connect, mlx->north_wall_image.ptr);
 		mlx_destroy_image(mlx->connect, mlx->south_wall_image.ptr);
@@ -29,25 +29,25 @@ int get_images(t_mlx *mlx, t_input *input)
 		mlx_destroy_image(mlx->connect, mlx->west_wall_image.ptr);
 		return (0);
 	}
-	if (!get_image_from_xpm(mlx->connect, "/Users/afanidi/Downloads/partie1.xpm",&mlx->partie1_image))
-	{
-		mlx_destroy_image(mlx->connect, mlx->north_wall_image.ptr);
-		mlx_destroy_image(mlx->connect, mlx->south_wall_image.ptr);
-		mlx_destroy_image(mlx->connect, mlx->east_wall_image.ptr);
-		mlx_destroy_image(mlx->connect, mlx->west_wall_image.ptr);
-		mlx_destroy_image(mlx->connect, mlx->door_image.ptr);
-		return (0);
-	}
-	if (!get_image_from_xpm(mlx->connect, "/Users/afanidi/Downloads/partie2.xpm",&mlx->partie2_image))
-	{
-		mlx_destroy_image(mlx->connect, mlx->north_wall_image.ptr);
-		mlx_destroy_image(mlx->connect, mlx->south_wall_image.ptr);
-		mlx_destroy_image(mlx->connect, mlx->east_wall_image.ptr);
-		mlx_destroy_image(mlx->connect, mlx->west_wall_image.ptr);
-		mlx_destroy_image(mlx->connect, mlx->door_image.ptr);
-		mlx_destroy_image(mlx->connect, mlx->partie1_image.ptr);
-		return (0);
-	}
+	// if (!get_image_from_xpm(mlx->connect, "./partie1.xpm",&mlx->partie1_image))
+	// {
+	// 	mlx_destroy_image(mlx->connect, mlx->north_wall_image.ptr);
+	// 	mlx_destroy_image(mlx->connect, mlx->south_wall_image.ptr);
+	// 	mlx_destroy_image(mlx->connect, mlx->east_wall_image.ptr);
+	// 	mlx_destroy_image(mlx->connect, mlx->west_wall_image.ptr);
+	// 	mlx_destroy_image(mlx->connect, mlx->door_image.ptr);
+	// 	return (0);
+	// }
+	// if (!get_image_from_xpm(mlx->connect, "./partie2.xpm",&mlx->partie2_image))
+	// {
+	// 	mlx_destroy_image(mlx->connect, mlx->north_wall_image.ptr);
+	// 	mlx_destroy_image(mlx->connect, mlx->south_wall_image.ptr);
+	// 	mlx_destroy_image(mlx->connect, mlx->east_wall_image.ptr);
+	// 	mlx_destroy_image(mlx->connect, mlx->west_wall_image.ptr);
+	// 	mlx_destroy_image(mlx->connect, mlx->door_image.ptr);
+	// 	mlx_destroy_image(mlx->connect, mlx->partie1_image.ptr);
+	// 	return (0);
+	// }
 	return (1);
 }
 
