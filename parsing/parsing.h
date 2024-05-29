@@ -1,8 +1,16 @@
+# ifndef PARSING_H
+# define PARSING_H
+
 # include<stdio.h>
 # include<unistd.h>
 # include <fcntl.h>
 # include <stdlib.h>
 #include "gnl/get_next_line.h"
+
+typedef struct s_point {
+  float x;
+  float y;
+} t_point;
 
 typedef struct s_input {
   char  *no;
@@ -10,13 +18,15 @@ typedef struct s_input {
   char  *we;
   char  *ea;
   int    c_color;
-  int    f_color;
+  int    f_color; 
   double  direction;
   char  **map;
   int    pos_x;
   int    pos_y;
   int    door_x;
   int    door_y;
+  t_point door[10];
+  int   nb_doors;
   int   H;
   int   W;
 }  t_input;
@@ -25,7 +35,8 @@ typedef struct s_input {
 int init_Data(t_input *input, char *file);
 void free_all_elements(t_input *input);
 
-void mise_a_jour_map(t_input input);
+void get_doors(t_input *input);
+void mise_a_jour_map(t_input *input);
 int get_position_door(t_input input, int *x, int *y, char **map);
 void flood_fill(t_input input, int x, int y, char **map);
 void	fill_desc_map(char *line, t_input *input, int *index_start_map,
@@ -44,6 +55,7 @@ int	ft_strcmp(const char *s1, const char *s2);
 int	ft_strncmp(const char *s1, const char *s2, size_t n);
 int white_space(char c);
 int	ft_isdigit(int c);
+void	*ft_memcpy(void *dst, const void *src, size_t n);
 int is_direction(char c);
 long	ft_atoi(const char *p);
 void ft_free(char **tab);
@@ -52,3 +64,5 @@ char	**ft_split(char const *s, char c, int *nbr_lines);
 int parsing(char *file, t_input *input);
 char *get_full_len(char *line, t_input *input, int *position);
 char *replace_spaces(char *line);
+
+#endif

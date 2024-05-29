@@ -16,7 +16,7 @@
 # define DISTANCE_TO_PP ((WIDTH / 2) / tan(FOV / 2))
 # define MOVE_SPEED 15
 # define ROTATION_SPEED deg_to_rad(8)
-# define MINI_HEIGHT 113
+# define MINI_HEIGHT 130
 # define MINI_WIDTH 180
 # define MINI_CUBE_SIZE 12
 # define RIGHT_ARROW 124
@@ -62,12 +62,10 @@ typedef struct s_mlx {
   t_img		east_wall_image;
   t_img		west_wall_image;
   t_img		door_image;
+  t_img   partie1_image;
+  t_img   partie2_image;
 }	t_mlx;
 
-typedef struct s_point {
-  float x;
-  float y;
-} t_point;
 
 typedef struct s_player{
   float  x;
@@ -103,9 +101,13 @@ typedef struct s_game{
   int   c_color;
   int   f_color;
   t_point door;
+  t_point doors[10];
+  int nb_doors;
+  bool door_open;
   int last_mouse_x;
 } t_game;
 
+float calculate_distance(float x1, float y1, float x2, float y2);
 int	ft_connect(t_mlx *mlx, t_input *input);
 void	my_mlx_pixel_put(t_img *image, int x, int y, int color);
 void	ft_error(void	*ptr, char *msg,t_input *input);

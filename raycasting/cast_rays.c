@@ -89,7 +89,7 @@ t_ray get_horizontal_intersection(t_game *game, t_ray ray)
             to_check.y--;
         if (game->map[(int)(to_check.y / game->cube_size)][(int)(to_check.x / game->cube_size)] == '1')
         {
-            if ((int)(to_check.y / game->cube_size) == game->door.y && (int)(to_check.x / game->cube_size) == game->door.x)
+            if ((int)(to_check.y / game->cube_size) == game->door.y && (int)(to_check.x / game->cube_size) == game->door.x && !game->door_open)
                 ray.is_wall = 0;
             ray.wall_hit.x = next_intersection.x;
             ray.wall_hit.y = next_intersection.y;
@@ -118,7 +118,7 @@ t_ray get_vertical_intersection(t_game *game, t_ray ray)
             to_check.x--;
         if (game->map[(int)(to_check.y / game->cube_size)][(int)(to_check.x / game->cube_size)] == '1')
         {
-            if ((int)(to_check.y / game->cube_size) == game->door.y && (int)(to_check.x / game->cube_size) == game->door.x)
+            if ((int)(to_check.y / game->cube_size) == game->door.y && (int)(to_check.x / game->cube_size) == game->door.x && !game->door_open)
                 ray.is_wall = 0;
             ray.wall_hit.x = next_intersection.x;
             ray.wall_hit.y = next_intersection.y;
@@ -295,10 +295,10 @@ void draw_textured_wall(t_game *game, int column, float wall_height, t_img *text
     y = start_y;
     while (y < end_y)
     {
-        if (game->rays[column].is_wall == 0)
+       // if (game->rays[column].is_wall == 0)
             my_mlx_pixel_put(&game->mlx.image, column, y, get_texture_pixel(texture, texture_pos.x, texture_pos.y, game->rays[column].distance));
-        else
-            my_mlx_pixel_put(&game->mlx.image, column, y, get_texture_pixel(texture, texture_pos.x, texture_pos.y, game->rays[column].distance));
+        //else
+          //  my_mlx_pixel_put(&game->mlx.image, column, y, get_texture_pixel(texture, texture_pos.x, texture_pos.y, game->rays[column].distance));
         texture_pos.y += step;
         y++;
     }
@@ -315,6 +315,27 @@ void draw_column(t_game *game, int column)
     texture = get_orientation_texture(game, game->rays[column].orientation);
     draw_textured_wall(game, column, wall_height, texture);
 }
+t_point get_best_door(t_game *game)
+{
+    t_point door;
+    float distance;
+    float best_distance;
+    int i;
+    
+    i = 0;
+    distance = calculate_distance(game->player.x/game->cube_size, game->player.y/game->cube_size, game->doors[0].x, game->doors[0].y);
+    door = game->doors[0];
+    while (++i < game->nb_doors)
+    {
+        best_distance = calculate_distance(game->player.x/game->cube_size, game->player.y/game->cube_size, game->doors[i].x, game->doors[i].y);
+        if (best_distance < distance)
+        {
+            distance = best_distance;
+            door = game->doors[i];
+        }
+    }
+    return (door);
+}
 
 void cast_all_rays(t_game *game)
 {
@@ -323,6 +344,7 @@ void cast_all_rays(t_game *game)
 
     column = 0;
     ray_angle = (game->player.rotation_angle) - (FOV / 2);
+    game->door = get_best_door(game);
     while (column < NUM_RAYS)
     {
         game->rays[column] = cast_ray(game, ray_angle);

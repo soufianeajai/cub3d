@@ -99,19 +99,21 @@ void handle_movements(t_game *game, int keysym, float *new_pos_x, float *new_pos
     }
 }
 
+
 int handle_keys(int keysym, t_game *game)
 {
     float new_pos_x;
     float new_pos_y;
     float border;
-	
+    float distance_door;
+    
 	border = game->cube_size / 6;
     new_pos_x = game->player.x;
     new_pos_y = game->player.y;
    	handle_movements(game, keysym, &new_pos_x, &new_pos_y);
     if (new_pos_x > game->cube_size && new_pos_x < (game->map_width * game->cube_size) &&
         new_pos_y > game->cube_size && new_pos_y < (game->map_height * game->cube_size))
-    {
+    {               
         if (!is_collision(game, new_pos_x - border, new_pos_y - border) &&
             !is_collision(game, new_pos_x + border, new_pos_y - border) &&
             !is_collision(game, new_pos_x - border, new_pos_y + border) &&
@@ -119,6 +121,20 @@ int handle_keys(int keysym, t_game *game)
         {
             game->player.x = new_pos_x;
             game->player.y = new_pos_y;
+        }
+    }
+    if (game->door.x > 0 && game->door.y > 0)
+    {
+        distance_door = calculate_distance(game->player.x/game->cube_size, game->player.y/game->cube_size, game->door.x, game->door.y);
+        if (distance_door < M_PI - 1.14)
+        {
+            game->door_open = 1;
+            game->map[(int)(game->door.y)][(int)(game->door.x)] = '0';
+        }
+        else
+        {
+            game->door_open = 0;
+            game->map[(int)(game->door.y)][(int)(game->door.x)] = '1';
         }
     }
     cast_all_rays(game);

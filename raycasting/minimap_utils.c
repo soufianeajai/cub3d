@@ -44,7 +44,7 @@ void draw_line(t_img *img, int x, int y, int end_x, int end_y)
 		sy = -1;
     while (x != end_x || y != end_y)
 	{
-        my_mlx_pixel_put(img, x, y, 0x00FF0000);
+        my_mlx_pixel_put(img, x, y, 0x00000000);
         e2 = 2 * err;
         if (e2 > -dy) {
             err -= dy;
@@ -136,7 +136,7 @@ void draw_mini_square(t_game *game, int x, int y, int color)
 	int j;
 
 	i = 0;
-//	draw_mini_border(game, x, y);
+	draw_mini_border(game, x, y);
 	while (i < MINI_CUBE_SIZE)
 	{
 		j = 0;
