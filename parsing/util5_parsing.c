@@ -44,6 +44,7 @@ void get_doors(t_input *input)
     mise_a_jour_map(input);
     while (++i < input->nb_doors)
         input->map[(int)input->door[i].y][(int)input->door[i].x] = '1';
+        printf("nb doors = %d\n", input->nb_doors);
 }
 int get_position_door(t_input input, int *x, int *y, char **map)
 {
@@ -69,19 +70,62 @@ int get_position_door(t_input input, int *x, int *y, char **map)
 	}
 	return (0);
 }
+
+
+// void flood_fill(t_input input, int x, int y, char **map)
+// {
+//     if (x < 0 || x >= input.W || y < 0 || y >= input.H || map[y][x] != '0')
+//     {
+// 		if (map[y][x] == '1' && x != 0 && y != 0 && x != input.W - 1 && y != input.H - 1)
+// 			map[y][x] = 'y';
+//         return;
+//     }
+//     map[y][x] = 'x';
+//     flood_fill(input, x, y - 1,map);
+//     flood_fill(input, x, y + 1,map);
+//     flood_fill(input, x - 1, y,map);
+//     flood_fill(input, x + 1, y,map);
+// }
+
 void flood_fill(t_input input, int x, int y, char **map)
 {
-    if (x < 0 || x >= input.W || y < 0 || y >= input.H || map[y][x] != '0')
+    int dx[] = {0, 0, -1, 1};
+    int dy[] = {-1, 1, 0, 0};
+
+    int head = 0, tail = 0;
+    t_point *queue = malloc(input.W * input.H * sizeof(t_point));
+    queue[tail++] = (t_point){x, y};
+
+    while (head < tail)
     {
-		if (map[y][x] == '1' && x != 0 && y != 0 && x != input.W - 1 && y != input.H - 1)
-			map[y][x] = 'y';
-        return;
+        t_point p = queue[head++];
+        if (p.x < 0 || p.x >= input.W || p.y < 0 || p.y >= input.H || map[(int)p.y][(int)p.x] != '0')
+        {
+            if (map[(int)p.y][(int)p.x] == '1' && p.x != 0 && p.y != 0 && p.x != input.W - 1 && p.y != input.H - 1)
+                map[(int)p.y][(int)p.x] = 'y';
+            continue;
+        }
+
+        map[(int)p.y][(int)p.x] = 'x';
+
+       for (int i = 0; i < 4; i++)
+        {
+            int nx = p.x + dx[i];
+            int ny = p.y + dy[i];
+            if (nx >= 0 && nx < input.W && ny >= 0 && ny < input.H)
+            {
+                if (tail >= input.W * input.H)
+                {
+                    // Queue is full, stop the function or reallocate more memory
+                    free(queue);
+                    return;
+                }
+                queue[tail++] = (t_point){nx, ny};
+            }
+        }
     }
-    map[y][x] = 'x';
-    flood_fill(input, x, y - 1,map);
-    flood_fill(input, x, y + 1,map);
-    flood_fill(input, x - 1, y,map);
-    flood_fill(input, x + 1, y,map);
+
+    free(queue);
 }
 
 void mise_a_jour_map(t_input *input)

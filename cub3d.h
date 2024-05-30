@@ -88,10 +88,7 @@ typedef struct s_ray{
   t_point wall_hit;
   wall_orientation orientation;
 } t_ray;
-typedef struct s_door{
-  t_point door;
-  bool door_open;
-} t_door;
+
 
 typedef struct s_game{
   t_mlx mlx;
@@ -103,8 +100,8 @@ typedef struct s_game{
   int cube_size;
   int   c_color;
   int   f_color;
-  t_door door;
-  t_door doors[NUM_DOORS];
+  t_point door;
+  t_point doors[NUM_DOORS];
   int nb_doors;
   bool door_open;
   int last_mouse_x;

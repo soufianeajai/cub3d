@@ -126,7 +126,7 @@ int handle_keys(int keysym, t_game *game)
     if (game->door.x > 0 && game->door.y > 0)
     {
         distance_door = calculate_distance(game->player.x/game->cube_size, game->player.y/game->cube_size, game->door.x, game->door.y);
-        if (distance_door < 1.50)
+        if (distance_door < 1.70)
         {
             game->door_open = 1;
             game->map[(int)(game->door.y)][(int)(game->door.x)] = '0';
@@ -138,22 +138,7 @@ int handle_keys(int keysym, t_game *game)
         }
     }
 
-    //  if (game->door.x > 0 && game->door.y > 0)
-    // {
-    //     t_ray ray;
-    //     ray = cast_ray(game, game->player.rotation_angle);
-    //     distance_door = ray.distance;
-    //     if (distance_door < game->cube_size || calculate_distance(game->player.x/game->cube_size, game->player.y/game->cube_size, game->door.x, game->door.y) < M_PI - 1.14)
-    //     {
-    //         game->door_open = 1;
-    //         game->map[(int)(game->door.y)][(int)(game->door.x)] = '0';
-    //     } 
-    //     else
-    //     {
-    //         game->door_open = 0;
-    //         game->map[(int)(game->door.y)][(int)(game->door.x)] = '1';
-    //     }
-    // }
+
     cast_all_rays(game);
     return (0);
 }
