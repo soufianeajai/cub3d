@@ -81,70 +81,93 @@ t_point	get_step(t_game *game, t_ray *ray, axes axis)
 
 t_ray	get_horizontal_intersection(t_game *game, t_ray ray)
 {
-	t_point	next_intersection;
-	t_point	step;
-	t_point	to_check;
+    t_point next_intersection;
+    t_point step;
+    t_point to_check;
+    int i;
 
-	next_intersection = get_first_intersection(game, &ray, Y);
-	step = get_step(game, &ray, Y);
-	while (next_intersection.x >= 0 && next_intersection.x < game->map_width
-		* game->cube_size && next_intersection.y >= 0
-		&& next_intersection.y < game->map_height * game->cube_size)
-	{
-		to_check = next_intersection;
-		if (!ray.is_facing_down)
-			to_check.y--;
-		if (game->map[(int)(to_check.y / game->cube_size)][(int)(to_check.x
-				/ game->cube_size)] == '1')
-		{
-			if ((int)(to_check.y / game->cube_size) == game->door.y
-				&& (int)(to_check.x / game->cube_size) == game->door.x
-				&& !game->door_open)
-				ray.is_wall = 0;
-			ray.wall_hit.x = next_intersection.x;
-			ray.wall_hit.y = next_intersection.y;
-			ray.distance = calculate_distance(game->player.x, game->player.y,
-					ray.wall_hit.x, ray.wall_hit.y);
-			break ;
-		}
-		next_intersection.x += step.x;
-		next_intersection.y += step.y;
-	}
-	return (ray);
+    i = -1;
+    next_intersection = get_first_intersection(game, &ray, Y);
+    step = get_step(game, &ray, Y);
+    while (next_intersection.x >= 0 && next_intersection.x < game->map_width * game->cube_size &&
+           next_intersection.y >= 0 && next_intersection.y < game->map_height * game->cube_size)
+    {
+        to_check = next_intersection;
+        if (!ray.is_facing_down)
+            to_check.y--;
+        if (game->map[(int)(to_check.y / game->cube_size)][(int)(to_check.x / game->cube_size)] == '1')
+        {
+            // if ((int)(to_check.y / game->cube_size) == game->door.y && (int)(to_check.x / game->cube_size) == game->door.x && !game->door_open)
+            //     ray.is_wall = 0;
+
+        while (++i < game->nb_doors)
+        {
+            if ((int)(to_check.y / game->cube_size) == game->doors[i].y && (int)(to_check.x / game->cube_size) == game->doors[i].x)
+            {
+                ray.is_wall = 0;
+                ray.wall_hit.x = next_intersection.x;
+                ray.wall_hit.y = next_intersection.y;
+                ray.distance = calculate_distance(game->player.x, game->player.y, ray.wall_hit.x, ray.wall_hit.y);
+                game->door = game->doors[i];
+                break;
+            }
+        }
+            ray.wall_hit.x = next_intersection.x;
+            ray.wall_hit.y = next_intersection.y;
+            ray.distance = calculate_distance(game->player.x, game->player.y, ray.wall_hit.x, ray.wall_hit.y);
+            break;
+        }
+        next_intersection.x += step.x;
+        next_intersection.y += step.y;
+    }
+    return (ray);
 }
 
 t_ray	get_vertical_intersection(t_game *game, t_ray ray)
 {
-	t_point	next_intersection;
-	t_point	step;
-	t_point	to_check;
+    t_point next_intersection;
+    t_point step;
+    t_point to_check;
+    int i;
 
-	next_intersection = get_first_intersection(game, &ray, X);
-	step = get_step(game, &ray, X);
-	while (next_intersection.x >= 0 && next_intersection.x < game->map_width
-		* game->cube_size && next_intersection.y >= 0
-		&& next_intersection.y < game->map_height * game->cube_size)
-	{
-		to_check = next_intersection;
-		if (!ray.is_facing_right)
-			to_check.x--;
-		if (game->map[(int)(to_check.y / game->cube_size)][(int)(to_check.x
-				/ game->cube_size)] == '1')
-		{
-			if ((int)(to_check.y / game->cube_size) == game->door.y
-				&& (int)(to_check.x / game->cube_size) == game->door.x
-				&& !game->door_open)
-				ray.is_wall = 0;
-			ray.wall_hit.x = next_intersection.x;
-			ray.wall_hit.y = next_intersection.y;
-			ray.distance = calculate_distance(game->player.x, game->player.y,
-					ray.wall_hit.x, ray.wall_hit.y);
-			break ;
-		}
-		next_intersection.x += step.x;
-		next_intersection.y += step.y;
-	}
-	return (ray);
+    i = -1;
+    next_intersection = get_first_intersection(game, &ray, X);
+    step = get_step(game, &ray, X);
+    while (next_intersection.x >= 0 && next_intersection.x < game->map_width * game->cube_size &&
+           next_intersection.y >= 0 && next_intersection.y < game->map_height * game->cube_size)
+    {
+        to_check = next_intersection;
+        if (!ray.is_facing_right)
+            to_check.x--;
+        if (game->map[(int)(to_check.y / game->cube_size)][(int)(to_check.x / game->cube_size)] == '1')
+        {
+            // if ((int)(to_check.y / game->cube_size) == game->door.y && (int)(to_check.x / game->cube_size) == game->door.x && !game->door_open)
+            //     ray.is_wall = 0;
+
+        while (++i < game->nb_doors)
+        {
+            if ((int)(to_check.y / game->cube_size) == game->doors[i].y && (int)(to_check.x / game->cube_size) == game->doors[i].x)
+            {
+                ray.is_wall = 0;
+                ray.wall_hit.x = next_intersection.x;
+                ray.wall_hit.y = next_intersection.y;
+                ray.distance = calculate_distance(game->player.x, game->player.y, ray.wall_hit.x, ray.wall_hit.y);
+                game->door = game->doors[i];
+                break;
+            }
+        }
+
+
+
+            ray.wall_hit.x = next_intersection.x;
+            ray.wall_hit.y = next_intersection.y;
+            ray.distance = calculate_distance(game->player.x, game->player.y, ray.wall_hit.x, ray.wall_hit.y);
+            break;
+        }
+        next_intersection.x += step.x;
+        next_intersection.y += step.y;
+    }
+    return (ray);
 }
 wall_orientation	get_orientation(t_ray *ray, axes axis)
 {
@@ -332,17 +355,16 @@ void	cast_all_rays(t_game *game)
 	float	ray_angle;
 	int		column;
 
-	column = 0;
-	ray_angle = (game->player.rotation_angle) - (FOV / 2);
-	game->door = get_best_door(game);
-	while (column < NUM_RAYS)
-	{
-		game->rays[column] = cast_ray(game, ray_angle);
-		draw_column(game, column);
-		ray_angle += ANGLE_INCREMENT;
-		column++;
-	}
-	mlx_put_image_to_window(game->mlx.connect, game->mlx.window,
-		game->mlx.image.ptr, 0, 0);
-	draw_minimap(game);
+    column = 0;
+    ray_angle = (game->player.rotation_angle) - (FOV / 2);
+    //game->door = get_best_door(game);
+    while (column < NUM_RAYS)
+    {
+        game->rays[column] = cast_ray(game, ray_angle);
+        draw_column(game, column);
+        ray_angle += ANGLE_INCREMENT;
+        column++;
+    }
+    mlx_put_image_to_window(game->mlx.connect, game->mlx.window, game->mlx.image.ptr, 0, 0);
+    draw_minimap(game);
 }
