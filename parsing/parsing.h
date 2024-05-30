@@ -6,7 +6,7 @@
 # include <fcntl.h>
 # include <stdlib.h>
 #include "gnl/get_next_line.h"
-
+#define NBR_DOORS 50
 typedef struct s_point {
   float x;
   float y;
@@ -25,7 +25,7 @@ typedef struct s_input {
   int    pos_y;
   int    door_x;
   int    door_y;
-  t_point door[10];
+  t_point door[NBR_DOORS];
   int   nb_doors;
   int   H;
   int   W;

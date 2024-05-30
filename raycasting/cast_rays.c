@@ -211,13 +211,13 @@ float get_shadow_factor(float distance)
     float shadow_factor;
 
     shadow_factor = (distance / WIDTH) * 2;
-    if (shadow_factor < 0.2)
+    if (shadow_factor < 0.7)
         shadow_factor = shadow_factor*shadow_factor*shadow_factor*shadow_factor;
-    else if (shadow_factor < 0.4)
-        shadow_factor = shadow_factor*shadow_factor*shadow_factor;
-    else if (shadow_factor < 0.6)
-        shadow_factor = shadow_factor*shadow_factor;
     else if (shadow_factor < 0.8)
+        shadow_factor = shadow_factor*shadow_factor*shadow_factor;
+    else if (shadow_factor < 0.85)
+        shadow_factor = shadow_factor*shadow_factor;
+    else if (shadow_factor < 0.9)
         shadow_factor = shadow_factor * 1;
     else
         shadow_factor = 1;

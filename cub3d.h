@@ -26,6 +26,7 @@
 # define A_KEY 0
 # define D_KEY 2
 # define MAX_DISTANCE 300
+# define NUM_DOORS 50
 
 typedef enum {
     NORTH,

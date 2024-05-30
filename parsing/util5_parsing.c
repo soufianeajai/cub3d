@@ -26,7 +26,7 @@ void get_doors(t_input *input)
 
     i = -1;
     input->nb_doors = 0;
-    while (input->nb_doors < 10)
+    while (input->nb_doors < NUM_DOORS)
     {
         if(!get_position_door(*input, &x, &y, input->map))
             break;
@@ -39,7 +39,6 @@ void get_doors(t_input *input)
     mise_a_jour_map(input);
     while (++i < input->nb_doors)
         input->map[(int)input->door[i].y][(int)input->door[i].x] = '1';
-    printf("nb doors = %d\n", input->nb_doors);
 }
 int get_position_door(t_input input, int *x, int *y, char **map)
 {

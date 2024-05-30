@@ -35,6 +35,24 @@ void draw_minimap_borderr(t_game *game)
     draw_line(&game->mlx.minimap_image, 0, 0, 0, MINI_HEIGHT);
     draw_line(&game->mlx.minimap_image, MINI_WIDTH - 1, 0, MINI_WIDTH - 1, MINI_HEIGHT - 1);
 }
+int is_door(t_game *game, int x, int y)
+{
+	int i;
+	int is_door;
+
+	is_door = 0;
+	i = 0;
+	while (i < NUM_DOORS)
+	{
+		if (game->map[y][x] == '1' && (int)game->doors[i].x == x && (int)game->doors[i].y == y)
+		{
+			is_door = 1;
+			return (is_door);
+		}
+		i++;
+	}
+	return (is_door);
+}
 void draw_minimap(t_game *game)
 {
 	int player_map_x;
@@ -60,12 +78,12 @@ void draw_minimap(t_game *game)
 		{
 			if (y >= 0 && y < game->map_height && x >= 0 && x < game->map_width)
 			{
-				if (game->map[y][x] == '1')
+				if (is_door(game, x, y))
+					draw_mini_square(game, (x - start_x) * MINI_CUBE_SIZE, (y - start_y) * MINI_CUBE_SIZE, 0x00000000);
+				else if (game->map[y][x] == '1')
 					draw_mini_square(game, (x - start_x) * MINI_CUBE_SIZE, (y - start_y) * MINI_CUBE_SIZE, 0xFF000000);
 				else if (game->map[y][x] == '0')
 					draw_mini_square(game, (x - start_x) * MINI_CUBE_SIZE, (y - start_y) * MINI_CUBE_SIZE, 0x00FFFFFF);
-				//else if (game->map[y][x] == '2')
-				//	draw_mini_square(game, (x - start_x) * MINI_CUBE_SIZE, (y - start_y) * MINI_CUBE_SIZE, 0x00000000);
 			}
 			x++;
 		}
