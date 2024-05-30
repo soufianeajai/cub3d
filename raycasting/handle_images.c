@@ -1,4 +1,5 @@
 #include"../cub3d.h"
+
 int get_images(t_mlx *mlx, t_input *input)
 {
 	if (!get_image_from_xpm(mlx->connect, input->no,&mlx->north_wall_image))
@@ -29,25 +30,6 @@ int get_images(t_mlx *mlx, t_input *input)
 		mlx_destroy_image(mlx->connect, mlx->west_wall_image.ptr);
 		return (0);
 	}
-	// if (!get_image_from_xpm(mlx->connect, "./partie1.xpm",&mlx->partie1_image))
-	// {
-	// 	mlx_destroy_image(mlx->connect, mlx->north_wall_image.ptr);
-	// 	mlx_destroy_image(mlx->connect, mlx->south_wall_image.ptr);
-	// 	mlx_destroy_image(mlx->connect, mlx->east_wall_image.ptr);
-	// 	mlx_destroy_image(mlx->connect, mlx->west_wall_image.ptr);
-	// 	mlx_destroy_image(mlx->connect, mlx->door_image.ptr);
-	// 	return (0);
-	// }
-	// if (!get_image_from_xpm(mlx->connect, "./partie2.xpm",&mlx->partie2_image))
-	// {
-	// 	mlx_destroy_image(mlx->connect, mlx->north_wall_image.ptr);
-	// 	mlx_destroy_image(mlx->connect, mlx->south_wall_image.ptr);
-	// 	mlx_destroy_image(mlx->connect, mlx->east_wall_image.ptr);
-	// 	mlx_destroy_image(mlx->connect, mlx->west_wall_image.ptr);
-	// 	mlx_destroy_image(mlx->connect, mlx->door_image.ptr);
-	// 	mlx_destroy_image(mlx->connect, mlx->partie1_image.ptr);
-	// 	return (0);
-	// }
 	return (1);
 }
 
@@ -70,23 +52,7 @@ void read_matrix(t_input input)
         i++;
     }
 }
-void copy_image(t_img *image, t_img image_to_copy, int x, int y)
-{
-	int i = 0;
-	int j = 0;
-	int color;
-	while (i < image_to_copy.width)
-	{
-		j = 0;
-		while (j < image_to_copy.height)
-		{
-			color = *(int *)(image_to_copy.addr + (j * image_to_copy.line_len + i * (image_to_copy.bpp / 8)));
-			my_mlx_pixel_put(image, x + i, y + j, color);
-			j++;
-		}
-		i++;
-	}
-}
+
 void	my_mlx_pixel_put(t_img *image, int x, int y, int color)
 {
 	char	*pixel;

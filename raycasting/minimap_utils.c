@@ -1,26 +1,26 @@
 #include"../cub3d.h"
 
-void draw_player(t_img *img, int x, int y, int color, t_game *game)
-{
-	int i;
-	int j;
-	int r;
+// void draw_player(t_img *img, int x, int y, int color, t_game *game)
+// {
+// 	int i;
+// 	int j;
+// 	int r;
 
-	r = game->cube_size / 8;
-	i = -r;
-	while (i < r)
-	{
-		j = -r;
-		while (j < r)
-		{
-			if (i * i + j * j <= r * r)
-				my_mlx_pixel_put(img, x + i, y + j, color);
-			j++;
-		}
-		i++;
-	}
-	draw_direction(img, x, y, game, r*3);
-}
+// 	r = game->cube_size / 8;
+// 	i = -r;
+// 	while (i < r)
+// 	{
+// 		j = -r;
+// 		while (j < r)
+// 		{
+// 			if (i * i + j * j <= r * r)
+// 				my_mlx_pixel_put(img, x + i, y + j, color);
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// 	draw_direction(img, x, y, game, r*3);
+// }
 
 void draw_line(t_img *img, int x, int y, int end_x, int end_y)
 {
@@ -73,70 +73,70 @@ void draw_direction(t_img *img, int x, int y, t_game *game, int length)
 		i++;
 	}
 }
-void draw_border(t_game *game, int x, int y)
-{
-    int i;
+// void draw_border(t_game *game, int x, int y)
+// {
+//     int i;
 
-	i = 0;
-	while (i < game->cube_size)
-	{
-        my_mlx_pixel_put(&game->mlx.image, x + i, y, 0X00000000);
-        my_mlx_pixel_put(&game->mlx.image, x + i, y + game->cube_size - 1, 0X00000000);
-		i++;
-	}
-	i = 0;
-	while (i < game->cube_size)
-	{
-        my_mlx_pixel_put(&game->mlx.image, x, y + i, 0X00000000);
-        my_mlx_pixel_put(&game->mlx.image, x + game->cube_size - 1, y + i, 0X00000000);
-		i++;
-	}
-}
-void draw_mini_border(t_game *game, int x, int y)
-{
-    int i;
+// 	i = 0;
+// 	while (i < game->cube_size)
+// 	{
+//         my_mlx_pixel_put(&game->mlx.image, x + i, y, 0X00000000);
+//         my_mlx_pixel_put(&game->mlx.image, x + i, y + game->cube_size - 1, 0X00000000);
+// 		i++;
+// 	}
+// 	i = 0;
+// 	while (i < game->cube_size)
+// 	{
+//         my_mlx_pixel_put(&game->mlx.image, x, y + i, 0X00000000);
+//         my_mlx_pixel_put(&game->mlx.image, x + game->cube_size - 1, y + i, 0X00000000);
+// 		i++;
+// 	}
+// }
+// void draw_mini_border(t_game *game, int x, int y)
+// {
+//     int i;
 
-	i = 0;
-	while (i < MINI_CUBE_SIZE)
-	{
-        my_mlx_pixel_put(&game->mlx.minimap_image, x + i, y, 0X00000000);
-        my_mlx_pixel_put(&game->mlx.minimap_image, x + i, y + MINI_CUBE_SIZE - 1, 0X00000000);
-		i++;
-	}
-	i = 0;
-	while (i < MINI_CUBE_SIZE)
-	{
-        my_mlx_pixel_put(&game->mlx.minimap_image, x, y + i, 0X00000000);
-        my_mlx_pixel_put(&game->mlx.minimap_image, x + MINI_CUBE_SIZE - 1, y + i, 0X00000000);
-		i++;
-	}
-}
+// 	i = 0;
+// 	while (i < MINI_CUBE_SIZE)
+// 	{
+//         my_mlx_pixel_put(&game->mlx.minimap_image, x + i, y, 0X00000000);
+//         my_mlx_pixel_put(&game->mlx.minimap_image, x + i, y + MINI_CUBE_SIZE - 1, 0X00000000);
+// 		i++;
+// 	}
+// 	i = 0;
+// 	while (i < MINI_CUBE_SIZE)
+// 	{
+//         my_mlx_pixel_put(&game->mlx.minimap_image, x, y + i, 0X00000000);
+//         my_mlx_pixel_put(&game->mlx.minimap_image, x + MINI_CUBE_SIZE - 1, y + i, 0X00000000);
+// 		i++;
+// 	}
+// }
+// void draw_square(t_game *game, int x, int y, int color)
+// {
+// 	int i;
+// 	int j;
+
+// 	i = 1;
+// 	draw_border(game, x, y);
+// 	while (i < game->cube_size)
+// 	{
+// 		j = 1;
+// 		while (j < game->cube_size)
+// 		{
+// 			my_mlx_pixel_put(&game->mlx.image, x + i, y + j, color);
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// }
+
 void draw_square(t_game *game, int x, int y, int color)
 {
 	int i;
 	int j;
 
-	i = 1;
-	draw_border(game, x, y);
-	while (i < game->cube_size)
-	{
-		j = 1;
-		while (j < game->cube_size)
-		{
-			my_mlx_pixel_put(&game->mlx.image, x + i, y + j, color);
-			j++;
-		}
-		i++;
-	}
-}
-
-void draw_mini_square(t_game *game, int x, int y, int color)
-{
-	int i;
-	int j;
-
 	i = 0;
-	draw_mini_border(game, x, y);
+//	draw_mini_border(game, x, y);
 	while (i < MINI_CUBE_SIZE)
 	{
 		j = 0;
@@ -149,7 +149,7 @@ void draw_mini_square(t_game *game, int x, int y, int color)
 	}
 }
 
-void draw_player_mini(t_img *img, int x, int y, int color, t_game *game)
+void draw_player(t_img *img, int x, int y, int color, t_game *game)
 {
 	int i;
 	int j;

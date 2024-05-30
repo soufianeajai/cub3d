@@ -88,20 +88,14 @@ t_game init_game(t_mlx mlx, t_input input)
 	game.player.turn_speed = deg_to_rad(45);
 	game.player.rotation_angle = deg_to_rad(input.direction);
 	game.last_mouse_x = -1;
-	//game.door.x = input.door_x;
-	//game.door.y = input.door_y;
+	game.door.x = -1;
+	game.door.y = -1;
 	if (input.nb_doors > 0)
 	{
 		game.door.x = input.door[0].x;
 		game.door.y = input.door[0].y;
 		game.nb_doors = input.nb_doors;
 		ft_memcpy(game.doors, input.door, sizeof(t_point) * NUM_DOORS);
-		//printf("-> door x : %f, door y : %f\n", game.doors[2].x, game.doors[2].y);
-	}
-	else
-	{
-		game.door.x = -1;
-		game.door.y = -1;
 	}
 	game.door_open = 0;
 	return (game);
