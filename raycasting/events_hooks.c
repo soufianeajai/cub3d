@@ -126,7 +126,7 @@ int handle_keys(int keysym, t_game *game)
     if (game->door.x > 0 && game->door.y > 0)
     {
         distance_door = calculate_distance(game->player.x/game->cube_size, game->player.y/game->cube_size, game->door.x, game->door.y);
-        if (distance_door < M_PI - 1.14)
+        if (distance_door < 1.50)
         {
             game->door_open = 1;
             game->map[(int)(game->door.y)][(int)(game->door.x)] = '0';

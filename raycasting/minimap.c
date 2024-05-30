@@ -15,7 +15,7 @@ int is_door(t_game *game, int x, int y)
 	i = 0;
 	if (x <= 0 || y <= 0 || x >= game->map_width || y >= game->map_height)
 		return (0);
-	while (i < NUM_DOORS)
+	while (i < game->nb_doors)
 	{
 		if (game->map[y][x] == '1' && (int)game->doors[i].x == x && (int)game->doors[i].y == y)
 			return (1);

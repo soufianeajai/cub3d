@@ -26,7 +26,7 @@
 # define A_KEY 0
 # define D_KEY 2
 # define MAX_DISTANCE 300
-# define NUM_DOORS 50
+# define NUM_DOORS 100
 
 typedef enum {
     NORTH,
@@ -63,8 +63,6 @@ typedef struct s_mlx {
   t_img		east_wall_image;
   t_img		west_wall_image;
   t_img		door_image;
-  t_img   partie1_image;
-  t_img   partie2_image;
 }	t_mlx;
 
 
@@ -90,6 +88,10 @@ typedef struct s_ray{
   t_point wall_hit;
   wall_orientation orientation;
 } t_ray;
+typedef struct s_door{
+  t_point door;
+  bool door_open;
+} t_door;
 
 typedef struct s_game{
   t_mlx mlx;
@@ -101,8 +103,8 @@ typedef struct s_game{
   int cube_size;
   int   c_color;
   int   f_color;
-  t_point door;
-  t_point doors[NUM_DOORS];
+  t_door door;
+  t_door doors[NUM_DOORS];
   int nb_doors;
   bool door_open;
   int last_mouse_x;
@@ -132,4 +134,6 @@ void draw_line(t_img *img, int x, int y, int end_x, int end_y);
 int get_cube_size(t_game game);
 t_ray cast_ray(t_game *game, float ray_angle);
 float normalize_angle(float angle);
+int is_door(t_game *game, int x, int y);
+
 #endif
