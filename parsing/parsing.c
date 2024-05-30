@@ -121,12 +121,10 @@ int error_first_last_element(char **map, t_input *input, int i)
 int	parsing_map(char **map, t_input *input)
 {
 	int	i;
-	int	j;
 
 	i = -1;
 	while (map[++i])
 	{
-		j = -1;
 		// if (i == 0 || i == input->H - 1)
 		// {
 		// 	while (map[i][++j])

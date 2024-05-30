@@ -206,23 +206,6 @@ void draw_floor(t_game *game, int start_x, int start_y, int width, int height, i
     draw_rec(game, start_x, start_y,width, height, color);
 }
 
-float get_shadow_factor(float distance)
-{
-    float shadow_factor;
-
-    shadow_factor = (distance / WIDTH) * 2;
-    if (shadow_factor < 0.7)
-        shadow_factor = shadow_factor*shadow_factor*shadow_factor*shadow_factor;
-    else if (shadow_factor < 0.8)
-        shadow_factor = shadow_factor*shadow_factor*shadow_factor;
-    else if (shadow_factor < 0.85)
-        shadow_factor = shadow_factor*shadow_factor;
-    else if (shadow_factor < 0.9)
-        shadow_factor = shadow_factor * 1;
-    else
-        shadow_factor = 1;
-    return(shadow_factor);
-}
 
 int blend_colors(int pixel_color, float distance)
 {
@@ -231,15 +214,15 @@ int blend_colors(int pixel_color, float distance)
     unsigned int green;
     unsigned int blue;
 
-    factor = get_shadow_factor(distance);
-    if (factor == 1)
-        return (0);
-    red = ((pixel_color >> 16) % 256) * (1 - factor);
-    green = ((pixel_color >> 8) % 256) * (1 - factor);
-    blue = (pixel_color % 256) * (1 - factor);
+    factor = expf(-5.0 * (distance / WIDTH));
+
+    red = ((pixel_color >> 16) % 256) * (factor);
+    green = ((pixel_color >> 8) % 256) * (factor);
+    blue = (pixel_color % 256) * (factor);
 
     return ((red << 16) + (green << 8) + blue);
 }
+
 
 int get_texture_pixel(t_img *texture, int x, int y, float distance)
 {

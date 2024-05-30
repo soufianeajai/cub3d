@@ -102,7 +102,7 @@ typedef struct s_game{
   int   c_color;
   int   f_color;
   t_point door;
-  t_point doors[10];
+  t_point doors[NUM_DOORS];
   int nb_doors;
   bool door_open;
   int last_mouse_x;

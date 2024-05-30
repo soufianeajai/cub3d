@@ -38,20 +38,17 @@ void draw_minimap_borderr(t_game *game)
 int is_door(t_game *game, int x, int y)
 {
 	int i;
-	int is_door;
 
-	is_door = 0;
 	i = 0;
+	if (x <= 0 || y <= 0 || x >= game->map_width || y >= game->map_height)
+		return (0);
 	while (i < NUM_DOORS)
 	{
 		if (game->map[y][x] == '1' && (int)game->doors[i].x == x && (int)game->doors[i].y == y)
-		{
-			is_door = 1;
-			return (is_door);
-		}
+			return (1);
 		i++;
 	}
-	return (is_door);
+	return (0);
 }
 void draw_minimap(t_game *game)
 {

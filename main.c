@@ -95,7 +95,7 @@ t_game init_game(t_mlx mlx, t_input input)
 		game.door.x = input.door[0].x;
 		game.door.y = input.door[0].y;
 		game.nb_doors = input.nb_doors;
-		ft_memcpy(game.doors, input.door, sizeof(t_point) * 10);
+		ft_memcpy(game.doors, input.door, sizeof(t_point) * NUM_DOORS);
 		//printf("-> door x : %f, door y : %f\n", game.doors[2].x, game.doors[2].y);
 	}
 	else
