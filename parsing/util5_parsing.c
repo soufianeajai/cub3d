@@ -10,11 +10,15 @@ int is_valid_door(t_input input, int i, int j)
     if (i == 0 || j == 0)
         return (0);
     if ((input.map[i][j - 1] == '0' && input.map[i][j + 1] == 'x') || (input.map[i][j - 1] == 'x' && input.map[i][j + 1] == '0'))
+    {
         if (input.map[i + 1][j] == 'y' && input.map[i - 1][j] == 'y')
             return (1);
-    if ((input.map[i - 1][j] == '0' && input.map[i + 1][j] == 'x') || (input.map[i + 1][j] == 'x' && input.map[i - 1][j] == '0'))
+    }
+    if ((input.map[i - 1][j] == '0' && input.map[i + 1][j] == 'x') || (input.map[i + 1][j] == '0' && input.map[i - 1][j] == 'x'))
+    {
         if (input.map[i][j + 1] == 'y' && input.map[i][j - 1] == 'y')
             return (1);
+    }
     return (0);
 }
 
@@ -35,6 +39,7 @@ void get_doors(t_input *input)
         input->map[y][x] = '0';
         input->nb_doors++;
         mise_a_jour_map(input);
+        
     }
     mise_a_jour_map(input);
     while (++i < input->nb_doors)
