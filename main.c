@@ -52,24 +52,6 @@ int	main(int ac , char **av)
  	mlx_loop(mlx.connect);
 	return (0);
 }
-
-int get_cube_size(t_game game)
-{
-	float scale_x;
-	float scale_y;
-	float cube_size;
-
-	scale_x = (float)WIDTH / (float)game.map_width;
-	scale_y = (float)HEIGHT / (float)game.map_height;
-	if (scale_x < scale_y)
-		cube_size = scale_x;
-	else
-		cube_size = scale_y;
-	if (cube_size < 12)
-		cube_size = 12;
-	return (64);
-}
-
 t_game init_game(t_mlx mlx, t_input input)
 {
 	t_game game;
@@ -80,14 +62,9 @@ t_game init_game(t_mlx mlx, t_input input)
 	game.map_width = input.W;
 	game.c_color = input.c_color;
 	game.f_color = input.f_color;
-	game.cube_size = get_cube_size(game);
-	game.player.map_x = input.pos_x;
-	game.player.map_y = input.pos_y;
-	game.player.x = (input.pos_x * game.cube_size) + game.cube_size / 2;
-	game.player.y = (input.pos_y * game.cube_size) + game.cube_size / 2;
+	game.player.x = (input.pos_x * CUBE_SIZE) + CUBE_SIZE / 2;
+	game.player.y = (input.pos_y * CUBE_SIZE) + CUBE_SIZE / 2;
 	game.player.turn_direction = 0;
-	game.player.walk_speed = game.cube_size / 2;
-	game.player.turn_speed = deg_to_rad(45);
 	game.player.rotation_angle = deg_to_rad(input.direction);
 	game.last_mouse_x = -1;
 	game.door.x = -1;

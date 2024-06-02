@@ -70,12 +70,8 @@ typedef struct s_mlx {
 typedef struct s_player{
   float  x;
   float  y;
-  int map_x;
-  int map_y;
   int turn_direction;
   float rotation_angle;
-  float walk_speed;
-  float turn_speed;
 } t_player;
 
 typedef struct s_ray{
@@ -98,7 +94,6 @@ typedef struct s_game{
   char  **map;
   int  map_width;
   int  map_height;
-  int cube_size;
   int   c_color;
   int   f_color;
   t_point door;
@@ -124,12 +119,10 @@ double deg_to_rad(double angle);
 double rad_to_deg(double angle);
 void read_matrix(t_input input);
 void draw_square(t_game *game, int x, int y, int color);
-void draw_direction(t_img *img, int x, int y, t_game *game, int length);
-void draw_player(t_img *img, int x, int y, int color, t_game *game);
+void draw_player(t_game *game, t_point player);
 void draw_minimap(t_game *game);
 void cast_all_rays(t_game *game);
-void draw_line(t_img *img, int x, int y, int end_x, int end_y);
-int get_cube_size(t_game game);
+void draw_line(t_img *img, t_point start, t_point end);
 t_ray cast_ray(t_game *game, float ray_angle);
 float normalize_angle(float angle);
 int is_door(t_game *game, int x, int y);

@@ -230,9 +230,10 @@ int	get_texture_pixel(t_img *texture, int x, int y, float distance)
 	int		pixel_color;
 	char	*pixel;
 
+	(void)distance;
 	pixel = texture->addr + (y * texture->line_len + x * (texture->bpp / 8));
 	pixel_color = *(int *)pixel;
-	pixel_color = blend_colors(pixel_color, distance);
+//	pixel_color = blend_colors(pixel_color, distance);
 	return (pixel_color);
 }
 
