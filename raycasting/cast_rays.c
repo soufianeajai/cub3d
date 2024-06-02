@@ -103,21 +103,6 @@ t_ray	get_horizontal_intersection(t_game *game, t_ray ray)
 				if (game->door_open)
 				game->door = game->doors[i];		
 			}
-            // if ((int)(to_check.y / game->cube_size) == game->door.y && (int)(to_check.x / game->cube_size) == game->door.x && !game->door_open)
-            //     ray.is_wall = 0;
-
-        // while (++i < game->nb_doors)
-        // {
-        //     if ((int)(to_check.y / game->cube_size) == game->doors[i].y && (int)(to_check.x / game->cube_size) == game->doors[i].x)
-        //     {
-        //         ray.is_wall = 0;
-        //         ray.wall_hit.x = next_intersection.x;
-        //         ray.wall_hit.y = next_intersection.y;
-        //         ray.distance = calculate_distance(game->player.x, game->player.y, ray.wall_hit.x, ray.wall_hit.y);
-        //         game->door = game->doors[i];
-        //         break;
-        //     }
-        
             ray.wall_hit.x = next_intersection.x;
             ray.wall_hit.y = next_intersection.y;
             ray.distance = calculate_distance(game->player.x, game->player.y, ray.wall_hit.x, ray.wall_hit.y);
@@ -154,25 +139,6 @@ t_ray	get_vertical_intersection(t_game *game, t_ray ray)
 				if (game->door_open)
 				game->door = game->doors[i];		
 			}
-
-            // if ((int)(to_check.y / game->cube_size) == game->door.y && (int)(to_check.x / game->cube_size) == game->door.x && !game->door_open)
-            //     ray.is_wall = 0;
-
-        // while (++i < game->nb_doors)
-        // {
-        //     if ((int)(to_check.y / game->cube_size) == game->doors[i].y && (int)(to_check.x / game->cube_size) == game->doors[i].x)
-        //     {
-        //         ray.is_wall = 0;
-        //         ray.wall_hit.x = next_intersection.x;
-        //         ray.wall_hit.y = next_intersection.y;
-        //         ray.distance = calculate_distance(game->player.x, game->player.y, ray.wall_hit.x, ray.wall_hit.y);
-        //         game->door = game->doors[i];
-        //         break;
-        //     }
-        // }
-
-
-
             ray.wall_hit.x = next_intersection.x;
             ray.wall_hit.y = next_intersection.y;
             ray.distance = calculate_distance(game->player.x, game->player.y, ray.wall_hit.x, ray.wall_hit.y);
@@ -297,47 +263,47 @@ void	check_start_end(int *start, int *end, float *y, float step)
 	if (*end >= HEIGHT)
 		*end = HEIGHT;
 }
-void	draw_textured_wall(t_game *game, int column, float wall_height,
-		t_img *texture)
+void draw_textured_wall(t_game *game, int column, float wall_height, t_img *texture)
 {
-	t_point	texture_pos;
-	int		start_y;
-	int		end_y;
-	int		y;
-	float	step;
+    t_point texture_pos;
+    int start_y;
+    int end_y;
+    int y;
+    float step;
 
-	texture_pos.x = (int)(game->rays[column].texture_offset / game->cube_size
-			* texture->width);
-	start_y = (game->map_height * game->cube_size / 2) - (wall_height / 2);
-	end_y = start_y + wall_height;
-	step = (float)texture->height / wall_height;
-	texture_pos.y = 0;
-	check_start_end(&start_y, &end_y, &texture_pos.y, step);
-	y = start_y;
-	while (y < end_y)
-	{
-		my_mlx_pixel_put(&game->mlx.image, column, y, get_texture_pixel(texture,
-				texture_pos.x, texture_pos.y, game->rays[column].distance));
-		get_texture_pixel(texture, texture_pos.x, texture_pos.y,
-			game->rays[column].distance);
-		texture_pos.y += step;
-		y++;
-	}
+    texture_pos.x = (int)(game->rays[column].texture_offset / game->cube_size * texture->width);
+    start_y = (HEIGHT / 2) - (wall_height / 2);
+    end_y = start_y + wall_height;
+    step = (float)texture->height / wall_height;
+    texture_pos.y = 0;
+    check_start_end(&start_y, &end_y, &texture_pos.y, step);
+    y = start_y;
+    while (y < end_y)
+    {
+        my_mlx_pixel_put(&game->mlx.image, column, y, get_texture_pixel(texture, texture_pos.x, texture_pos.y, game->rays[column].distance));
+        texture_pos.y += step;
+        y++;
+    }
 }
 
-void	draw_column(t_game *game, int column)
+void draw_column(t_game *game, int column)
 {
-	float	wall_height;
-	t_img	*texture;
+    float wall_height;
+    int start_y;
+    int end_y;
+    t_img *texture;
 
-	wall_height = (game->cube_size / game->rays[column].distance)
-		* DISTANCE_TO_PP;
+    wall_height = (game->cube_size / game->rays[column].distance) * DISTANCE_TO_PP;
+
 	draw_rectangle(game, column, HEIGHT, game->f_color);
-	draw_rectangle(game, column, (game->map_height * game->cube_size
-			- wall_height) / 2, game->c_color);
-	texture = get_orientation_texture(game, game->rays[column].orientation);
-	draw_textured_wall(game, column, wall_height, texture);
+    start_y = (HEIGHT / 2) - (wall_height / 2);
+    end_y = start_y + wall_height;
+    if (start_y > 0)
+        draw_rectangle(game, column, start_y, game->c_color);
+    texture = get_orientation_texture(game, game->rays[column].orientation);
+    draw_textured_wall(game, column, wall_height, texture);
 }
+
 t_point	get_best_door(t_game *game)
 {
 	t_point	door;

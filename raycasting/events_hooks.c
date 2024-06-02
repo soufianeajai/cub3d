@@ -79,23 +79,23 @@ void handle_movements(t_game *game, int keysym, float *new_pos_x, float *new_pos
 	handle_arrows(game, keysym);
     if (keysym == W_KEY)
     {
-        *new_pos_y += sin(game->player.rotation_angle) * MOVE_SPEED;
-        *new_pos_x += cos(game->player.rotation_angle) * MOVE_SPEED;
+        *new_pos_y += sin(game->player.rotation_angle) * (game->cube_size/2);
+        *new_pos_x += cos(game->player.rotation_angle) * (game->cube_size/2);
     }
     else if (keysym == S_KEY)
     {
-        *new_pos_y -= sin(game->player.rotation_angle) * MOVE_SPEED;
-        *new_pos_x -= cos(game->player.rotation_angle) * MOVE_SPEED;
+        *new_pos_y -= sin(game->player.rotation_angle) * (game->cube_size/2);
+        *new_pos_x -= cos(game->player.rotation_angle) * (game->cube_size/2);
     }
     else if (keysym == A_KEY)
     {
-        *new_pos_y += sin(game->player.rotation_angle - M_PI_2) * MOVE_SPEED;
-        *new_pos_x += cos(game->player.rotation_angle - M_PI_2) * MOVE_SPEED;
+        *new_pos_y += sin(game->player.rotation_angle - M_PI_2) * (game->cube_size/2);
+        *new_pos_x += cos(game->player.rotation_angle - M_PI_2) * (game->cube_size/2);
     }
     else if (keysym == D_KEY)
     {
-        *new_pos_y += sin(game->player.rotation_angle + M_PI_2) * MOVE_SPEED;
-        *new_pos_x += cos(game->player.rotation_angle + M_PI_2) * MOVE_SPEED;
+        *new_pos_y += sin(game->player.rotation_angle + M_PI_2) * (game->cube_size/2);
+        *new_pos_x += cos(game->player.rotation_angle + M_PI_2) * (game->cube_size/2);
     }
 }
 

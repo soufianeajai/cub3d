@@ -65,7 +65,9 @@ int get_cube_size(t_game game)
 		cube_size = scale_x;
 	else
 		cube_size = scale_y;
-	return ((int)cube_size);
+	if (cube_size < 12)
+		cube_size = 12;
+	return (64);
 }
 
 t_game init_game(t_mlx mlx, t_input input)
