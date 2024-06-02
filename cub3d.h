@@ -122,7 +122,6 @@ void draw_square(t_game *game, int x, int y, int color);
 void draw_player(t_game *game, t_point player);
 void draw_minimap(t_game *game);
 void cast_all_rays(t_game *game);
-void draw_line(t_img *img, t_point start, t_point end);
 t_ray cast_ray(t_game *game, float ray_angle);
 float normalize_angle(float angle);
 int is_door(t_game *game, int x, int y);
