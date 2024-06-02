@@ -62,8 +62,8 @@ void draw_minimap(t_game *game)
 	}
 
 	// Draw player position on the mini-map
-	double player_mini_x = ((game->player.x / game->cube_size) - start_x) * MINI_CUBE_SIZE;
-	double player_mini_y = ((game->player.y / game->cube_size) - start_y) * MINI_CUBE_SIZE;
+	double player_mini_x = ((game->player.x / CUBE_SIZE) - start_x) * MINI_CUBE_SIZE;
+	double player_mini_y = ((game->player.y / CUBE_SIZE) - start_y) * MINI_CUBE_SIZE;
 	draw_player(&game->mlx.minimap_image, player_mini_x, player_mini_y, 0x00000000, game);
 
 //	draw_minimap_borderr(game);

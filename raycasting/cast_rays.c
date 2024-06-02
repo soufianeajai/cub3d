@@ -19,19 +19,19 @@ t_point	get_first_intersection(t_game *game, t_ray *ray, axes axis)
 
 	if (axis == Y)
 	{
-		first_intersection.y = floor(game->player.y / game->cube_size)
-			* game->cube_size;
+		first_intersection.y = floor(game->player.y / CUBE_SIZE)
+			* CUBE_SIZE;
 		if (ray->is_facing_down)
-			first_intersection.y += game->cube_size;
+			first_intersection.y += CUBE_SIZE;
 		first_intersection.x = game->player.x + (first_intersection.y
 				- game->player.y) / tan(ray->angle);
 	}
 	else
 	{
-		first_intersection.x = floor(game->player.x / game->cube_size)
-			* game->cube_size;
+		first_intersection.x = floor(game->player.x / CUBE_SIZE)
+			* CUBE_SIZE;
 		if (ray->is_facing_right)
-			first_intersection.x += game->cube_size;
+			first_intersection.x += CUBE_SIZE;
 		first_intersection.y = game->player.y + (first_intersection.x
 				- game->player.x) * tan(ray->angle);
 	}
@@ -52,26 +52,26 @@ t_ray	init_ray(float ray_angle)
 	return (ray);
 }
 
-t_point	get_step(t_game *game, t_ray *ray, axes axis)
+t_point	get_step(t_ray *ray, axes axis)
 {
 	t_point	step;
 
 	if (axis == Y)
 	{
-		step.y = game->cube_size;
+		step.y = CUBE_SIZE;
 		if (!ray->is_facing_down)
 			step.y *= -1;
-		step.x = game->cube_size / tan(ray->angle);
+		step.x = CUBE_SIZE / tan(ray->angle);
 		if ((!ray->is_facing_right && step.x > 0) || (ray->is_facing_right
 				&& step.x < 0))
 			step.x *= -1;
 	}
 	else
 	{
-		step.x = game->cube_size;
+		step.x = CUBE_SIZE;
 		if (!ray->is_facing_right)
 			step.x *= -1;
-		step.y = game->cube_size * tan(ray->angle);
+		step.y = CUBE_SIZE * tan(ray->angle);
 		if ((!ray->is_facing_down && step.y > 0) || (ray->is_facing_down
 				&& step.y < 0))
 			step.y *= -1;
@@ -88,16 +88,16 @@ t_ray	get_horizontal_intersection(t_game *game, t_ray ray)
 
     i = -1;
     next_intersection = get_first_intersection(game, &ray, Y);
-    step = get_step(game, &ray, Y);
-    while (next_intersection.x >= 0 && next_intersection.x < game->map_width * game->cube_size &&
-           next_intersection.y >= 0 && next_intersection.y < game->map_height * game->cube_size)
+    step = get_step(&ray, Y);
+    while (next_intersection.x >= 0 && next_intersection.x < game->map_width * CUBE_SIZE &&
+           next_intersection.y >= 0 && next_intersection.y < game->map_height * CUBE_SIZE)
     {
         to_check = next_intersection;
         if (!ray.is_facing_down)
             to_check.y--;
-        if (game->map[(int)(to_check.y / game->cube_size)][(int)(to_check.x / game->cube_size)] == '1')
+        if (game->map[(int)(to_check.y / CUBE_SIZE)][(int)(to_check.x / CUBE_SIZE)] == '1')
         {
-			if (is_door(game, (int)(to_check.x / game->cube_size), (int)(to_check.y / game->cube_size)))
+			if (is_door(game, (int)(to_check.x / CUBE_SIZE), (int)(to_check.y / CUBE_SIZE)))
 			{
 				ray.is_wall = 0;
 				if (game->door_open)
@@ -123,16 +123,16 @@ t_ray	get_vertical_intersection(t_game *game, t_ray ray)
 
     i = -1;
     next_intersection = get_first_intersection(game, &ray, X);
-    step = get_step(game, &ray, X);
-    while (next_intersection.x >= 0 && next_intersection.x < game->map_width * game->cube_size &&
-           next_intersection.y >= 0 && next_intersection.y < game->map_height * game->cube_size)
+    step = get_step(&ray, X);
+    while (next_intersection.x >= 0 && next_intersection.x < game->map_width * CUBE_SIZE &&
+           next_intersection.y >= 0 && next_intersection.y < game->map_height * CUBE_SIZE)
     {
         to_check = next_intersection;
         if (!ray.is_facing_right)
             to_check.x--;
-        if (game->map[(int)(to_check.y / game->cube_size)][(int)(to_check.x / game->cube_size)] == '1')
+        if (game->map[(int)(to_check.y / CUBE_SIZE)][(int)(to_check.x / CUBE_SIZE)] == '1')
         {
-			if (is_door(game, (int)(to_check.x / game->cube_size), (int)(to_check.y / game->cube_size)))
+			if (is_door(game, (int)(to_check.x / CUBE_SIZE), (int)(to_check.y / CUBE_SIZE)))
 			{
 
 					ray.is_wall = 0;
@@ -184,14 +184,14 @@ t_ray	cast_ray(t_game *game, float ray_angle)
 	{
 		ray = horizontal_intersection;
 		ray.orientation = get_orientation(&ray, Y);
-		ray.texture_offset = fmod(ray.wall_hit.x, game->cube_size);
+		ray.texture_offset = fmod(ray.wall_hit.x, CUBE_SIZE);
 	}
 	else
 	{
 		ray = vertical_intersection;
 		ray.vertical_hit = 1;
 		ray.orientation = get_orientation(&ray, X);
-		ray.texture_offset = fmod(ray.wall_hit.y, game->cube_size);
+		ray.texture_offset = fmod(ray.wall_hit.y, CUBE_SIZE);
 	}
 	ray.distance = ray.distance * cos(ray.angle
 			- (game->player.rotation_angle));
@@ -271,7 +271,7 @@ void draw_textured_wall(t_game *game, int column, float wall_height, t_img *text
     int y;
     float step;
 
-    texture_pos.x = (int)(game->rays[column].texture_offset / game->cube_size * texture->width);
+    texture_pos.x = (int)(game->rays[column].texture_offset / CUBE_SIZE * texture->width);
     start_y = (HEIGHT / 2) - (wall_height / 2);
     end_y = start_y + wall_height;
     step = (float)texture->height / wall_height;
@@ -293,7 +293,7 @@ void draw_column(t_game *game, int column)
     int end_y;
     t_img *texture;
 
-    wall_height = (game->cube_size / game->rays[column].distance) * DISTANCE_TO_PP;
+    wall_height = (CUBE_SIZE / game->rays[column].distance) * DISTANCE_TO_PP;
 
 	draw_rectangle(game, column, HEIGHT, game->f_color);
     start_y = (HEIGHT / 2) - (wall_height / 2);
@@ -312,14 +312,14 @@ t_point	get_best_door(t_game *game)
 	int		i;
 
 	i = 0;
-	distance = calculate_distance(game->player.x / game->cube_size,
-			game->player.y / game->cube_size, game->doors[0].x,
+	distance = calculate_distance(game->player.x / CUBE_SIZE,
+			game->player.y / CUBE_SIZE, game->doors[0].x,
 			game->doors[0].y);
 	door = game->doors[0];
 	while (++i < game->nb_doors)
 	{
-		best_distance = calculate_distance(game->player.x / game->cube_size,
-				game->player.y / game->cube_size, game->doors[i].x,
+		best_distance = calculate_distance(game->player.x / CUBE_SIZE,
+				game->player.y / CUBE_SIZE, game->doors[i].x,
 				game->doors[i].y);
 		if (best_distance < distance)
 		{

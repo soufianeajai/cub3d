@@ -11,6 +11,7 @@
 # define HEIGHT 900
 # define WIDTH 1500
 # define FOV deg_to_rad(60)
+# define CUBE_SIZE 64
 # define NUM_RAYS WIDTH
 # define ANGLE_INCREMENT (FOV / NUM_RAYS)
 # define DISTANCE_TO_PP ((WIDTH / 2) / tan(FOV / 2))
