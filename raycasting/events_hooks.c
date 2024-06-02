@@ -98,8 +98,23 @@ void handle_movements(t_game *game, int keysym, float *new_pos_x, float *new_pos
         *new_pos_x += cos(game->player.rotation_angle + M_PI_2) * (CUBE_SIZE/2);
     }
 }
-
-
+void handle_doors(t_game *game, float distance_door)
+{
+    if (game->door.x > 0 && game->door.y > 0)
+    {
+        distance_door = calculate_distance(game->player.x/CUBE_SIZE, game->player.y/CUBE_SIZE, game->door.x, game->door.y);
+        if (distance_door < 1.7)
+        {
+            game->door_open = 1;
+            game->map[(int)(game->door.y)][(int)(game->door.x)] = '0';
+        }
+        else
+        {
+            game->door_open = 0;
+            game->map[(int)(game->door.y)][(int)(game->door.x)] = '1';
+        }
+    }
+}
 int handle_keys(int keysym, t_game *game)
 {
     float new_pos_x;
@@ -110,6 +125,7 @@ int handle_keys(int keysym, t_game *game)
 	border = CUBE_SIZE / 6;
     new_pos_x = game->player.x;
     new_pos_y = game->player.y;
+    distance_door = 0;
    	handle_movements(game, keysym, &new_pos_x, &new_pos_y);
     if (new_pos_x > CUBE_SIZE && new_pos_x < (game->map_width * CUBE_SIZE) &&
         new_pos_y > CUBE_SIZE && new_pos_y < (game->map_height * CUBE_SIZE))
@@ -123,20 +139,7 @@ int handle_keys(int keysym, t_game *game)
             game->player.y = new_pos_y;
         }
     }
-    if (game->door.x > 0 && game->door.y > 0)
-    {
-        distance_door = calculate_distance(game->player.x/CUBE_SIZE, game->player.y/CUBE_SIZE, game->door.x, game->door.y);
-        if (distance_door < 1.70)
-        {
-            game->door_open = 1;
-            game->map[(int)(game->door.y)][(int)(game->door.x)] = '0';
-        }
-        else
-        {
-            game->door_open = 0;
-            game->map[(int)(game->door.y)][(int)(game->door.x)] = '1';
-        }
-    }
+    handle_doors(game, distance_door);
     cast_all_rays(game);
     return (0);
 }

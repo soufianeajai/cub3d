@@ -19,8 +19,7 @@ t_point	get_first_intersection(t_game *game, t_ray *ray, axes axis)
 
 	if (axis == Y)
 	{
-		first_intersection.y = floor(game->player.y / CUBE_SIZE)
-			* CUBE_SIZE;
+		first_intersection.y = floor(game->player.y / CUBE_SIZE) * CUBE_SIZE;
 		if (ray->is_facing_down)
 			first_intersection.y += CUBE_SIZE;
 		first_intersection.x = game->player.x + (first_intersection.y
@@ -28,8 +27,7 @@ t_point	get_first_intersection(t_game *game, t_ray *ray, axes axis)
 	}
 	else
 	{
-		first_intersection.x = floor(game->player.x / CUBE_SIZE)
-			* CUBE_SIZE;
+		first_intersection.x = floor(game->player.x / CUBE_SIZE) * CUBE_SIZE;
 		if (ray->is_facing_right)
 			first_intersection.x += CUBE_SIZE;
 		first_intersection.y = game->player.y + (first_intersection.x
@@ -79,76 +77,66 @@ t_point	get_step(t_ray *ray, axes axis)
 	return (step);
 }
 
-t_ray	get_horizontal_intersection(t_game *game, t_ray ray)
+int intersection_found(t_game *game, t_ray *ray, t_point next_intersection, t_point to_check)
+{
+	int state;
+
+	state = 0;
+	if (game->map[(int)(to_check.y / CUBE_SIZE)][(int)(to_check.x / CUBE_SIZE)] == '1')
+    {
+        if (is_door(game, (int)(to_check.x / CUBE_SIZE), (int)(to_check.y / CUBE_SIZE)))
+        {
+            ray->is_wall = 0;
+            if (game->door_open)
+				state = 1;
+			else
+				state = 2;				
+        }
+		else
+			state = 3;
+        ray->wall_hit.x = next_intersection.x;
+        ray->wall_hit.y = next_intersection.y;
+        ray->distance = calculate_distance(game->player.x, game->player.y, ray->wall_hit.x, ray->wall_hit.y);
+        return (state);
+    }
+	return (state);
+}
+void check_direction(t_point *to_check, t_ray *ray, axes axis)
+{
+    if (axis == Y && !ray->is_facing_down)
+        to_check->y--;
+    else if (axis == X && !ray->is_facing_right)
+        to_check->x--;
+}
+t_ray get_intersection(t_game *game, t_ray ray, axes axis)
 {
     t_point next_intersection;
     t_point step;
     t_point to_check;
     int i;
+	int intersection;
 
     i = -1;
-    next_intersection = get_first_intersection(game, &ray, Y);
-    step = get_step(&ray, Y);
+    next_intersection = get_first_intersection(game, &ray, axis);
+    step = get_step(&ray, axis);
     while (next_intersection.x >= 0 && next_intersection.x < game->map_width * CUBE_SIZE &&
            next_intersection.y >= 0 && next_intersection.y < game->map_height * CUBE_SIZE)
     {
-        to_check = next_intersection;
-        if (!ray.is_facing_down)
-            to_check.y--;
-        if (game->map[(int)(to_check.y / CUBE_SIZE)][(int)(to_check.x / CUBE_SIZE)] == '1')
-        {
-			if (is_door(game, (int)(to_check.x / CUBE_SIZE), (int)(to_check.y / CUBE_SIZE)))
-			{
-				ray.is_wall = 0;
-				if (game->door_open)
-				game->door = game->doors[i];		
-			}
-            ray.wall_hit.x = next_intersection.x;
-            ray.wall_hit.y = next_intersection.y;
-            ray.distance = calculate_distance(game->player.x, game->player.y, ray.wall_hit.x, ray.wall_hit.y);
-            break;
-        }
+		to_check = next_intersection;
+		check_direction(&to_check, &ray, axis);
+		intersection = intersection_found(game, &ray, next_intersection, to_check);
+		if (intersection)
+		{
+			if (intersection == 1)
+				game->door = game->doors[i];
+			break;
+		}
         next_intersection.x += step.x;
         next_intersection.y += step.y;
     }
     return (ray);
 }
 
-t_ray	get_vertical_intersection(t_game *game, t_ray ray)
-{
-    t_point next_intersection;
-    t_point step;
-    t_point to_check;
-    int i;
-
-    i = -1;
-    next_intersection = get_first_intersection(game, &ray, X);
-    step = get_step(&ray, X);
-    while (next_intersection.x >= 0 && next_intersection.x < game->map_width * CUBE_SIZE &&
-           next_intersection.y >= 0 && next_intersection.y < game->map_height * CUBE_SIZE)
-    {
-        to_check = next_intersection;
-        if (!ray.is_facing_right)
-            to_check.x--;
-        if (game->map[(int)(to_check.y / CUBE_SIZE)][(int)(to_check.x / CUBE_SIZE)] == '1')
-        {
-			if (is_door(game, (int)(to_check.x / CUBE_SIZE), (int)(to_check.y / CUBE_SIZE)))
-			{
-
-					ray.is_wall = 0;
-				if (game->door_open)
-				game->door = game->doors[i];		
-			}
-            ray.wall_hit.x = next_intersection.x;
-            ray.wall_hit.y = next_intersection.y;
-            ray.distance = calculate_distance(game->player.x, game->player.y, ray.wall_hit.x, ray.wall_hit.y);
-            break;
-        }
-        next_intersection.x += step.x;
-        next_intersection.y += step.y;
-    }
-    return (ray);
-}
 wall_orientation	get_orientation(t_ray *ray, axes axis)
 {
 	wall_orientation	orientation;
@@ -171,31 +159,32 @@ wall_orientation	get_orientation(t_ray *ray, axes axis)
 		orientation = DOOR;
 	return (orientation);
 }
-t_ray	cast_ray(t_game *game, float ray_angle)
-{
-	t_ray	ray;
-	t_ray	horizontal_intersection;
-	t_ray	vertical_intersection;
 
-	ray = init_ray(ray_angle);
-	horizontal_intersection = get_horizontal_intersection(game, ray);
-	vertical_intersection = get_vertical_intersection(game, ray);
-	if (horizontal_intersection.distance < vertical_intersection.distance)
-	{
-		ray = horizontal_intersection;
-		ray.orientation = get_orientation(&ray, Y);
-		ray.texture_offset = fmod(ray.wall_hit.x, CUBE_SIZE);
-	}
-	else
-	{
-		ray = vertical_intersection;
-		ray.vertical_hit = 1;
-		ray.orientation = get_orientation(&ray, X);
-		ray.texture_offset = fmod(ray.wall_hit.y, CUBE_SIZE);
-	}
-	ray.distance = ray.distance * cos(ray.angle
-			- (game->player.rotation_angle));
-	return (ray);
+t_ray cast_ray(t_game *game, float ray_angle)
+{
+    t_ray ray;
+    t_ray horizontal_intersection;
+    t_ray vertical_intersection;
+
+    ray = init_ray(ray_angle);
+    horizontal_intersection = get_intersection(game, ray, Y);
+    vertical_intersection = get_intersection(game, ray, X);
+
+    if (horizontal_intersection.distance < vertical_intersection.distance)
+    {
+        ray = horizontal_intersection;
+        ray.orientation = get_orientation(&ray, Y);
+        ray.texture_offset = fmod(ray.wall_hit.x, CUBE_SIZE);
+    }
+    else
+    {
+        ray = vertical_intersection;
+        ray.vertical_hit = 1;
+        ray.orientation = get_orientation(&ray, X);
+        ray.texture_offset = fmod(ray.wall_hit.y, CUBE_SIZE);
+    }
+    ray.distance = ray.distance * cos(ray.angle - (game->player.rotation_angle));
+    return (ray);
 }
 
 void	draw_rectangle(t_game *game, int start_x, int height, int color)
@@ -206,23 +195,9 @@ void	draw_rectangle(t_game *game, int start_x, int height, int color)
 	while (j < height)
 	{
 		if (start_x >= 0 && start_x < WIDTH && j >= 0 && j < HEIGHT)
-			my_mlx_pixel_put(&game->mlx.image, start_x, + j, color);
+			my_mlx_pixel_put(&game->mlx.image, start_x, +j, color);
 		j++;
 	}
-}
-
-int	blend_colors(int pixel_color, float distance)
-{
-	float			factor;
-	unsigned int	red;
-	unsigned int	green;
-	unsigned int	blue;
-
-	factor = expf(-5.0 * (distance / WIDTH));
-	red = ((pixel_color >> 16) % 256) * factor;
-	green = ((pixel_color >> 8) % 256) * factor;
-	blue = (pixel_color % 256) * factor;
-	return ((red << 16) + (green << 8) + blue);
 }
 
 int	get_texture_pixel(t_img *texture, int x, int y, float distance)
@@ -233,7 +208,6 @@ int	get_texture_pixel(t_img *texture, int x, int y, float distance)
 	(void)distance;
 	pixel = texture->addr + (y * texture->line_len + x * (texture->bpp / 8));
 	pixel_color = *(int *)pixel;
-//	pixel_color = blend_colors(pixel_color, distance);
 	return (pixel_color);
 }
 
@@ -264,45 +238,47 @@ void	check_start_end(int *start, int *end, float *y, float step)
 	if (*end >= HEIGHT)
 		*end = HEIGHT;
 }
-void draw_textured_wall(t_game *game, int column, float wall_height, t_img *texture)
+void	draw_textured_wall(t_game *game, int column, float wall_height,
+		t_img *texture)
 {
-    t_point texture_pos;
-    int start_y;
-    int end_y;
-    int y;
-    float step;
+	t_point	texture_pos;
+	int		start_y;
+	int		end_y;
+	int		y;
+	float	step;
 
-    texture_pos.x = (int)(game->rays[column].texture_offset / CUBE_SIZE * texture->width);
-    start_y = (HEIGHT / 2) - (wall_height / 2);
-    end_y = start_y + wall_height;
-    step = (float)texture->height / wall_height;
-    texture_pos.y = 0;
-    check_start_end(&start_y, &end_y, &texture_pos.y, step);
-    y = start_y;
-    while (y < end_y)
-    {
-        my_mlx_pixel_put(&game->mlx.image, column, y, get_texture_pixel(texture, texture_pos.x, texture_pos.y, game->rays[column].distance));
-        texture_pos.y += step;
-        y++;
-    }
+	texture_pos.x = (int)(game->rays[column].texture_offset / CUBE_SIZE
+			* texture->width);
+	start_y = (HEIGHT / 2) - (wall_height / 2);
+	end_y = start_y + wall_height;
+	step = (float)texture->height / wall_height;
+	texture_pos.y = 0;
+	check_start_end(&start_y, &end_y, &texture_pos.y, step);
+	y = start_y;
+	while (y < end_y)
+	{
+		my_mlx_pixel_put(&game->mlx.image, column, y, get_texture_pixel(texture,
+				texture_pos.x, texture_pos.y, game->rays[column].distance));
+		texture_pos.y += step;
+		y++;
+	}
 }
 
-void draw_column(t_game *game, int column)
+void	draw_column(t_game *game, int column)
 {
-    float wall_height;
-    int start_y;
-    int end_y;
-    t_img *texture;
+	float	wall_height;
+	int		start_y;
+	int		end_y;
+	t_img	*texture;
 
-    wall_height = (CUBE_SIZE / game->rays[column].distance) * DISTANCE_TO_PP;
-
+	wall_height = (CUBE_SIZE / game->rays[column].distance) * DISTANCE_TO_PP;
 	draw_rectangle(game, column, HEIGHT, game->f_color);
-    start_y = (HEIGHT / 2) - (wall_height / 2);
-    end_y = start_y + wall_height;
-    if (start_y > 0)
-        draw_rectangle(game, column, start_y, game->c_color);
-    texture = get_orientation_texture(game, game->rays[column].orientation);
-    draw_textured_wall(game, column, wall_height, texture);
+	start_y = (HEIGHT / 2) - (wall_height / 2);
+	end_y = start_y + wall_height;
+	if (start_y > 0)
+		draw_rectangle(game, column, start_y, game->c_color);
+	texture = get_orientation_texture(game, game->rays[column].orientation);
+	draw_textured_wall(game, column, wall_height, texture);
 }
 
 t_point	get_best_door(t_game *game)
@@ -313,15 +289,13 @@ t_point	get_best_door(t_game *game)
 	int		i;
 
 	i = 0;
-	distance = calculate_distance(game->player.x / CUBE_SIZE,
-			game->player.y / CUBE_SIZE, game->doors[0].x,
-			game->doors[0].y);
+	distance = calculate_distance(game->player.x / CUBE_SIZE, game->player.y
+			/ CUBE_SIZE, game->doors[0].x, game->doors[0].y);
 	door = game->doors[0];
 	while (++i < game->nb_doors)
 	{
 		best_distance = calculate_distance(game->player.x / CUBE_SIZE,
-				game->player.y / CUBE_SIZE, game->doors[i].x,
-				game->doors[i].y);
+				game->player.y / CUBE_SIZE, game->doors[i].x, game->doors[i].y);
 		if (best_distance < distance)
 		{
 			distance = best_distance;
@@ -336,16 +310,17 @@ void	cast_all_rays(t_game *game)
 	float	ray_angle;
 	int		column;
 
-    column = 0;
-    ray_angle = (game->player.rotation_angle) - (FOV / 2);
-    game->door = get_best_door(game);
-    while (column < NUM_RAYS)
-    {
-        game->rays[column] = cast_ray(game, ray_angle);
-        draw_column(game, column);
-        ray_angle += ANGLE_INCREMENT;
-        column++;
-    }
-    mlx_put_image_to_window(game->mlx.connect, game->mlx.window, game->mlx.image.ptr, 0, 0);
-    draw_minimap(game);
+	column = 0;
+	ray_angle = (game->player.rotation_angle) - (FOV / 2);
+	game->door = get_best_door(game);
+	while (column < NUM_RAYS)
+	{
+		game->rays[column] = cast_ray(game, ray_angle);
+		draw_column(game, column);
+		ray_angle += ANGLE_INCREMENT;
+		column++;
+	}
+	mlx_put_image_to_window(game->mlx.connect, game->mlx.window,
+		game->mlx.image.ptr, 0, 0);
+	draw_minimap(game);
 }

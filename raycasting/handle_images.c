@@ -42,17 +42,6 @@ int  get_image_from_xpm(void *mlx_ptr, char *path_xpm, t_img *img)
   return (1);
 }
 
-void read_matrix(t_input input)
-{
-    int i = 0;
-    while(input.map[i] != NULL)
-    {
-        printf("%s", input.map[i]);
-        printf("\n");
-        i++;
-    }
-}
-
 void	my_mlx_pixel_put(t_img *image, int x, int y, int color)
 {
 	char	*pixel;
