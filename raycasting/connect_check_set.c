@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   connect_check_set.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: afanidi <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/03 22:31:51 by afanidi           #+#    #+#             */
+/*   Updated: 2024/06/03 22:31:54 by afanidi          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../cub3d.h"
 
 t_mlx	ft_connect(t_input *input)
@@ -13,7 +25,7 @@ t_mlx	ft_connect(t_input *input)
 	mlx.image.ptr = mlx_new_image(mlx.connect, WIDTH, HEIGHT);
 	mlx.minimap_image.ptr = mlx_new_image(mlx.connect, MINI_WIDTH, MINI_HEIGHT);
 	if (!mlx.image.ptr || !mlx.minimap_image.ptr)
-		ft_error(mlx.connect, "Problem in Allocating the image", input, 2);	
+		ft_error(mlx.connect, "Problem in Allocating the image", input, 2);
 	mlx.image.addr = mlx_get_data_addr(mlx.image.ptr, &(mlx.image.bpp),
 			&(mlx.image.line_len), &(mlx.image.endian));
 	mlx.minimap_image.addr = mlx_get_data_addr(mlx.minimap_image.ptr,

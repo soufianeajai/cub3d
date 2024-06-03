@@ -46,8 +46,7 @@ typedef struct s_input
 	int		w;
 }			t_input;
 
-int			init_data(t_input *input, char *file, int *error,
-				int *index_start_map);
+t_input		init_data(void);
 void		free_all_elements(t_input *input);
 
 void		get_doors(t_input *input);

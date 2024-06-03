@@ -47,6 +47,7 @@ int	main(int ac, char **av)
 	t_input	input;
 	t_ray	rays[NUM_RAYS + 1];
 
+	input = init_data();
 	if (!check_argument(ac, av) || !parsing(av[1], &input))
 		return (printf("Error\n"), 1);
 	get_doors(&input);
@@ -61,7 +62,8 @@ int	main(int ac, char **av)
 	mlx_loop(game.mlx.connect);
 	return (0);
 }
-void init_doors(t_game *game, t_input *input)
+
+void	init_doors(t_game *game, t_input *input)
 {
 	game->door.x = -1;
 	game->door.y = -1;
@@ -74,6 +76,7 @@ void init_doors(t_game *game, t_input *input)
 	}
 	game->door_open = 0;
 }
+
 t_game	init_game(t_mlx mlx, t_input input)
 {
 	t_game	game;

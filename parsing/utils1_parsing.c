@@ -26,25 +26,25 @@ void	ft_free(char **tab)
 	tab = NULL;
 }
 
-int	init_data(t_input *input, char *file, int *error, int *index_start_map)
+t_input	init_data(void)
 {
-	*error = 0;
-	*index_start_map = 0;
-	input->door_x = -1;
-	input->door_y = -1;
-	input->pos_x = -1;
-	input->pos_y = -1;
-	input->direction = -1;
-	input->h = 0;
-	input->w = 0;
-	input->no = NULL;
-	input->so = NULL;
-	input->we = NULL;
-	input->ea = NULL;
-	input->f_color = -1;
-	input->c_color = -1;
-	input->map = NULL;
-	return (open(file, O_RDONLY));
+	t_input	input;
+
+	input.door_x = -1;
+	input.door_y = -1;
+	input.pos_x = -1;
+	input.pos_y = -1;
+	input.direction = -1;
+	input.h = 0;
+	input.w = 0;
+	input.no = NULL;
+	input.so = NULL;
+	input.we = NULL;
+	input.ea = NULL;
+	input.f_color = -1;
+	input.c_color = -1;
+	input.map = NULL;
+	return (input);
 }
 
 void	free_all_elements(t_input *input)

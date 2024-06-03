@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_walls.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: afanidi <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/03 22:32:03 by afanidi           #+#    #+#             */
+/*   Updated: 2024/06/03 22:32:04 by afanidi          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../cub3d.h"
 
 void	draw_rectangle(t_game *game, int start_x, int height, int color)
@@ -22,6 +34,7 @@ int	get_texture_pixel(t_img *texture, int x, int y)
 	pixel_color = *(int *)pixel;
 	return (pixel_color);
 }
+
 void	check_start_end(int *start, int *end, float *y, float step)
 {
 	if (*start < 0)

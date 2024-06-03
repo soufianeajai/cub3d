@@ -86,4 +86,5 @@ void	get_doors(t_input *input)
 	mise_a_jour_map(input);
 	while (++i < input->nb_doors)
 		input->map[(int)input->door[i].y][(int)input->door[i].x] = '1';
+	printf("nb_doors = %d\n", input->nb_doors);
 }

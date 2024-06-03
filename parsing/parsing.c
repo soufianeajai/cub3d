@@ -80,7 +80,9 @@ int	parsing(char *file, t_input *input)
 	int		index_start_map;
 	int		error;
 
-	fd = init_data(input, file, &error, &index_start_map);
+	index_start_map = 0;
+	error = 0;
+	fd = open(file, O_RDONLY);
 	while (1)
 	{
 		line = get_next_line(fd);
