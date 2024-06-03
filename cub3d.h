@@ -117,7 +117,6 @@ t_game init_game(t_mlx mlx, t_input input);
 int  get_image_from_xpm(void *mlx_ptr, char *path_xpm, t_img *img);
 double deg_to_rad(double angle);
 double rad_to_deg(double angle);
-void read_matrix(t_input input);
 void draw_square(t_game *game, int x, int y, int color);
 void draw_player(t_game *game, t_point player);
 void draw_minimap(t_game *game);

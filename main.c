@@ -31,7 +31,6 @@ int	main(int ac , char **av)
 	t_ray  rays[NUM_RAYS + 1];
 	t_input input;
 	
-
 	if (!check_argument(ac, av) || !parsing(av[1],&input))
 	{
 		printf("Map Error\n");
