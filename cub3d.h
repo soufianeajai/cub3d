@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afanidi <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: sajaite <sajaite@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 18:43:37 by afanidi           #+#    #+#             */
-/*   Updated: 2024/06/03 18:43:38 by afanidi          ###   ########.fr       */
+/*   Updated: 2024/06/03 19:58:48 by sajaite          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,10 @@
 
 # define HEIGHT 900
 # define WIDTH 1500
-# define FOV deg_to_rad(60)
 # define CUBE_SIZE 64
 # define NUM_RAYS WIDTH
-# define ANGLE_INCREMENT (FOV / NUM_RAYS)
-# define DISTANCE_TO_PROJECTION_PLAN ((WIDTH / 2) / tan(FOV / 2))
+# define NUM_DOORS 100
 # define MOVE_SPEED 15
-# define ROTATION_SPEED deg_to_rad(8)
 # define MINI_HEIGHT 132
 # define MINI_WIDTH 180
 # define MINI_CUBE_SIZE 12
@@ -39,8 +36,6 @@
 # define S_KEY 1
 # define A_KEY 0
 # define D_KEY 2
-# define MAX_DISTANCE 300
-# define NUM_DOORS 100
 
 typedef enum s_wall_orientation
 {
@@ -119,13 +114,19 @@ typedef struct s_game
 	int					nb_doors;
 	bool				door_open;
 	int					last_mouse_x;
+	float				fov;
+	double				angle_increment;
+	float				distance_to_projection_plan;
+	float				rotation_speed;
+	float				move_speed;
 }						t_game;
 
 float					calculate_distance(float x1, float y1, float x2,
 							float y2);
 t_mlx					ft_connect(t_input *input);
 void					my_mlx_pixel_put(t_img *image, int x, int y, int color);
-void					ft_error(void *ptr, char *msg, t_input *input);
+void					ft_error(t_mlx *mlx, char *msg, t_input *input,
+							int free_flag);
 int						mouse_move(int x, int y, t_game *game);
 int						handle_keys(int keysym, t_game *game);
 int						ft_close(int keysym, t_mlx *mlx);
@@ -146,5 +147,26 @@ float					normalize_angle(float angle);
 int						is_door(t_game *game, int x, int y);
 int						get_texture_pixel(t_img *texture, int x, int y);
 void					draw_line(t_img *img, t_point start, t_point end);
-
+void					draw_rectangle(t_game *game, int start_x, int height,
+							int color);
+void					check_start_end(int *start, int *end, float *y,
+							float step);
+void					draw_textured_wall(t_game *game, int column,
+							float wall_height, t_img *texture);
+void					draw_column(t_game *game, int column);
+t_img					*get_orientation_texture(t_game *game,
+							t_wall_orientation orientation);
+t_point					get_first_intersection(t_game *game, t_ray *ray,
+							t_axes axis);
+t_point					get_step(t_ray *ray, t_axes axis);
+int						intersection_found(t_game *game, t_ray *ray,
+							t_point next_intersection, t_point to_check);
+t_ray					get_intersection(t_game *game, t_ray ray, t_axes axis);
+void					check_direction(t_point *to_check, t_ray *ray,
+							t_axes axis);
+t_point					get_best_door(t_game *game);
+t_ray					init_ray(float ray_angle);
+t_wall_orientation		set_orientation(t_ray *ray, t_axes axis);
+t_img					*get_orientation_texture(t_game *game,
+							t_wall_orientation orientation);
 #endif

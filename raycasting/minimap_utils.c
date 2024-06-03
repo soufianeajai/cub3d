@@ -1,6 +1,7 @@
-#include"../cub3d.h"
+#include "../cub3d.h"
 
-void initialize_line(t_point *delta, t_point *signe, t_point start, t_point end)
+void	initialize_line(t_point *delta, t_point *signe, t_point start,
+		t_point end)
 {
 	delta->x = abs((int)((int)end.x - (int)start.x));
 	delta->y = abs((int)((int)end.y - (int)start.y));
@@ -12,42 +13,40 @@ void initialize_line(t_point *delta, t_point *signe, t_point start, t_point end)
 		signe->y = -1;
 }
 
-void draw_line(t_img *img, t_point start, t_point end)
+void	draw_line(t_img *img, t_point start, t_point end)
 {
-	t_point delta;
-	t_point signe;
-	int x;
-	int y;
-    int err;
-	int e2;
+	t_point	delta;
+	t_point	signe;
+	int		x;
+	int		y;
+	int		err;
+	int		e2;
 
 	initialize_line(&delta, &signe, start, end);
 	err = (int)((int)delta.x - (int)delta.y);
-    while ((int)start.x != (int)end.x || (int)start.y != (int)end.y)
+	while ((int)start.x != (int)end.x || (int)start.y != (int)end.y)
 	{
 		x = (int)start.x;
 		y = (int)start.y;
-        my_mlx_pixel_put(img, x,y, 0x00FF0000);
-        e2 = 3 *err;
-        if (e2 > (int)(-delta.y))
+		my_mlx_pixel_put(img, x, y, 0x00FF0000);
+		e2 = 3 * err;
+		if (e2 > (int)(-delta.y))
 		{
-            err -= (int)delta.y;
-            start.x += (int)signe.x;
-        }
-        if (e2 < (int)delta.x)
+			err -= (int)delta.y;
+			start.x += (int)signe.x;
+		}
+		if (e2 < (int)delta.x)
 		{
-            err += (int)delta.x;
-            start.y += (int)signe.y;
-        }
-    }
+			err += (int)delta.x;
+			start.y += (int)signe.y;
+		}
+	}
 }
 
-
-
-void draw_square(t_game *game, int x, int y, int color)
+void	draw_square(t_game *game, int x, int y, int color)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (i < MINI_CUBE_SIZE)
@@ -62,12 +61,12 @@ void draw_square(t_game *game, int x, int y, int color)
 	}
 }
 
-void draw_player(t_game *game, t_point player)
+void	draw_player(t_game *game, t_point player)
 {
-	int i;
-	int j;
-	int r;
-	t_point end;
+	int		i;
+	int		j;
+	int		r;
+	t_point	end;
 
 	r = MINI_CUBE_SIZE / 4;
 	i = -r;
@@ -77,12 +76,29 @@ void draw_player(t_game *game, t_point player)
 		while (j < r)
 		{
 			if (i * i + j * j <= r * r)
-				my_mlx_pixel_put(&game->mlx.minimap_image, player.x + i, player.y + j, 0x00FF0000);
+				my_mlx_pixel_put(&game->mlx.minimap_image, player.x + i,
+					player.y + j, 0x00FF0000);
 			j++;
 		}
 		i++;
 	}
-	end.x = player.x + (int)(MINI_CUBE_SIZE*cos(game->player.rotation_angle));
-	end.y = player.y + (int)(MINI_CUBE_SIZE*sin(game->player.rotation_angle));
-    draw_line(&game->mlx.minimap_image, player, end);
+	end.x = player.x + (int)(MINI_CUBE_SIZE * cos(game->player.rotation_angle));
+	end.y = player.y + (int)(MINI_CUBE_SIZE * sin(game->player.rotation_angle));
+	draw_line(&game->mlx.minimap_image, player, end);
+}
+int	is_door(t_game *game, int x, int y)
+{
+	int	i;
+
+	i = 0;
+	if (x <= 0 || y <= 0 || x >= game->map_width || y >= game->map_height)
+		return (0);
+	while (i < game->nb_doors)
+	{
+		if (game->map[y][x] == '1' && (int)game->doors[i].x == x
+			&& (int)game->doors[i].y == y)
+			return (1);
+		i++;
+	}
+	return (0);
 }

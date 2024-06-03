@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afanidi <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: sajaite <sajaite@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 18:42:51 by afanidi           #+#    #+#             */
-/*   Updated: 2024/06/03 18:42:52 by afanidi          ###   ########.fr       */
+/*   Updated: 2024/06/03 19:02:47 by sajaite          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,19 @@ int	main(int ac, char **av)
 	mlx_loop(game.mlx.connect);
 	return (0);
 }
-
+void init_doors(t_game *game, t_input *input)
+{
+	game->door.x = -1;
+	game->door.y = -1;
+	if (input->nb_doors > 0)
+	{
+		game->door.x = input->door[0].x;
+		game->door.y = input->door[0].y;
+		game->nb_doors = input->nb_doors;
+		ft_memcpy(game->doors, input->door, sizeof(t_point) * NUM_DOORS);
+	}
+	game->door_open = 0;
+}
 t_game	init_game(t_mlx mlx, t_input input)
 {
 	t_game	game;
@@ -77,15 +89,11 @@ t_game	init_game(t_mlx mlx, t_input input)
 	game.player.turn_direction = 0;
 	game.player.rotation_angle = deg_to_rad(input.direction);
 	game.last_mouse_x = -1;
-	game.door.x = -1;
-	game.door.y = -1;
-	if (input.nb_doors > 0)
-	{
-		game.door.x = input.door[0].x;
-		game.door.y = input.door[0].y;
-		game.nb_doors = input.nb_doors;
-		ft_memcpy(game.doors, input.door, sizeof(t_point) * NUM_DOORS);
-	}
-	game.door_open = 0;
+	game.fov = deg_to_rad(60);
+	game.angle_increment = (game.fov / NUM_RAYS);
+	game.distance_to_projection_plan = (WIDTH / 2) / (tan(game.fov / 2));
+	game.rotation_speed = deg_to_rad(8);
+	game.move_speed = CUBE_SIZE / 2;
+	init_doors(&game, &input);
 	return (game);
 }
