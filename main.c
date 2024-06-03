@@ -28,7 +28,6 @@ int	main(int ac , char **av)
 {
 	t_game game;
 	t_mlx	mlx;
-	t_ray  rays[NUM_RAYS + 1];
 	t_input input;
 	
 	if (!check_argument(ac, av) || !parsing(av[1],&input))
@@ -40,12 +39,8 @@ int	main(int ac , char **av)
 	//read_matrix(input);
 	ft_connect(&mlx, &input);
 	game = init_game(mlx, input);
-	game.rays = rays;
- 	cast_all_rays(&game);
 	mlx_key_hook(mlx.window, &ft_close, &mlx);
-	// free input
  	mlx_hook(mlx.window, 17,0, &ft_close2, &mlx);
-	// free input
 	mlx_hook(mlx.window, 2, 0, &handle_keys, &game);
 	mlx_hook(mlx.window, 6, 1L << 6,&mouse_move,&game);
  	mlx_loop(mlx.connect);
@@ -76,5 +71,6 @@ t_game init_game(t_mlx mlx, t_input input)
 		ft_memcpy(game.doors, input.door, sizeof(t_point) * NUM_DOORS);
 	}
 	game.door_open = 0;
+	cast_all_rays(&game);
 	return (game);
 }

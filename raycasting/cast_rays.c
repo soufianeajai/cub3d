@@ -309,8 +309,10 @@ void	cast_all_rays(t_game *game)
 {
 	float	ray_angle;
 	int		column;
+	t_ray  rays[NUM_RAYS + 1];
 
 	column = 0;
+	game->rays = rays;
 	ray_angle = (game->player.rotation_angle) - (FOV / 2);
 	game->door = get_best_door(game);
 	while (column < NUM_RAYS)
