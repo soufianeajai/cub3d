@@ -6,7 +6,7 @@ SRS		= main.c raycasting/events_hooks.c raycasting/connect_check_set.c raycastin
 		  parsing/util2_parsing.c parsing/util1_parsing.c parsing/util3_parsing.c parsing/util4_parsing.c parsing/parsing.c \
 		  parsing/util_parsing.c parsing/util5_parsing.c parsing/gnl/get_next_line.c parsing/gnl/get_next_line_utils.c
 
-FRAM	= libmlx.a -framework OpenGL -framework AppKit #
+FRAM	= libmlx.a -framework OpenGL -framework AppKit #-ggdb3 -fsanitize=address
 
 OBJ	= $(SRS:.c=.o)
 
@@ -16,7 +16,7 @@ all: $(NAME)
 	cc $(CFLAGS) -c $< -o $@
 	
 $(NAME): $(OBJ)
-	cc $(OBJ)  $(FRAM)  -ggdb3 -fsanitize=address -o $(NAME)
+	cc $(OBJ)  $(FRAM)   -o $(NAME)
 
 fclean: clean
 	rm -f $(NAME)
