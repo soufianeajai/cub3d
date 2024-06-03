@@ -53,6 +53,7 @@ void	get_doors(t_input *input)
 	mise_a_jour_map(input);
 	while (++i < input->nb_doors)
 		input->map[(int)input->door[i].y][(int)input->door[i].x] = '1';
+		
 }
 
 int	get_position_door(t_input input, int *x, int *y, char **map)

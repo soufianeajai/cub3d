@@ -200,12 +200,11 @@ void	draw_rectangle(t_game *game, int start_x, int height, int color)
 	}
 }
 
-int	get_texture_pixel(t_img *texture, int x, int y, float distance)
+int	get_texture_pixel(t_img *texture, int x, int y)
 {
 	int		pixel_color;
 	char	*pixel;
 
-	(void)distance;
 	pixel = texture->addr + (y * texture->line_len + x * (texture->bpp / 8));
 	pixel_color = *(int *)pixel;
 	return (pixel_color);
@@ -258,7 +257,7 @@ void	draw_textured_wall(t_game *game, int column, float wall_height,
 	while (y < end_y)
 	{
 		my_mlx_pixel_put(&game->mlx.image, column, y, get_texture_pixel(texture,
-				texture_pos.x, texture_pos.y, game->rays[column].distance));
+				texture_pos.x, texture_pos.y));
 		texture_pos.y += step;
 		y++;
 	}
@@ -309,10 +308,8 @@ void	cast_all_rays(t_game *game)
 {
 	float	ray_angle;
 	int		column;
-	t_ray  rays[NUM_RAYS + 1];
 
 	column = 0;
-	game->rays = rays;
 	ray_angle = (game->player.rotation_angle) - (FOV / 2);
 	game->door = get_best_door(game);
 	while (column < NUM_RAYS)
@@ -322,7 +319,7 @@ void	cast_all_rays(t_game *game)
 		ray_angle += ANGLE_INCREMENT;
 		column++;
 	}
+	draw_minimap(game);
 	mlx_put_image_to_window(game->mlx.connect, game->mlx.window,
 		game->mlx.image.ptr, 0, 0);
-	draw_minimap(game);
 }

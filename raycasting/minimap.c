@@ -15,42 +15,63 @@ int is_door(t_game *game, int x, int y)
 	}
 	return (0);
 }
-void draw(t_game *game, t_point start, t_point end)
+void draw(t_game *game, t_point start)
 {
-	t_point point;
-	point.y = start.y;
-	while (point.y < end.y)
+	int x;
+	int y;
+	int end_x;
+	int end_y;
+
+	end_x = (int)((int)game->player.x / CUBE_SIZE) + (int)(MINI_WIDTH / MINI_CUBE_SIZE / 2) + 1;
+	end_y = (int)(((int)game->player.y / CUBE_SIZE)+ (int)(MINI_HEIGHT / MINI_CUBE_SIZE / 2)) + 1;
+	y = (int)start.y - 1;
+	while (++y < end_y)
 	{
-		point.x = start.x;
-		while (point.x < end.x)
+		x = (int)start.x - 1;
+		while (++x < end_x)
 		{
-			if (point.y >= 0 && point.y < game->map_height && point.x >= 0 && point.x < game->map_width)
+			if (y >= 0 && y < game->map_height && x >= 0 && x < game->map_width)
 			{
-				if (is_door(game, point.x, point.y))
-					draw_square(game, (point.x - start.x) * MINI_CUBE_SIZE, (point.y - start.y) * MINI_CUBE_SIZE, 0x00000000);
-				else if (game->map[(int)point.y][(int)point.x] == '1')
-					draw_square(game, (point.x - start.x) * MINI_CUBE_SIZE, (point.y - start.y) * MINI_CUBE_SIZE, 0xFF000000);
-				else if (game->map[(int)point.y][(int)point.x] == '0')
-					draw_square(game, (point.x - start.x) * MINI_CUBE_SIZE, (point.y - start.y) * MINI_CUBE_SIZE, 0x00FFFFFF);
+				if (is_door(game, x, y))
+					draw_square(game, (x - start.x) * MINI_CUBE_SIZE, (y - start.y) * MINI_CUBE_SIZE, 0x00000000);
+				else if (game->map[(int)y][(int)x] == '1')
+					draw_square(game, (x - start.x) * MINI_CUBE_SIZE, (y - start.y) * MINI_CUBE_SIZE, 0xFF000000);
+				else if (game->map[(int)y][(int)x] == '0')
+					draw_square(game, (x - start.x) * MINI_CUBE_SIZE, (y - start.y) * MINI_CUBE_SIZE, 0x00FFFFFF);
 			}
-			point.x++;
 		}
-		point.y++;
+	}
+}
+void copy_image(t_game *game)
+{
+	int x;
+	int y;
+	int color;
+
+	y = 0;
+	while (y < MINI_HEIGHT)
+	{
+		x = 0;
+		while (x < MINI_WIDTH)
+		{
+			color = get_texture_pixel(&game->mlx.minimap_image, x, y);
+			my_mlx_pixel_put(&game->mlx.image, x, y + HEIGHT - MINI_HEIGHT, color);
+			x++;
+		}
+		y++;
 	}
 }
 void draw_minimap(t_game *game)
 {
 	t_point start;
-	t_point end;
 	t_point mini_player;
 
 	start.x = (int)(game->player.x / CUBE_SIZE) - (int)(MINI_WIDTH / MINI_CUBE_SIZE / 2);
 	start.y = (int)(game->player.y / CUBE_SIZE) - (int)(MINI_HEIGHT / MINI_CUBE_SIZE / 2);
-	end.x = (int)(game->player.x / CUBE_SIZE) + (int)(MINI_WIDTH / MINI_CUBE_SIZE / 2) + 1;
-	end.y = (int)(game->player.y / CUBE_SIZE)+ (int)(MINI_HEIGHT / MINI_CUBE_SIZE / 2) + 1;
-	draw(game, start, end);
+	draw(game, start);
 	mini_player.x = ((game->player.x / CUBE_SIZE) - start.x) * MINI_CUBE_SIZE;
 	mini_player.y = ((game->player.y / CUBE_SIZE) - start.y) * MINI_CUBE_SIZE;
 	draw_player(game, mini_player);
-	mlx_put_image_to_window(game->mlx.connect, game->mlx.window, game->mlx.minimap_image.ptr, 0, HEIGHT - MINI_HEIGHT);
+	copy_image(game);
+//	mlx_put_image_to_window(game->mlx.connect, game->mlx.window, game->mlx.image.ptr, 0, 0);
 }

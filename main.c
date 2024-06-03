@@ -4,46 +4,48 @@ int check_argument(int ac, char **av)
 	int fd;
 
 	if (ac != 2)
-	{
-		printf("Error\n");
 		return (0);
-	}
 	if (ft_strncmp(av[1] + ft_strlen(av[1]) - 4, ".cub", 4) != 0)
-	{
-		printf("Error\n");
 		return (0);
-	}
 	fd = open(av[1], O_RDONLY);
 	if (fd < 0)
-	{
-		printf("Error\n");
 		return (0);
-	}
 	close(fd);
 	return (1);
 }
 
+void read_matrix(t_input input)
+{
+    int i = 0;
+    while(input.map[i] != NULL)
+    {
+        printf("%s", input.map[i]);
+        printf("\n");
+        i++;
+    }
+}
 
 int	main(int ac , char **av)
 {
 	t_game game;
 	t_mlx	mlx;
 	t_input input;
+	t_ray  rays[NUM_RAYS + 1];
 	
-	if (!check_argument(ac, av) || !parsing(av[1],&input))
-	{
-		printf("Map Error\n");
-		return (1);
-	}
+	if (!check_argument(ac, av) || !parsing(av[1], &input))
+		return (printf("Error\n"),1);
+	
 	get_doors(&input);
 	//read_matrix(input);
-	ft_connect(&mlx, &input);
+	mlx = ft_connect(&input);
 	game = init_game(mlx, input);
-	mlx_key_hook(mlx.window, &ft_close, &mlx);
- 	mlx_hook(mlx.window, 17,0, &ft_close2, &mlx);
-	mlx_hook(mlx.window, 2, 0, &handle_keys, &game);
-	mlx_hook(mlx.window, 6, 1L << 6,&mouse_move,&game);
- 	mlx_loop(mlx.connect);
+	game.rays = rays;
+	cast_all_rays(&game);
+	mlx_key_hook(game.mlx.window, &ft_close, &game.mlx);
+	mlx_hook(game.mlx.window, 17,0, &ft_close2, &game.mlx);
+	mlx_hook(game.mlx.window, 2, 0, &handle_keys, &game);
+	mlx_hook(game.mlx.window, 6, 1L << 6,&mouse_move,&game);
+	mlx_loop(game.mlx.connect);
 	return (0);
 }
 t_game init_game(t_mlx mlx, t_input input)
@@ -71,6 +73,5 @@ t_game init_game(t_mlx mlx, t_input input)
 		ft_memcpy(game.doors, input.door, sizeof(t_point) * NUM_DOORS);
 	}
 	game.door_open = 0;
-	cast_all_rays(&game);
 	return (game);
 }

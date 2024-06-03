@@ -17,7 +17,7 @@
 # define DISTANCE_TO_PP ((WIDTH / 2) / tan(FOV / 2))
 # define MOVE_SPEED 15
 # define ROTATION_SPEED deg_to_rad(8)
-# define MINI_HEIGHT 130
+# define MINI_HEIGHT 132
 # define MINI_WIDTH 180
 # define MINI_CUBE_SIZE 12
 # define RIGHT_ARROW 124
@@ -104,7 +104,7 @@ typedef struct s_game{
 } t_game;
 
 float calculate_distance(float x1, float y1, float x2, float y2);
-int	ft_connect(t_mlx *mlx, t_input *input);
+t_mlx	ft_connect(t_input *input);
 void	my_mlx_pixel_put(t_img *image, int x, int y, int color);
 void	ft_error(void	*ptr, char *msg,t_input *input);
 int mouse_move(int x, int y, t_game *game);
@@ -124,5 +124,6 @@ void cast_all_rays(t_game *game);
 t_ray cast_ray(t_game *game, float ray_angle);
 float normalize_angle(float angle);
 int is_door(t_game *game, int x, int y);
+int	get_texture_pixel(t_img *texture, int x, int y);
 
 #endif
