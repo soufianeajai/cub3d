@@ -1,7 +1,20 @@
-#include"cub3d.h"
-int check_argument(int ac, char **av)
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: afanidi <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/03 18:42:51 by afanidi           #+#    #+#             */
+/*   Updated: 2024/06/03 18:42:52 by afanidi          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3d.h"
+
+int	check_argument(int ac, char **av)
 {
-	int fd;
+	int	fd;
 
 	if (ac != 2)
 		return (0);
@@ -14,43 +27,44 @@ int check_argument(int ac, char **av)
 	return (1);
 }
 
-void read_matrix(t_input input)
+void	read_matrix(t_input input)
 {
-    int i = 0;
-    while(input.map[i] != NULL)
-    {
-        printf("%s", input.map[i]);
-        printf("\n");
-        i++;
-    }
+	int	i;
+
+	i = 0;
+	while (input.map[i] != NULL)
+	{
+		printf("%s", input.map[i]);
+		printf("\n");
+		i++;
+	}
 }
 
-int	main(int ac , char **av)
+int	main(int ac, char **av)
 {
-	t_game game;
+	t_game	game;
 	t_mlx	mlx;
-	t_input input;
-	t_ray  rays[NUM_RAYS + 1];
-	
+	t_input	input;
+	t_ray	rays[NUM_RAYS + 1];
+
 	if (!check_argument(ac, av) || !parsing(av[1], &input))
-		return (printf("Error\n"),1);
-	
+		return (printf("Error\n"), 1);
 	get_doors(&input);
-	//read_matrix(input);
 	mlx = ft_connect(&input);
 	game = init_game(mlx, input);
 	game.rays = rays;
 	cast_all_rays(&game);
 	mlx_key_hook(game.mlx.window, &ft_close, &game.mlx);
-	mlx_hook(game.mlx.window, 17,0, &ft_close2, &game.mlx);
+	mlx_hook(game.mlx.window, 17, 0, &ft_close2, &game.mlx);
 	mlx_hook(game.mlx.window, 2, 0, &handle_keys, &game);
-	mlx_hook(game.mlx.window, 6, 1L << 6,&mouse_move,&game);
+	mlx_hook(game.mlx.window, 6, 1L << 6, &mouse_move, &game);
 	mlx_loop(game.mlx.connect);
 	return (0);
 }
-t_game init_game(t_mlx mlx, t_input input)
+
+t_game	init_game(t_mlx mlx, t_input input)
 {
-	t_game game;
+	t_game	game;
 
 	game.mlx = mlx;
 	game.map = input.map;

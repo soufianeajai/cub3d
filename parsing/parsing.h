@@ -79,5 +79,20 @@ char		**ft_split(char const *s, char c, int *nbr_lines);
 int			parsing(char *file, t_input *input);
 char		*get_full_len(char *line, t_input *input, int *position);
 char		*replace_spaces(char *line);
-
+int			get_position_door(t_input input, int *x, int *y, char **map);
+int			is_valid_door(t_input input, int i, int j);
+void		get_doors(t_input *input);
+char		*replace_spaces(char *line);
+void		free_tab_len(char **tab, int len);
+int			is_wall(char c);
+void		*ft_memcpy(void *dst, const void *src, size_t n);
+int			is_texture(char *line, t_input *input);
+int			white_space(char c);
+int			get_position_door(t_input input, int *x, int *y, char **map);
+char		**fill_map(t_input *input, char *file, int index_start_map,
+				char *line);
+int			parsing_map(char **map, t_input *input);
+char		**avance_line(int index_start_map, char *file, int *fd, int len);
+int			check_error_espace(char **map, int i, t_input *input);
+int			error_first_last_element(char **map, t_input *input, int i);
 #endif

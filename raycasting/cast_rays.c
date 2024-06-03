@@ -13,7 +13,7 @@ float	normalize_angle(float angle)
 	return (angle);
 }
 
-t_point	get_first_intersection(t_game *game, t_ray *ray, axes axis)
+t_point	get_first_intersection(t_game *game, t_ray *ray, t_axes axis)
 {
 	t_point	first_intersection;
 
@@ -50,7 +50,7 @@ t_ray	init_ray(float ray_angle)
 	return (ray);
 }
 
-t_point	get_step(t_ray *ray, axes axis)
+t_point	get_step(t_ray *ray, t_axes axis)
 {
 	t_point	step;
 
@@ -101,14 +101,14 @@ int intersection_found(t_game *game, t_ray *ray, t_point next_intersection, t_po
     }
 	return (state);
 }
-void check_direction(t_point *to_check, t_ray *ray, axes axis)
+void check_direction(t_point *to_check, t_ray *ray, t_axes axis)
 {
     if (axis == Y && !ray->is_facing_down)
         to_check->y--;
     else if (axis == X && !ray->is_facing_right)
         to_check->x--;
 }
-t_ray get_intersection(t_game *game, t_ray ray, axes axis)
+t_ray get_intersection(t_game *game, t_ray ray, t_axes axis)
 {
     t_point next_intersection;
     t_point step;
@@ -137,9 +137,9 @@ t_ray get_intersection(t_game *game, t_ray ray, axes axis)
     return (ray);
 }
 
-wall_orientation	get_orientation(t_ray *ray, axes axis)
+t_wall_orientation	get_orientation(t_ray *ray, t_axes axis)
 {
-	wall_orientation	orientation;
+	t_wall_orientation	orientation;
 
 	if (axis == Y)
 	{
@@ -183,7 +183,7 @@ t_ray cast_ray(t_game *game, float ray_angle)
         ray.orientation = get_orientation(&ray, X);
         ray.texture_offset = fmod(ray.wall_hit.y, CUBE_SIZE);
     }
-    ray.distance = ray.distance * cos(ray.angle - (game->player.rotation_angle));
+    ray.distance = ray.distance * cos(game->player.rotation_angle - ray.angle);
     return (ray);
 }
 
@@ -210,7 +210,7 @@ int	get_texture_pixel(t_img *texture, int x, int y)
 	return (pixel_color);
 }
 
-t_img	*get_orientation_texture(t_game *game, wall_orientation orientation)
+t_img	*get_orientation_texture(t_game *game, t_wall_orientation orientation)
 {
 	t_img	*texture;
 
@@ -270,7 +270,7 @@ void	draw_column(t_game *game, int column)
 	int		end_y;
 	t_img	*texture;
 
-	wall_height = (CUBE_SIZE / game->rays[column].distance) * DISTANCE_TO_PP;
+	wall_height = (CUBE_SIZE / game->rays[column].distance) * DISTANCE_TO_PROJECTION_PLAN;
 	draw_rectangle(game, column, HEIGHT, game->f_color);
 	start_y = (HEIGHT / 2) - (wall_height / 2);
 	end_y = start_y + wall_height;

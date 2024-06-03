@@ -87,24 +87,3 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	}
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
-
-int	white_space(char c)
-{
-	if (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f'
-		|| c == '\r')
-		return (1);
-	return (0);
-}
-
-int	is_direction(char c)
-{
-	if (c == 'N')
-		return (270);
-	if (c == 'S')
-		return (90);
-	if (c == 'E')
-		return (0);
-	if (c == 'W')
-		return (180);
-	return (-1);
-}
