@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   util_parsing.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: afanidi <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/02 20:19:12 by afanidi           #+#    #+#             */
+/*   Updated: 2024/06/02 20:19:13 by afanidi          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parsing.h"
 
 int	ft_isdigit(int c)
@@ -6,7 +18,6 @@ int	ft_isdigit(int c)
 		return (1);
 	return (0);
 }
-
 
 long	ft_atoi(const char *p)
 {
@@ -49,6 +60,7 @@ char	*ft_substr(char *s, int start, size_t len)
 	str[i] = '\0';
 	return (str);
 }
+
 int	ft_strcmp(const char *s1, const char *s2)
 {
 	int	i;
@@ -75,14 +87,16 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	}
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
-int white_space(char c)
+
+int	white_space(char c)
 {
-	if (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r')
+	if (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f'
+		|| c == '\r')
 		return (1);
 	return (0);
 }
 
-int is_direction(char c)
+int	is_direction(char c)
 {
 	if (c == 'N')
 		return (270);
@@ -92,7 +106,5 @@ int is_direction(char c)
 		return (0);
 	if (c == 'W')
 		return (180);
-    return (-1);
+	return (-1);
 }
-
-

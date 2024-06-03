@@ -1,9 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   util4_parsing.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: afanidi <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/02 20:16:45 by afanidi           #+#    #+#             */
+/*   Updated: 2024/06/02 20:16:47 by afanidi          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parsing.h"
 
 void	fill_desc_map(char *line, t_input *input, int *index_start_map,
 		int *error)
 {
-	if (is_texture(line, input)== 1 && *error == 0)
+	if (empty_line(line))
+		return ;
+	if (is_texture(line, input) == 1 && *error == 0)
 	{
 		*index_start_map += 1;
 		return ;
@@ -16,20 +30,20 @@ void	fill_desc_map(char *line, t_input *input, int *index_start_map,
 			return ;
 		}
 		*error = 1;
-		if (all_elements_set(input,0) && *index_start_map == 6) // last element set is map !!
+		if (all_elements_set(input, 0) && *index_start_map == 6)
 		{
-			if (input->W < ft_strlen(line))
-				input->W = ft_strlen(line);
-			input->H += 1;
+			if (input->w < ft_strlen(line))
+				input->w = ft_strlen(line);
+			input->h += 1;
 		}
 	}
 }
+
 int	check_espace(t_input *input, int i, int j, char type)
 {
-	
 	if (type == '2')
 	{
-		if (i < 0 || i >= input->H || j < 0 || j >= input->W)
+		if (i < 0 || i >= input->h || j < 0 || j >= input->w)
 			return (1);
 		if (input->map[i][j] == '0')
 			return (0);
@@ -41,6 +55,7 @@ int	check_espace(t_input *input, int i, int j, char type)
 	}
 	return (1);
 }
+
 int	is_not_map(char *line)
 {
 	int	i;
@@ -62,7 +77,6 @@ int	is_not_map(char *line)
 
 int	all_elements_set(t_input *input, int flag)
 {
-
 	if (input->no && input->so && input->we && input->ea && input->f_color != -1
 		&& input->c_color != -1)
 	{
@@ -75,5 +89,4 @@ int	all_elements_set(t_input *input, int flag)
 			return (1);
 	}
 	return (0);
-
 }

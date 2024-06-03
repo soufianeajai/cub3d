@@ -52,8 +52,8 @@ t_game init_game(t_mlx mlx, t_input input)
 
 	game.mlx = mlx;
 	game.map = input.map;
-	game.map_height = input.H;
-	game.map_width = input.W;
+	game.map_height = input.h;
+	game.map_width = input.w;
 	game.c_color = input.c_color;
 	game.f_color = input.f_color;
 	game.player.x = (input.pos_x * CUBE_SIZE) + CUBE_SIZE / 2;

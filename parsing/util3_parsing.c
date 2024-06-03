@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   util3_parsing.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: afanidi <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/02 20:16:13 by afanidi           #+#    #+#             */
+/*   Updated: 2024/06/02 20:16:15 by afanidi          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parsing.h"
 
 int	empty_line(char *line)
@@ -34,14 +46,14 @@ int	check_digits(char **str)
 {
 	int	i;
 	int	j;
-	int flag;
+	int	flag;
 
 	j = 0;
 	i = 0;
 	while (j < 3)
 	{
 		i = 0;
-		flag  = 0;
+		flag = 0;
 		while (str[j][i])
 		{
 			while (white_space(str[j][i]) && flag == 0)
