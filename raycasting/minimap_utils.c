@@ -27,8 +27,8 @@ void draw_line(t_img *img, t_point start, t_point end)
 	{
 		x = (int)start.x;
 		y = (int)start.y;
-        my_mlx_pixel_put(img, x,y, 0x00000000);
-        e2 = 2 * err;
+        my_mlx_pixel_put(img, x,y, 0x00FF0000);
+        e2 = 3 *err;
         if (e2 > (int)(-delta.y))
 		{
             err -= (int)delta.y;
@@ -43,41 +43,6 @@ void draw_line(t_img *img, t_point start, t_point end)
 }
 
 
-// this is valid  with no norminette :
-// void draw_line(t_img *img, int x, int y, int end_x, int end_y)
-// {
-//     int dx;
-//     int dy;
-//     int sx;
-//     int sy;
-//     int err;
-// 	int e2;
-
-// 	dx = abs(end_x - x);
-// 	dy = abs(end_y - y);
-// 	err = dx - dy;
-// 	if (end_x > x)
-// 		sx = 1;
-// 	else
-// 		sx = -1;
-// 	if (end_y > y)
-// 		sy = 1;
-// 	else	
-// 		sy = -1;
-//     while (x != end_x || y != end_y)
-// 	{
-//         my_mlx_pixel_put(img, x, y, 0x00000000);
-//         e2 = 2 * err;
-//         if (e2 > -dy) {
-//             err -= dy;
-//             x += sx;
-//         }
-//         if (e2 < dx) {
-//             err += dx;
-//             y += sy;
-//         }
-//     }
-// }
 
 void draw_square(t_game *game, int x, int y, int color)
 {
@@ -112,7 +77,7 @@ void draw_player(t_game *game, t_point player)
 		while (j < r)
 		{
 			if (i * i + j * j <= r * r)
-				my_mlx_pixel_put(&game->mlx.minimap_image, player.x + i, player.y + j, 0x00000000);
+				my_mlx_pixel_put(&game->mlx.minimap_image, player.x + i, player.y + j, 0x00FF0000);
 			j++;
 		}
 		i++;

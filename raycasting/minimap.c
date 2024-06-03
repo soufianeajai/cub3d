@@ -33,12 +33,14 @@ void draw(t_game *game, t_point start)
 			if (y >= 0 && y < game->map_height && x >= 0 && x < game->map_width)
 			{
 				if (is_door(game, x, y))
-					draw_square(game, (x - start.x) * MINI_CUBE_SIZE, (y - start.y) * MINI_CUBE_SIZE, 0x00000000);
+					draw_square(game, (x - start.x) * MINI_CUBE_SIZE, (y - start.y) * MINI_CUBE_SIZE, 0x0000FF00);
 				else if (game->map[(int)y][(int)x] == '1')
-					draw_square(game, (x - start.x) * MINI_CUBE_SIZE, (y - start.y) * MINI_CUBE_SIZE, 0xFF000000);
+					draw_square(game, (x - start.x) * MINI_CUBE_SIZE, (y - start.y) * MINI_CUBE_SIZE, 0x00000000);
 				else if (game->map[(int)y][(int)x] == '0')
 					draw_square(game, (x - start.x) * MINI_CUBE_SIZE, (y - start.y) * MINI_CUBE_SIZE, 0x00FFFFFF);
 			}
+			else
+				draw_square(game, (x - start.x) * MINI_CUBE_SIZE, (y - start.y) * MINI_CUBE_SIZE, 0x0000FFFF);
 		}
 	}
 }
@@ -61,6 +63,43 @@ void copy_image(t_game *game)
 		y++;
 	}
 }
+void draw_mini_border(t_game *game, int x, int y)
+{
+    int i;
+
+	i = 0;
+	while (i < MINI_CUBE_SIZE)
+	{
+        my_mlx_pixel_put(&game->mlx.minimap_image, x + i, y, 0X000000FF);
+        my_mlx_pixel_put(&game->mlx.minimap_image, x + i, y + MINI_CUBE_SIZE - 1, 0X000000FF);
+		i++;
+	}
+	i = 0;
+	while (i < MINI_CUBE_SIZE)
+	{
+        my_mlx_pixel_put(&game->mlx.minimap_image, x, y + i, 0X000000FF);
+        my_mlx_pixel_put(&game->mlx.minimap_image, x + MINI_CUBE_SIZE - 1, y + i, 0X000000FF);
+		i++;
+	}
+}
+void draw_minimap_borderr(t_game *game)
+{
+	t_point start;
+	t_point end;
+
+	start.x = 0;
+	start.y = HEIGHT - MINI_HEIGHT;
+	end.x = MINI_WIDTH;
+	end.y = HEIGHT - MINI_HEIGHT;
+	draw_line(&game->mlx.image, start, end);
+	start.x = MINI_WIDTH - 1;
+	start.y = HEIGHT - MINI_HEIGHT;
+	end.x = MINI_WIDTH - 1;
+	end.y = HEIGHT - 1;
+	draw_line(&game->mlx.image, start, end);
+
+	// draw_line(&game->mlx.image, start, end);
+}
 void draw_minimap(t_game *game)
 {
 	t_point start;
@@ -72,6 +111,6 @@ void draw_minimap(t_game *game)
 	mini_player.x = ((game->player.x / CUBE_SIZE) - start.x) * MINI_CUBE_SIZE;
 	mini_player.y = ((game->player.y / CUBE_SIZE) - start.y) * MINI_CUBE_SIZE;
 	draw_player(game, mini_player);
+	// draw_minimap_borderr(game);
 	copy_image(game);
-//	mlx_put_image_to_window(game->mlx.connect, game->mlx.window, game->mlx.image.ptr, 0, 0);
 }

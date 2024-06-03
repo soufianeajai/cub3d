@@ -125,5 +125,6 @@ t_ray cast_ray(t_game *game, float ray_angle);
 float normalize_angle(float angle);
 int is_door(t_game *game, int x, int y);
 int	get_texture_pixel(t_img *texture, int x, int y);
+void draw_line(t_img *img, t_point start, t_point end);
 
 #endif
