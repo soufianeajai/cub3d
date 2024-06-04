@@ -2,7 +2,7 @@
 NAME	= cub3d
 CFLAGS	= -Wall -Wextra -Werror 
 SRS		= main.c $(wildcard raycasting/*.c parsing/*.c parsing/gnl/*.c )
-FRAM	= -lmlx -framework OpenGL -framework AppKit #-ggdb3 -fsanitize=address
+FRAM	= libmlx_Linux.a -lm -lmlx_Linux -lX11 -lXext #-ggdb3 -fsanitize=address
 
 OBJ	= $(SRS:.c=.o)
 
