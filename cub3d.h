@@ -12,10 +12,13 @@
 
 #ifndef CUB3D_H
 # define CUB3D_H
+#include <limits.h>
 # include "parsing/parsing.h"
+# include <X11/X.h>
+# include <X11/keysym.h>
 # include <fcntl.h>
 # include <math.h>
-# include "mlx.h"
+# include <mlx.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -30,12 +33,6 @@
 # define MINI_HEIGHT 132
 # define MINI_WIDTH 180
 # define MINI_CUBE_SIZE 12
-# define RIGHT_ARROW 124
-# define LEFT_ARROW 123
-# define W_KEY 13
-# define S_KEY 1
-# define A_KEY 0
-# define D_KEY 2
 
 typedef enum s_wall_orientation
 {
@@ -129,8 +126,7 @@ void					ft_error(t_mlx *mlx, char *msg, t_input *input,
 							int free_flag);
 int						mouse_move(int x, int y, t_game *game);
 int						handle_keys(int keysym, t_game *game);
-int						ft_close(int keysym, t_mlx *mlx);
-int						ft_close2(t_mlx *mlx);
+int						ft_close(t_mlx *mlx);
 void					free_ptr(void *ptr);
 int						get_images(t_mlx *mlx, t_input *input);
 t_game					init_game(t_mlx mlx, t_input input);

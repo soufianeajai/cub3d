@@ -41,8 +41,7 @@ t_ray	init_ray(float ray_angle)
 	t_ray	ray;
 
 	ray.angle = normalize_angle(ray_angle);
-	//todo	
-	ray.distance = 1000000;
+	ray.distance = (float)INT_MAX;
 	ray.is_wall = 1;
 	ray.wall_hit.x = 0;
 	ray.wall_hit.y = 0;

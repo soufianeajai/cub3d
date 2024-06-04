@@ -42,9 +42,9 @@ void	read_matrix(t_input input)
 
 int	main(int ac, char **av)
 {
+	t_input	input;
 	t_game	game;
 	t_mlx	mlx;
-	t_input	input;
 	t_ray	rays[NUM_RAYS + 1];
 
 	input = init_data();
@@ -55,10 +55,11 @@ int	main(int ac, char **av)
 	game = init_game(mlx, input);
 	game.rays = rays;
 	cast_all_rays(&game);
-	mlx_key_hook(game.mlx.window, &ft_close, &game.mlx);
-	mlx_hook(game.mlx.window, 17, 0, &ft_close2, &game.mlx);
-	mlx_hook(game.mlx.window, 2, 0, &handle_keys, &game);
-	mlx_hook(game.mlx.window, 6, 1L << 6, &mouse_move, &game);
+	mlx_hook(game.mlx.window, DestroyNotify, StructureNotifyMask, ft_close,
+		&game.mlx);
+	mlx_hook(game.mlx.window, KeyPress, KeyPressMask, &handle_keys, &game);
+	//problem in this mouse_move
+	//mlx_hook(game.mlx.window, NotifyPointerRoot, CWBackingStore, &mouse_move, &game);
 	mlx_loop(game.mlx.connect);
 	return (0);
 }

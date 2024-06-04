@@ -1,26 +1,24 @@
-
 #include "../cub3d.h"
 
-int	ft_close(int keysym, t_mlx *mlx)
-{
-	if (keysym == 53)
-	{
-		mlx_destroy_window(mlx->connect, mlx->window);
-		mlx_destroy_image(mlx->connect, mlx->image.ptr);
-		free_ptr(mlx->connect);
-		exit(0);
-	}
+int	ft_close(t_mlx *mlx)
+{	
+	mlx_destroy_image(mlx->connect, mlx->image.ptr);
+	mlx_destroy_window(mlx->connect, mlx->window);
+	mlx_destroy_display(mlx->connect);
+	free_ptr(mlx->connect);
+	exit(1337);
 	return (0);
 }
 
-int	ft_close2(t_mlx *mlx)
-{
-	mlx_destroy_window(mlx->connect, mlx->window);
-	mlx_destroy_image(mlx->connect, mlx->image.ptr);
-	free_ptr(mlx->connect);
-	exit(0);
-	return (0);
-}
+// int	ft_close2(t_mlx *mlx)
+// {
+// 	mlx_destroy_window(mlx->connect, mlx->window);
+// 	mlx_destroy_image(mlx->connect, mlx->image.ptr);
+// 	free_ptr(mlx->connect);
+// 	printf("ffff");
+// 	exit(0);
+// 	return (0);
+// }
 
 int	mouse_move(int x, int y, t_game *game)
 {
@@ -61,13 +59,13 @@ int	is_collision(t_game *game, float x, float y)
 }
 void	handle_arrows(t_game *game, int keysym)
 {
-	if (keysym == RIGHT_ARROW)
+	if (keysym == XK_Right)
 	{
 		game->player.turn_direction = +1;
 		game->player.rotation_angle += game->rotation_speed
 			* game->player.turn_direction;
 	}
-	else if (keysym == LEFT_ARROW)
+	else if (keysym == XK_Left)
 	{
 		game->player.turn_direction = -1;
 		game->player.rotation_angle += game->rotation_speed
@@ -78,24 +76,24 @@ void	handle_movements(t_game *game, int keysym, float *new_pos_x,
 		float *new_pos_y)
 {
 	handle_arrows(game, keysym);
-	if (keysym == W_KEY)
+	if (keysym == XK_w || keysym == XK_W)
 	{
 		*new_pos_y += sin(game->player.rotation_angle) * game->move_speed;
 		*new_pos_x += cos(game->player.rotation_angle) * game->move_speed;
 	}
-	else if (keysym == S_KEY)
+	else if (keysym == XK_s || keysym == XK_S)
 	{
 		*new_pos_y -= sin(game->player.rotation_angle) * game->move_speed;
 		*new_pos_x -= cos(game->player.rotation_angle) * game->move_speed;
 	}
-	else if (keysym == A_KEY)
+	else if (keysym == XK_a || keysym == XK_A)
 	{
 		*new_pos_y += sin(game->player.rotation_angle - M_PI_2)
 			* game->move_speed;
 		*new_pos_x += cos(game->player.rotation_angle - M_PI_2)
 			* game->move_speed;
 	}
-	else if (keysym == D_KEY)
+	else if (keysym == XK_d || keysym == XK_D)
 	{
 		*new_pos_y += sin(game->player.rotation_angle + M_PI_2)
 			* game->move_speed;
@@ -128,6 +126,8 @@ int	handle_keys(int keysym, t_game *game)
 	float	border;
 	float	distance_door;
 
+	if (keysym == XK_Escape)
+		ft_close(&game->mlx);
 	border = CUBE_SIZE / 6;
 	new_pos_x = game->player.x;
 	new_pos_y = game->player.y;
