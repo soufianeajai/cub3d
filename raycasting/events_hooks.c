@@ -34,12 +34,13 @@ int	ft_close(t_game *game)
 int	mouse_move(int x, int y, t_game *game)
 {
 	int	dx;
+	int dir;
 
+	dir = 0;
 	dx = 0;
 	dx = (x - game->last_mouse_x);
 	if (x > 0 && x < WIDTH && y > 0 && y < HEIGHT)
 	{
-		dx = (x - game->last_mouse_x);
 		if (game->last_mouse_x == -1)
 			game->last_mouse_x = x;
 		else if (x > game->last_mouse_x)
@@ -55,6 +56,25 @@ int	mouse_move(int x, int y, t_game *game)
 	cast_all_rays(game);
 	return (0);
 }
+
+// int	mouse_move(int x, int y, t_game *game)
+// {
+// 	int	dx;
+// 	int dir;
+
+// 	dir = 0;
+// 	dx = 0;
+// 	(void)y;
+// 	dx = (x - game->last_mouse_x);
+// 	if (dx > 0)
+// 		dir = XK_Right;
+// 	else
+// 		dir = XK_Left;
+// 	handle_arrows(game, dir);
+// 	game->last_mouse_x = x;
+// 	cast_all_rays(game);
+// 	return (0);
+// }
 
 int	is_collision(t_game *game, float x, float y)
 {

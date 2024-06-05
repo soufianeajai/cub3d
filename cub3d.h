@@ -24,8 +24,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-# define HEIGHT 900
-# define WIDTH 1500
+# define HEIGHT 600
+# define WIDTH 1200
 # define CUBE_SIZE 64
 # define NUM_RAYS WIDTH
 # define NUM_DOORS 100
@@ -166,4 +166,5 @@ t_ray					init_ray(float ray_angle);
 t_wall_orientation		set_orientation(t_ray *ray, t_axes axis);
 t_img					*get_orientation_texture(t_game *game,
 							t_wall_orientation orientation);
+void					handle_arrows(t_game *game, int keysym);
 #endif

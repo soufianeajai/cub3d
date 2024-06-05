@@ -60,7 +60,7 @@ int	main(int ac, char **av)
 		&game);
 	mlx_hook(game.mlx.window, KeyPress, KeyPressMask, &handle_keys, &game);
 	//problem in this mouse_move
-	//mlx_hook(game.mlx.window, NotifyPointerRoot, CWBackingStore, &mouse_move, &game);
+	mlx_hook(game.mlx.window, NotifyPointerRoot, CWBackingStore, &mouse_move, &game);
 	mlx_loop(game.mlx.connect);
 	return (0);
 }
@@ -97,8 +97,8 @@ t_game	init_game(t_mlx mlx, t_input input)
 	game.fov = deg_to_rad(60);
 	game.angle_increment = (game.fov / NUM_RAYS);
 	game.distance_to_projection_plan = (WIDTH / 2) / (tan(game.fov / 2));
-	game.rotation_speed = deg_to_rad(8);
-	game.move_speed = CUBE_SIZE / 2;
+	game.rotation_speed = deg_to_rad(3);
+	game.move_speed = CUBE_SIZE / 5;
 	init_doors(&game, &input);
 	return (game);
 }
