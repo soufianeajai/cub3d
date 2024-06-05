@@ -6,7 +6,7 @@
 /*   By: sajaite <sajaite@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 18:42:51 by afanidi           #+#    #+#             */
-/*   Updated: 2024/06/03 19:02:47 by sajaite          ###   ########.fr       */
+/*   Updated: 2024/06/05 19:11:18 by afanidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	main(int ac, char **av)
 		&game);
 	mlx_hook(game.mlx.window, KeyPress, KeyPressMask, &handle_keys, &game);
 	//problem in this mouse_move
-	mlx_hook(game.mlx.window, NotifyPointerRoot, CWBackingStore, &mouse_move, &game);
+	mlx_hook(game.mlx.window, MotionNotify, PointerMotionMask, &mouse_move, &game);
 	mlx_loop(game.mlx.connect);
 	return (0);
 }

@@ -34,9 +34,7 @@ int	ft_close(t_game *game)
 int	mouse_move(int x, int y, t_game *game)
 {
 	int	dx;
-	int dir;
 
-	dir = 0;
 	dx = 0;
 	dx = (x - game->last_mouse_x);
 	if (x > 0 && x < WIDTH && y > 0 && y < HEIGHT)

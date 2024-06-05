@@ -6,7 +6,7 @@
 /*   By: sajaite <sajaite@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 18:43:37 by afanidi           #+#    #+#             */
-/*   Updated: 2024/06/03 19:58:48 by sajaite          ###   ########.fr       */
+/*   Updated: 2024/06/05 19:11:45 by afanidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # include <unistd.h>
 
 # define HEIGHT 600
-# define WIDTH 1200
+# define WIDTH 800
 # define CUBE_SIZE 64
 # define NUM_RAYS WIDTH
 # define NUM_DOORS 100
