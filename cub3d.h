@@ -116,6 +116,7 @@ typedef struct s_game
 	float				distance_to_projection_plan;
 	float				rotation_speed;
 	float				move_speed;
+	t_input				input;
 }						t_game;
 
 float					calculate_distance(float x1, float y1, float x2,
@@ -126,7 +127,7 @@ void					ft_error(t_mlx *mlx, char *msg, t_input *input,
 							int free_flag);
 int						mouse_move(int x, int y, t_game *game);
 int						handle_keys(int keysym, t_game *game);
-int						ft_close(t_mlx *mlx);
+int						ft_close(t_game *game);
 void					free_ptr(void *ptr);
 int						get_images(t_mlx *mlx, t_input *input);
 t_game					init_game(t_mlx mlx, t_input input);

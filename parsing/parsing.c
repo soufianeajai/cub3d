@@ -90,6 +90,7 @@ int	parsing(char *file, t_input *input)
 			break ;
 		fill_desc_map(line, input, &index_start_map, &error);
 		free(line);
+		line = NULL;
 	}
 	line = NULL;
 	if (input->h == 0 || index_start_map != 6)

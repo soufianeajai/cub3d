@@ -50,6 +50,7 @@ void	ft_error(t_mlx *mlx, char *msg, t_input *input, int free_flag)
 		mlx_destroy_window(mlx->connect, mlx->window);
 		free_ptr(mlx->connect);
 	}
+	mlx_destroy_display(mlx->connect);
 	perror(msg);
 	exit(1);
 }

@@ -1,11 +1,12 @@
 #include "../cub3d.h"
 
-int	ft_close(t_mlx *mlx)
+int	ft_close(t_game *game)
 {	
-	mlx_destroy_image(mlx->connect, mlx->image.ptr);
-	mlx_destroy_window(mlx->connect, mlx->window);
-	mlx_destroy_display(mlx->connect);
-	free_ptr(mlx->connect);
+	free_all_elements(&(game->input));
+	mlx_destroy_image(game->mlx.connect, game->mlx.image.ptr);
+	mlx_destroy_window(game->mlx.connect, game->mlx.window);
+	mlx_destroy_display(game->mlx.connect);
+	free_ptr(game->mlx.connect);
 	exit(1337);
 	return (0);
 }
@@ -127,7 +128,7 @@ int	handle_keys(int keysym, t_game *game)
 	float	distance_door;
 
 	if (keysym == XK_Escape)
-		ft_close(&game->mlx);
+		ft_close(game);
 	border = CUBE_SIZE / 6;
 	new_pos_x = game->player.x;
 	new_pos_y = game->player.y;

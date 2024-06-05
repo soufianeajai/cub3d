@@ -53,10 +53,11 @@ int	main(int ac, char **av)
 	get_doors(&input);
 	mlx = ft_connect(&input);
 	game = init_game(mlx, input);
+	game.input = input;
 	game.rays = rays;
 	cast_all_rays(&game);
 	mlx_hook(game.mlx.window, DestroyNotify, StructureNotifyMask, ft_close,
-		&game.mlx);
+		&game);
 	mlx_hook(game.mlx.window, KeyPress, KeyPressMask, &handle_keys, &game);
 	//problem in this mouse_move
 	//mlx_hook(game.mlx.window, NotifyPointerRoot, CWBackingStore, &mouse_move, &game);

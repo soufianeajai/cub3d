@@ -76,7 +76,7 @@ char	*get_full_len(char *line, t_input *input, int *position)
 	int		i;
 
 	i = 0;
-	new_line = malloc(input->w + 1);
+	new_line = (char *)malloc((input->w + 1) * sizeof(char));
 	if (!new_line)
 		return (NULL);
 	while (line[i])

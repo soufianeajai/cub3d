@@ -29,7 +29,6 @@ int	empty_line(char *line)
 char	*fill_elements(char *line, int i)
 {
 	int		j;
-	char	*str;
 
 	j = i;
 	if (empty_line(line))
@@ -38,8 +37,7 @@ char	*fill_elements(char *line, int i)
 		i++;
 	if (j == i)
 		return (NULL);
-	str = ft_substr(line, i, ft_strlen(line) - i - 1);
-	return (str);
+	return (ft_substr(line, i, ft_strlen(line) - i - 1));
 }
 
 int	check_digits(char **str)
