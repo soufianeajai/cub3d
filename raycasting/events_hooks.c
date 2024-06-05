@@ -2,10 +2,20 @@
 
 int	ft_close(t_game *game)
 {	
-	free_all_elements(&(game->input));
+	mlx_destroy_image(game->mlx.connect, game->mlx.minimap_image.ptr);
 	mlx_destroy_image(game->mlx.connect, game->mlx.image.ptr);
+	mlx_destroy_image(game->mlx.connect, game->mlx.north_wall_image.ptr);
+	mlx_destroy_image(game->mlx.connect, game->mlx.south_wall_image.ptr);
+	mlx_destroy_image(game->mlx.connect, game->mlx.east_wall_image.ptr);
+	mlx_destroy_image(game->mlx.connect, game->mlx.west_wall_image.ptr);
+	mlx_destroy_image(game->mlx.connect, game->mlx.door_image.ptr);
+	
+	free_all_elements(&(game->input));
+	
 	mlx_destroy_window(game->mlx.connect, game->mlx.window);
 	mlx_destroy_display(game->mlx.connect);
+	
+	
 	free_ptr(game->mlx.connect);
 	exit(1337);
 	return (0);
@@ -13,7 +23,7 @@ int	ft_close(t_game *game)
 
 // int	ft_close2(t_mlx *mlx)
 // {
-// 	mlx_destroy_window(mlx->connect, mlx->window);
+// 	mlx_destroy_window(game->mlx.connect, mlx->window);
 // 	mlx_destroy_image(mlx->connect, mlx->image.ptr);
 // 	free_ptr(mlx->connect);
 // 	printf("ffff");
