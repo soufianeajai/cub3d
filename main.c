@@ -6,7 +6,7 @@
 /*   By: sajaite <sajaite@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 18:42:51 by afanidi           #+#    #+#             */
-/*   Updated: 2024/06/05 19:11:18 by afanidi          ###   ########.fr       */
+/*   Updated: 2024/06/05 20:59:08 by afanidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,12 @@ int	main(int ac, char **av)
 	game.input = input;
 	game.rays = rays;
 	cast_all_rays(&game);
+	 mlx_loop_hook(game.mlx.connect, track_mouse_position, &game);
 	mlx_hook(game.mlx.window, DestroyNotify, StructureNotifyMask, ft_close,
 		&game);
 	mlx_hook(game.mlx.window, KeyPress, KeyPressMask, &handle_keys, &game);
 	//problem in this mouse_move
-	mlx_hook(game.mlx.window, MotionNotify, PointerMotionMask, &mouse_move, &game);
+	//mlx_hook(game.mlx.window, MotionNotify, PointerMotionMask, &track_mouse_movement, &game);
 	mlx_loop(game.mlx.connect);
 	return (0);
 }

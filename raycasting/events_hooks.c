@@ -31,11 +31,13 @@ int	ft_close(t_game *game)
 // 	return (0);
 // }
 
-int	mouse_move(int x, int y, t_game *game)
-{
-	int	dx;
 
-	dx = 0;
+int track_mouse_position(t_game *game)
+{
+    int x;
+	int y;
+	int	dx;
+    mlx_mouse_get_pos(game->mlx.connect, game->mlx.window, &x, &y);
 	dx = (x - game->last_mouse_x);
 	if (x > 0 && x < WIDTH && y > 0 && y < HEIGHT)
 	{
@@ -48,12 +50,12 @@ int	mouse_move(int x, int y, t_game *game)
 		game->player.rotation_angle += game->rotation_speed * dx / 80;
 	}
 	else if (game->last_mouse_x != -1)
-		game->player.rotation_angle += game->rotation_speed
-			* game->player.turn_direction;
+		game->player.rotation_angle += (game->rotation_speed * game->player.turn_direction)/2;
 	game->last_mouse_x = x;
 	cast_all_rays(game);
 	return (0);
 }
+
 
 // int	mouse_move(int x, int y, t_game *game)
 // {

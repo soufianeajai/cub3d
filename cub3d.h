@@ -6,7 +6,7 @@
 /*   By: sajaite <sajaite@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 18:43:37 by afanidi           #+#    #+#             */
-/*   Updated: 2024/06/05 19:11:45 by afanidi          ###   ########.fr       */
+/*   Updated: 2024/06/05 20:55:47 by afanidi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ t_mlx					ft_connect(t_input *input);
 void					my_mlx_pixel_put(t_img *image, int x, int y, int color);
 void					ft_error(t_mlx *mlx, char *msg, t_input *input,
 							int free_flag);
+int track_mouse_position(t_game *game);
 int						mouse_move(int x, int y, t_game *game);
 int						handle_keys(int keysym, t_game *game);
 int						ft_close(t_game *game);
