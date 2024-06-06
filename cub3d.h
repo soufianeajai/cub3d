@@ -12,7 +12,7 @@
 
 #ifndef CUB3D_H
 # define CUB3D_H
-#include <limits.h>
+# include <limits.h>
 # include "parsing/parsing.h"
 # include <X11/X.h>
 # include <X11/keysym.h>
@@ -24,8 +24,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-# define HEIGHT 600
-# define WIDTH 800
+# define HEIGHT 1000
+# define WIDTH 1700
 # define CUBE_SIZE 64
 # define NUM_RAYS WIDTH
 # define NUM_DOORS 100
@@ -125,7 +125,7 @@ t_mlx					ft_connect(t_input *input);
 void					my_mlx_pixel_put(t_img *image, int x, int y, int color);
 void					ft_error(t_mlx *mlx, char *msg, t_input *input,
 							int free_flag);
-int track_mouse_position(t_game *game);
+int						track_mouse_position(t_game *game);
 int						mouse_move(int x, int y, t_game *game);
 int						handle_keys(int keysym, t_game *game);
 int						ft_close(t_game *game);

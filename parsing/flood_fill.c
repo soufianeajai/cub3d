@@ -60,14 +60,13 @@ void	process_directions(t_input input, t_point p, t_point **queue, int *tail)
 		ny = p.y + dy[i];
 		if (nx >= 0 && nx < input.w && ny >= 0 && ny < input.h)
 		{
-			if (*tail>= input.w * input.h * 4)
+			if (*tail >= (input.w * input.h * 4))
 			{
 				free(*queue);
 				*queue = NULL;
 				return ;
 			}
 			(*queue)[(*tail)++] = (t_point){nx, ny};
-			
 		}
 	}
 }
@@ -80,9 +79,9 @@ void	flood_fill(t_input input, int x, int y, char **map)
 	t_point	p;
 
 	head = 0;
-	queue = malloc(input.w * input.h * 4 *sizeof(t_point));
+	queue = malloc ((input.w * input.h * 4) * sizeof(t_point));
 	if (!queue)
-        return;
+		return ;
 	tail = 0;
 	queue[tail++] = (t_point){x, y};
 	while (head < tail)
@@ -94,7 +93,8 @@ void	flood_fill(t_input input, int x, int y, char **map)
 		if (queue == NULL)
 			return ;
 	}
-	free(queue);queue = NULL;
+	free(queue);
+	queue = NULL;
 }
 
 void	mise_a_jour_map(t_input *input)

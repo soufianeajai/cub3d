@@ -48,7 +48,7 @@ typedef struct s_input
 
 t_input		init_data(void);
 void		free_all_elements(t_input *input);
-void	read_matrix(t_input input);
+void		read_matrix(t_input input);
 void		get_doors(t_input *input);
 void		mise_a_jour_map(t_input *input);
 int			get_position_door(t_input input, int *x, int *y, char **map);

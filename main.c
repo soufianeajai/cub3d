@@ -56,12 +56,10 @@ int	main(int ac, char **av)
 	game.input = input;
 	game.rays = rays;
 	cast_all_rays(&game);
-	 mlx_loop_hook(game.mlx.connect, track_mouse_position, &game);
+	mlx_loop_hook(game.mlx.connect, track_mouse_position, &game);
 	mlx_hook(game.mlx.window, DestroyNotify, StructureNotifyMask, ft_close,
 		&game);
 	mlx_hook(game.mlx.window, KeyPress, KeyPressMask, &handle_keys, &game);
-	//problem in this mouse_move
-	//mlx_hook(game.mlx.window, MotionNotify, PointerMotionMask, &track_mouse_movement, &game);
 	mlx_loop(game.mlx.connect);
 	return (0);
 }

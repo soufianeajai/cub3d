@@ -79,8 +79,6 @@ void	get_doors(t_input *input)
 			break ;
 		input->door[input->nb_doors].x = x;
 		input->door[input->nb_doors].y = y;
-		
-		
 		input->map[y][x] = '0';
 		input->nb_doors++;
 		mise_a_jour_map(input);
