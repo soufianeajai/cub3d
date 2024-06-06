@@ -24,8 +24,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-# define HEIGHT 1000
-# define WIDTH 1700
+# define HEIGHT 700
+# define WIDTH 900
 # define CUBE_SIZE 64
 # define NUM_RAYS WIDTH
 # define NUM_DOORS 100
