@@ -53,7 +53,7 @@ void	cast_all_rays(t_game *game)
 		ray_angle += game->angle_increment;
 		column++;
 	}
-	draw_minimap(game);
 	mlx_put_image_to_window(game->mlx.connect, game->mlx.window,
 		game->mlx.image.ptr, 0, 0);
+	draw_minimap(game);
 }

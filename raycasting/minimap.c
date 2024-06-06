@@ -69,5 +69,7 @@ void	draw_minimap(t_game *game)
 	mini_player.x = ((game->player.x / CUBE_SIZE) - start.x) * MINI_CUBE_SIZE;
 	mini_player.y = ((game->player.y / CUBE_SIZE) - start.y) * MINI_CUBE_SIZE;
 	draw_player(game, mini_player);
-	copy_image(game);
+	mlx_put_image_to_window(game->mlx.connect, game->mlx.window,
+		game->mlx.minimap_image.ptr, 0, HEIGHT - MINI_HEIGHT);
+//	copy_image(game);
 }
