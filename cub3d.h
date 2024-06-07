@@ -28,7 +28,6 @@
 # define WIDTH 1000
 # define CUBE_SIZE 64
 # define NUM_RAYS WIDTH
-# define NUM_DOORS 100
 # define MOVE_SPEED 15
 # define MINI_HEIGHT 132
 # define MINI_WIDTH 180
@@ -107,7 +106,7 @@ typedef struct s_game
 	int					c_color;
 	int					f_color;
 	t_point				door;
-	t_point				doors[NUM_DOORS];
+	t_point				doors[NBR_DOORS];
 	int					nb_doors;
 	bool				door_open;
 	int					last_mouse_x;

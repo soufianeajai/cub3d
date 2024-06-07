@@ -35,6 +35,7 @@ void	draw(t_game *game, t_point start)
 		}
 	}
 }
+
 void	copy_image(t_game *game)
 {
 	int	x;
