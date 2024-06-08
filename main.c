@@ -73,7 +73,7 @@ void	init_doors(t_game *game, t_input *input)
 		game->door.x = input->door[0].x;
 		game->door.y = input->door[0].y;
 		game->nb_doors = input->nb_doors;
-		ft_memcpy(game->doors, input->door, sizeof(t_point) * NUM_DOORS);
+		ft_memcpy(game->doors, input->door, sizeof(t_point) * NBR_DOORS);
 	}
 	game->door_open = 0;
 }

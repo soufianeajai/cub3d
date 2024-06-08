@@ -73,7 +73,7 @@ void	get_doors(t_input *input)
 
 	i = -1;
 	input->nb_doors = 0;
-	while (input->nb_doors < NUM_DOORS)
+	while (input->nb_doors < NBR_DOORS)
 	{
 		if (!get_position_door(*input, &x, &y, input->map))
 			break ;
