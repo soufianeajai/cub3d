@@ -6,6 +6,7 @@ void	draw(t_game *game, t_point start)
 	int	y;
 	int	end_x;
 	int	end_y;
+	int clr;
 
 	end_x = (int)((int)game->player.x / CUBE_SIZE) + (int)(MINI_WIDTH
 			/ MINI_CUBE_SIZE / 2) + 1;
@@ -19,15 +20,15 @@ void	draw(t_game *game, t_point start)
 		{
 			if (y >= 0 && y < game->map_height && x >= 0 && x < game->map_width)
 			{
+				
 				if (is_door(game, x, y))
-					draw_square(game, (x - start.x) * MINI_CUBE_SIZE, (y
-							- start.y) * MINI_CUBE_SIZE, 0x0000FF00);
+					clr=0x0000FF00;
 				else if (game->map[(int)y][(int)x] == '1')
-					draw_square(game, (x - start.x) * MINI_CUBE_SIZE, (y
-							- start.y) * MINI_CUBE_SIZE, 0x00000000);
+					clr=0x00000000;
 				else if (game->map[(int)y][(int)x] == '0')
+				clr = 0x00FFFFFF;
 					draw_square(game, (x - start.x) * MINI_CUBE_SIZE, (y
-							- start.y) * MINI_CUBE_SIZE, 0x00FFFFFF);
+							- start.y) * MINI_CUBE_SIZE, clr);
 			}
 			else
 				draw_square(game, (x - start.x) * MINI_CUBE_SIZE, (y - start.y)
