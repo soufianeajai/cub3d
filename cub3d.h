@@ -6,7 +6,7 @@
 /*   By: sajaite <sajaite@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 18:43:37 by afanidi           #+#    #+#             */
-/*   Updated: 2024/06/10 22:34:14 by sajaite          ###   ########.fr       */
+/*   Updated: 2024/06/10 22:53:37 by sajaite          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-# define HEIGHT 600
-# define WIDTH 1000
+# define HEIGHT 1000
+# define WIDTH 1600
 # define CUBE_SIZE 64
 # define NUM_RAYS WIDTH
 # define MOVE_SPEED 15
