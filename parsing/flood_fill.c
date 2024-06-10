@@ -79,7 +79,7 @@ void	flood_fill(t_input input, int x, int y, char **map)
 	t_point	p;
 
 	head = 0;
-	queue = malloc ((input.w * input.h * 4) * sizeof(t_point));
+	queue = malloc((input.w * input.h * 4) * sizeof(t_point));
 	if (!queue)
 		return ;
 	tail = 0;

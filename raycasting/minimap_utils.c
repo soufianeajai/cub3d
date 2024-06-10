@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minimap_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sajaite <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/10 22:16:21 by sajaite           #+#    #+#             */
+/*   Updated: 2024/06/10 22:16:24 by sajaite          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../cub3d.h"
 
 void	initialize_line(t_point *delta, t_point *signe, t_point start,
@@ -17,8 +29,6 @@ void	draw_line(t_img *img, t_point start, t_point end)
 {
 	t_point	delta;
 	t_point	signe;
-	int		x;
-	int		y;
 	int		err;
 	int		e2;
 
@@ -26,10 +36,8 @@ void	draw_line(t_img *img, t_point start, t_point end)
 	err = (int)((int)delta.x - (int)delta.y);
 	while ((int)start.x != (int)end.x || (int)start.y != (int)end.y)
 	{
-		x = (int)start.x;
-		y = (int)start.y;
-		my_mlx_pixel_put(img, x, y, 0x00FF0000);
-		e2 = 3 * err;
+		my_mlx_pixel_put(img, (int)start.x, (int)start.y, 0x00FF0000);
+		e2 = 2 * err;
 		if (e2 > (int)(-delta.y))
 		{
 			err -= (int)delta.y;
@@ -86,6 +94,7 @@ void	draw_player(t_game *game, t_point player)
 	end.y = player.y + (int)(MINI_CUBE_SIZE * sin(game->player.rotation_angle));
 	draw_line(&game->mlx.minimap_image, player, end);
 }
+
 int	is_door(t_game *game, int x, int y)
 {
 	int	i;

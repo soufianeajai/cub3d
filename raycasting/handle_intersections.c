@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handle_intersections.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sajaite <sajaite@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/10 22:16:51 by sajaite           #+#    #+#             */
+/*   Updated: 2024/06/10 22:32:07 by sajaite          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../cub3d.h"
 
 t_point	get_first_intersection(t_game *game, t_ray *ray, t_axes axis)
@@ -60,7 +72,7 @@ int	intersection_found(t_game *game, t_ray *ray, t_point next_intersection,
 			/ CUBE_SIZE)] == '1')
 	{
 		if (is_door(game, (int)(to_check.x / CUBE_SIZE), (int)(to_check.y
-					/ CUBE_SIZE)))
+			/ CUBE_SIZE)))
 		{
 			ray->is_wall = 0;
 			if (game->door_open)
@@ -78,33 +90,32 @@ int	intersection_found(t_game *game, t_ray *ray, t_point next_intersection,
 	}
 	return (state);
 }
+
 t_ray	get_intersection(t_game *game, t_ray ray, t_axes axis)
 {
-	t_point	next_intersection;
+	t_point	next_inter;
 	t_point	step;
 	t_point	to_check;
 	int		i;
 	int		intersection;
 
 	i = -1;
-	next_intersection = get_first_intersection(game, &ray, axis);
+	next_inter = get_first_intersection(game, &ray, axis);
 	step = get_step(&ray, axis);
-	while (next_intersection.x >= 0 && next_intersection.x < game->map_width
-		* CUBE_SIZE && next_intersection.y >= 0
-		&& next_intersection.y < game->map_height * CUBE_SIZE)
+	while (next_inter.x >= 0 && next_inter.x < game->map_width * CUBE_SIZE
+		&& next_inter.y >= 0 && next_inter.y < game->map_height * CUBE_SIZE)
 	{
-		to_check = next_intersection;
+		to_check = next_inter;
 		check_direction(&to_check, &ray, axis);
-		intersection = intersection_found(game, &ray, next_intersection,
-				to_check);
+		intersection = intersection_found(game, &ray, next_inter, to_check);
 		if (intersection)
 		{
 			if (intersection == 1)
 				game->door = game->doors[i];
 			break ;
 		}
-		next_intersection.x += step.x;
-		next_intersection.y += step.y;
+		next_inter.x += step.x;
+		next_inter.y += step.y;
 	}
 	return (ray);
 }

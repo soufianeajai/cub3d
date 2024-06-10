@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   util4_parsing.c                                    :+:      :+:    :+:   */
+/*   fill_desc_map.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: afanidi <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: sajaite <sajaite@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 20:16:45 by afanidi           #+#    #+#             */
-/*   Updated: 2024/06/02 20:16:47 by afanidi          ###   ########.fr       */
+/*   Updated: 2024/06/10 21:25:23 by sajaite          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,19 @@ int	all_elements_set(t_input *input, int flag)
 			return (1);
 	}
 	return (0);
+}
+
+int	check_argument(int ac, char **av)
+{
+	int	fd;
+
+	if (ac != 2)
+		return (0);
+	if (ft_strncmp(av[1] + ft_strlen(av[1]) - 4, ".cub", 4) != 0)
+		return (0);
+	fd = open(av[1], O_RDONLY);
+	if (fd < 0)
+		return (0);
+	close(fd);
+	return (1);
 }

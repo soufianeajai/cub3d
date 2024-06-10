@@ -94,4 +94,5 @@ int			parsing_map(char **map, t_input *input);
 char		**avance_line(int index_start_map, char *file, int *fd, int len);
 int			check_error_espace(char **map, int i, t_input *input);
 int			error_first_last_element(char **map, t_input *input, int i);
+int			check_argument(int ac, char **av);
 #endif

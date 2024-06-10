@@ -6,17 +6,17 @@
 /*   By: sajaite <sajaite@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 18:43:37 by afanidi           #+#    #+#             */
-/*   Updated: 2024/06/05 20:55:47 by afanidi          ###   ########.fr       */
+/*   Updated: 2024/06/10 22:34:14 by sajaite          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
-# include <limits.h>
 # include "parsing/parsing.h"
 # include <X11/X.h>
 # include <X11/keysym.h>
 # include <fcntl.h>
+# include <limits.h>
 # include <math.h>
 # include <mlx.h>
 # include <stdbool.h>
@@ -125,7 +125,6 @@ void					my_mlx_pixel_put(t_img *image, int x, int y, int color);
 void					ft_error(t_mlx *mlx, char *msg, t_input *input,
 							int free_flag);
 int						track_mouse_position(t_game *game);
-int						mouse_move(int x, int y, t_game *game);
 int						handle_keys(int keysym, t_game *game);
 int						ft_close(t_game *game);
 void					free_ptr(void *ptr);
@@ -167,4 +166,8 @@ t_wall_orientation		set_orientation(t_ray *ray, t_axes axis);
 t_img					*get_orientation_texture(t_game *game,
 							t_wall_orientation orientation);
 void					handle_arrows(t_game *game, int keysym);
+void					handle_doors(t_game *game);
+int						is_collision(t_game *game, float x, float y);
+void					init_doors(t_game *game, t_input *input);
+t_game					init_game(t_mlx mlx, t_input input);
 #endif

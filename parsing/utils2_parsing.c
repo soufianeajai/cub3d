@@ -28,7 +28,7 @@ int	empty_line(char *line)
 
 char	*fill_elements(char *line, int i)
 {
-	int		j;
+	int	j;
 
 	j = i;
 	if (empty_line(line))

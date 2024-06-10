@@ -1,4 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handle_images.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sajaite <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/10 22:17:00 by sajaite           #+#    #+#             */
+/*   Updated: 2024/06/10 22:17:01 by sajaite          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../cub3d.h"
+
+int	get_door_image(t_mlx *mlx)
+{
+	if (!get_image_from_xpm(mlx->connect, "./maps/1door.xpm", &mlx->door_image))
+	{
+		mlx_destroy_image(mlx->connect, mlx->north_wall_image.ptr);
+		mlx_destroy_image(mlx->connect, mlx->south_wall_image.ptr);
+		mlx_destroy_image(mlx->connect, mlx->east_wall_image.ptr);
+		mlx_destroy_image(mlx->connect, mlx->west_wall_image.ptr);
+		return (0);
+	}
+	return (1);
+}
 
 int	get_images(t_mlx *mlx, t_input *input)
 {
@@ -22,15 +47,7 @@ int	get_images(t_mlx *mlx, t_input *input)
 		mlx_destroy_image(mlx->connect, mlx->east_wall_image.ptr);
 		return (0);
 	}
-	if (!get_image_from_xpm(mlx->connect, "./maps/1door.xpm", &mlx->door_image))
-	{
-		mlx_destroy_image(mlx->connect, mlx->north_wall_image.ptr);
-		mlx_destroy_image(mlx->connect, mlx->south_wall_image.ptr);
-		mlx_destroy_image(mlx->connect, mlx->east_wall_image.ptr);
-		mlx_destroy_image(mlx->connect, mlx->west_wall_image.ptr);
-		return (0);
-	}
-	return (1);
+	return (get_door_image(mlx));
 }
 
 int	get_image_from_xpm(void *mlx_ptr, char *path_xpm, t_img *img)

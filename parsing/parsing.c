@@ -47,9 +47,9 @@ int	check_error_espace(char **map, int i, t_input *input)
 		if (map[i][j] == '2' || map[i][j] == '0')
 		{
 			if (!check_espace(input, i, j - 1, map[i][j])
-				|| !check_espace(input, i, j + 1, map[i][j]) ||
-				!check_espace(input, i - 1, j, map[i][j])
-					|| !check_espace(input, i + 1, j, map[i][j]))
+				|| !check_espace(input, i, j + 1, map[i][j])
+				|| !check_espace(input, i - 1, j, map[i][j])
+				|| !check_espace(input, i + 1, j, map[i][j]))
 			{
 				printf("\nError : map[%d][%d] = %c\n", i, j, map[i][j]);
 				return (0);
