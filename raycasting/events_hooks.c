@@ -6,7 +6,7 @@
 /*   By: sajaite <sajaite@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 22:17:06 by sajaite           #+#    #+#             */
-/*   Updated: 2024/06/10 22:30:45 by sajaite          ###   ########.fr       */
+/*   Updated: 2024/06/12 03:03:53 by sajaite          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	track_mouse_position(t_game *game)
 	}
 	else if (game->last_mouse_x != -1)
 		game->player.rotation_angle += (game->rotation_speed
-				* game->player.turn_direction);
+				* game->player.turn_direction)/4;
 	game->last_mouse_x = x;
 	cast_all_rays(game);
 	return (0);
