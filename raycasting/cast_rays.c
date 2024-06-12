@@ -25,14 +25,14 @@ t_ray	cast_ray(t_game *game, float ray_angle)
 	{
 		ray = horizontal_intersection;
 		ray.orientation = set_orientation(&ray, Y);
-		ray.texture_offset = fmod(ray.wall_hit.x, CUBE_SIZE);
+		ray.texture_offset = fmod(ray.wall_hit.x, CUBE_SIZE) / CUBE_SIZE;
 	}
 	else
 	{
 		ray = vertical_intersection;
 		ray.vertical_hit = 1;
 		ray.orientation = set_orientation(&ray, X);
-		ray.texture_offset = fmod(ray.wall_hit.y, CUBE_SIZE);
+		ray.texture_offset = fmod(ray.wall_hit.y, CUBE_SIZE) / CUBE_SIZE;
 	}
 	ray.distance = ray.distance * cos(game->player.rotation_angle - ray.angle);
 	return (ray);

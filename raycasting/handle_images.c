@@ -14,7 +14,7 @@
 
 int	get_door_image(t_mlx *mlx)
 {
-	if (!get_image_from_xpm(mlx->connect, "./maps/1door.xpm", &mlx->door_image))
+	if (!get_image_from_xpm(mlx->connect, "./maps/door.xpm", &mlx->door_image))
 	{
 		mlx_destroy_image(mlx->connect, mlx->north_wall_image.ptr);
 		mlx_destroy_image(mlx->connect, mlx->south_wall_image.ptr);

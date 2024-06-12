@@ -65,30 +65,19 @@ t_point	get_step(t_ray *ray, t_axes axis)
 int	intersection_found(t_game *game, t_ray *ray, t_point next_intersection,
 		t_point to_check)
 {
-	int	state;
-
-	state = 0;
 	if (game->map[(int)(to_check.y / CUBE_SIZE)][(int)(to_check.x
 			/ CUBE_SIZE)] == '1')
 	{
 		if (is_door(game, (int)(to_check.x / CUBE_SIZE), (int)(to_check.y
 			/ CUBE_SIZE)))
-		{
 			ray->is_wall = 0;
-			if (game->door_open)
-				state = 1;
-			else
-				state = 2;
-		}
-		else
-			state = 3;
 		ray->wall_hit.x = next_intersection.x;
 		ray->wall_hit.y = next_intersection.y;
 		ray->distance = calculate_distance(game->player.x, game->player.y,
 				ray->wall_hit.x, ray->wall_hit.y);
-		return (state);
+		return (1);
 	}
-	return (state);
+	return (0);
 }
 
 t_ray	get_intersection(t_game *game, t_ray ray, t_axes axis)
@@ -97,7 +86,6 @@ t_ray	get_intersection(t_game *game, t_ray ray, t_axes axis)
 	t_point	step;
 	t_point	to_check;
 	int		i;
-	int		intersection;
 
 	i = -1;
 	next_inter = get_first_intersection(game, &ray, axis);
@@ -107,11 +95,9 @@ t_ray	get_intersection(t_game *game, t_ray ray, t_axes axis)
 	{
 		to_check = next_inter;
 		check_direction(&to_check, &ray, axis);
-		intersection = intersection_found(game, &ray, next_inter, to_check);
-		if (intersection)
+		if (intersection_found(game, &ray, next_inter, to_check))
 		{
-			if (intersection == 1)
-				game->door = game->doors[i];
+			game->door = game->doors[i];
 			break ;
 		}
 		next_inter.x += step.x;

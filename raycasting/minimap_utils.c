@@ -29,25 +29,21 @@ void	draw_line(t_img *img, t_point start, t_point end)
 {
 	t_point	delta;
 	t_point	signe;
-	int		err;
-	int		e2;
+	t_point	increment;
+	float	step;
+	int		i;
 
+	i = 0;
 	initialize_line(&delta, &signe, start, end);
-	err = (int)((int)delta.x - (int)delta.y);
-	while ((int)start.x != (int)end.x || (int)start.y != (int)end.y)
+	step = fmax(fabs(delta.y), fabs(delta.x));
+	increment.x = signe.x * delta.x / step;
+	increment.y = signe.y * delta.y / step;
+	while (i <= step)
 	{
-		my_mlx_pixel_put(img, (int)start.x, (int)start.y, 0x00FF0000);
-		e2 = 2 * err;
-		if (e2 > (int)(-delta.y))
-		{
-			err -= (int)delta.y;
-			start.x += (int)signe.x;
-		}
-		if (e2 < (int)delta.x)
-		{
-			err += (int)delta.x;
-			start.y += (int)signe.y;
-		}
+		my_mlx_pixel_put(img, round(start.x), round(start.y), 0x00FF0000);
+		start.x += increment.x;
+		start.y += increment.y;
+		i++;
 	}
 }
 

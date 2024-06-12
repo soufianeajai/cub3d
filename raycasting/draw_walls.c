@@ -35,17 +35,6 @@ int	get_texture_pixel(t_img *texture, int x, int y)
 	return (pixel_color);
 }
 
-void	check_start_end(int *start, int *end, float *y, float step)
-{
-	if (*start < 0)
-	{
-		*y = -*start * step;
-		*start = 0;
-	}
-	if (*end >= HEIGHT)
-		*end = HEIGHT;
-}
-
 void	draw_textured_wall(t_game *game, int column, float wall_height,
 		t_img *texture)
 {
@@ -55,13 +44,11 @@ void	draw_textured_wall(t_game *game, int column, float wall_height,
 	int		y;
 	float	step;
 
-	texture_pos.x = (int)(game->rays[column].texture_offset / CUBE_SIZE
-			* texture->width);
-	start_y = (HEIGHT / 2) - (wall_height / 2);
+	texture_pos.x = (int)(game->rays[column].texture_offset * texture->width);
+	start_y = (HEIGHT - wall_height) / 2;
 	end_y = start_y + wall_height;
 	step = (float)texture->height / wall_height;
 	texture_pos.y = 0;
-	check_start_end(&start_y, &end_y, &texture_pos.y, step);
 	y = start_y;
 	while (y < end_y)
 	{
@@ -82,7 +69,7 @@ void	draw_column(t_game *game, int column)
 	wall_height = (CUBE_SIZE / game->rays[column].distance)
 		* game->distance_to_projection_plan;
 	draw_rectangle(game, column, HEIGHT, game->f_color);
-	start_y = (HEIGHT / 2) - (wall_height / 2);
+	start_y = (HEIGHT - wall_height) / 2;
 	end_y = start_y + wall_height;
 	if (start_y > 0)
 		draw_rectangle(game, column, start_y, game->c_color);
